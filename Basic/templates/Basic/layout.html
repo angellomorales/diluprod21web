@@ -11,29 +11,45 @@
 </head>
 
 <body>
-    <h1>Auctions</h1>
+    <h1>DILUPROD21</h1>
     <div>
         {% if user.is_authenticated %}
-        Signed in as <strong>{{ user.username }}</strong>.
-        {% else %}
-        Not signed in.
+        Logueado como: <strong>{{ user.username }}</strong>.
         {% endif %}
     </div>
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            <a class="nav-link" href="{% url 'index' %}">Proceso</a>
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            <a class="nav-link" href="">Data histórica</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">Pozo Inyector</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">Cálculos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">Gráficas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">Laboratorio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">Pozo Nuevo</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Salir</a>
         </li>
         {% else %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
         </li>
         {% endif %}
     </ul>
-    <hr>
+    <hr class="my-4">
     {% block body %}
     {% endblock %}
 </body>
