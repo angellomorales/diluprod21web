@@ -1,7 +1,10 @@
 {% extends "Basic/layout.html" %}
+{% load static %}
 
 {% block body %}
     <h2>Indexado</h2>
     <button onclick="showMessage()">click</button>
-    TODO
+    <!-- <img src="{{ MEDIA_URL }}{{ predio.dataFile }}" alt=""> -->
+    <img src="{% static 'Basic/img/hidrometro.gif' %}" alt="">
+    <p>En las pruebas de producción donde se realice la dilución del crudo de producción con el diluyente nafta, es vital conocer un valor aproximado del gasto necesario de diluyente para que la mezcla de fluidos tenga la densidad requerida para la conveniencia óptima del proceso; sin incurrir en sobrediluciones o falta de diluyente que conlleven a una obstrucción del equipo de medición. Teniendo en cuenta otros factores que pueden influenciar errores en la medición como por ejemplo alta presencia de vapor en la fase liquida.</p>
 {% endblock %}
