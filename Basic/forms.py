@@ -14,6 +14,6 @@ class NewCalculosForm(forms.Form):
         decimal_places=2, required=True, label="API Diluyente @60ºF")
     TipoCalculo = forms.ChoiceField(
         choices=CHOICES, required=True, label="Tipo calculo", widget= forms.RadioSelect)
-    APISeco = forms.DecimalField(
-        decimal_places=2, required=True, label="API Seco @60ºF")
+    VariableACalcular = forms.DecimalField(
+        decimal_places=2, required=True, label="Variable a calcular")
 
