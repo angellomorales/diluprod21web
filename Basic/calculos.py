@@ -67,3 +67,44 @@ class NewCalculos():
                           densidadEmulsion=self.densidadAgua*geMezclaSeco, densidadDiluyente=self.densidadAgua*geDiluyente, densidadLiquido=self.densidadAgua*geLiquido,
                           relacionOil_Diluyente=diluyente/(aceite+diluyente),
                           relacion1_3=aceite/3)
+
+    def calcularAPI(self, decApiCabeza, decApiDiluyente, decDiluyente, decAceite, decSwCabeza):
+        apiCabeza = float(decApiCabeza)
+        apiDiluyente = float(decApiDiluyente)
+        diluyente = float(decDiluyente)
+        aceite = float(decAceite)
+        swCabeza = float(decSwCabeza)
+
+        geAceite = 141.5 / (apiCabeza + 131.5)
+        geAgua = 1
+        geDiluyente = 141.5 / (apiDiluyente + 131.5)
+
+        agua = (aceite * swCabeza) / (1 - swCabeza)
+
+        factorC = (diluyente / (diluyente + aceite)) * 100
+        factorG = apiDiluyente - apiCabeza
+        factorS = 4.86 * pow(10, -8) * factorC * \
+            pow(100 - factorC, 0.819) * pow(factorG, 2.28)
+        # factorS=2.14*pow(10, -3)*pow(factorC,-0.0704)*pow(factorG,1.76)
+        encogimiento = (factorS / 100) * (diluyente + aceite)
+
+        geMezclaHumedo = (aceite * geAceite + agua * geAgua + diluyente *
+                          geDiluyente) / (aceite + agua + diluyente - encogimiento)
+        geMezclaSeco = (aceite * geAceite + diluyente *
+                        geDiluyente) / (aceite + diluyente - encogimiento)
+        # geMezcla = (aceite * geAceite + agua * geAgua + diluyente * geDiluyente) / (aceite + agua + diluyente)# SIN ENCOGIMIENTO
+
+        swMezcla = agua / (agua + diluyente + aceite)
+
+        apiMezclaHumedo = (141.5 / geMezclaHumedo) - 131.5
+        apiMezclaSeco = (141.5 / geMezclaSeco) - 131.5
+
+        geLiquido = 141.5 / (131.5 + apiMezclaHumedo)
+
+        self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
+                          agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
+                          apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
+                          densidadEmulsion=self.densidadAgua*geMezclaSeco, densidadDiluyente=self.densidadAgua*geDiluyente, densidadLiquido=self.densidadAgua*geLiquido,
+                          relacionOil_Diluyente=diluyente/(aceite+diluyente),
+                          relacion1_3=aceite/3)
+

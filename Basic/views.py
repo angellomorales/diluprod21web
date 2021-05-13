@@ -53,7 +53,10 @@ def calculos_view(request):
             tipoCalculo = form.cleaned_data["tipoCalculo"]
             variableACalcular = form.cleaned_data["variableACalcular"]
             calculos= NewCalculos()
-            calculos.calcularDiluyente(apiCabeza,apiDiluyente,variableACalcular,aceite,swCabeza,True)
+            if tipoCalculo == 'apiMezcla':
+                calculos.calcularAPI(apiCabeza,apiDiluyente,variableACalcular,aceite,swCabeza)
+            else:
+                calculos.calcularDiluyente(apiCabeza,apiDiluyente,variableACalcular,aceite,swCabeza,True)
             return render(request, "Basic/calculos.html", {
                 "form": form,
                 "esCalculado": True,
