@@ -4,13 +4,14 @@ from django import forms
 class NewCalculosForm(forms.Form):
     CHOICES = [('apiMezcla', 'Calcular Api de Mezcla'),
                ('diluyenteRequerido', 'Calcular Diluyente Requerido')]
-    aceitePruebaAnterior = forms.DecimalField(
+    pozo = forms.CharField(required=False, label="Pozo")
+    aceite = forms.DecimalField(
         decimal_places=2, required=True, label="Aceite Prueba Anterior BPD")
-    fraccionSYWCabeza = forms.DecimalField(
+    swCabeza = forms.DecimalField(
         decimal_places=2, required=True, label="% S&W Cabeza")
-    APICabeza = forms.DecimalField(
+    apiCabeza = forms.DecimalField(
         decimal_places=2, required=True, label="API Cabeza @60ºF")
-    APIDiluyente = forms.DecimalField(
+    apiDiluyente = forms.DecimalField(
         decimal_places=2, required=True, label="API Diluyente @60ºF")
     tipoCalculo = forms.ChoiceField(
         choices=CHOICES, required=True, label="Tipo calculo", widget= forms.RadioSelect)
