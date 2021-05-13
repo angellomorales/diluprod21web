@@ -7,7 +7,7 @@ class NewCalculosForm(forms.Form):
     aceitePruebaAnterior = forms.DecimalField(
         decimal_places=2, required=True, label="Aceite Prueba Anterior BPD")
     fraccionSYWCabeza = forms.DecimalField(
-        decimal_places=2, required=True, label="Fracción S&W Cabeza")
+        decimal_places=2, required=True, label="% S&W Cabeza")
     APICabeza = forms.DecimalField(
         decimal_places=2, required=True, label="API Cabeza @60ºF")
     APIDiluyente = forms.DecimalField(

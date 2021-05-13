@@ -17,7 +17,7 @@ class NewCalculos():
         apiDiluyente = float(decApiDiluyente)
         apiMezclaDeseado = float(decApiMezclaDeseado)
         aceite = float(decAceite)
-        swCabeza = float(decSwCabeza)
+        swCabeza = float(decSwCabeza)/100
         apiMezclaObjetivo = apiMezclaDeseado
         geAceite = 141.5 / (apiCabeza + 131.5)
         geAgua = 1
@@ -62,7 +62,8 @@ class NewCalculos():
             if ((res < 0.01 and res > -0.01) or (res < 0.5 and res > -0.5 and swCabeza > 0.9) or (res < 0.1 and res > -0.1 and swCabeza > 0.7)):
                 condicion = False
         self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
-                           agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
-                           apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
-                           relacionOil_Diluyente=diluyente/(aceite+diluyente),
-                           relacion1_3=aceite/3)
+                          agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
+                          apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
+                          densidadEmulsion=self.densidadAgua*geMezclaSeco, densidadDiluyente=self.densidadAgua*geDiluyente, densidadLiquido=self.densidadAgua*geLiquido,
+                          relacionOil_Diluyente=diluyente/(aceite+diluyente),
+                          relacion1_3=aceite/3)
