@@ -15,9 +15,13 @@
         </tr>
     </table>
 </form>
-{% if esCalculado %}
+
+{% if calculos.status %}
+    <h1>{{ calculos.status }}</h1>
+{% elif esCalculado %}   
 <div>
     <h3>Datos de salida</h3>
+    cambiar las tablas incrustadas a divs con un flex o algo asi pq no es responsive
     <table class="table">
         <thead>
             <tr>
