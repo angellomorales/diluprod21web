@@ -45,10 +45,11 @@ def calculos_view(request):
     if request.method == "POST":
         form = NewCalculosForm(request.POST)
         if form.is_valid():
-            aceite = form.cleaned_data["aceitePruebaAnterior"]
-            swCabeza = form.cleaned_data["fraccionSYWCabeza"]
-            apiCabeza = form.cleaned_data["APICabeza"]
-            apiDiluyente = form.cleaned_data["APIDiluyente"]
+            pozo=form.cleaned_data["pozo"]
+            aceite = form.cleaned_data["aceite"]
+            swCabeza = form.cleaned_data["swCabeza"]
+            apiCabeza = form.cleaned_data["apiCabeza"]
+            apiDiluyente = form.cleaned_data["apiDiluyente"]
             tipoCalculo = form.cleaned_data["tipoCalculo"]
             variableACalcular = form.cleaned_data["variableACalcular"]
             calculos= NewCalculos()
