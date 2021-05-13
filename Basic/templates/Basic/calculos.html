@@ -5,7 +5,8 @@
 <h1>Cálculos</h1>
 <form method="POST">
     {% csrf_token %}
-    <table class="table-borderless">
+    <!-- <table class="table table-borderless table-sm"> -->
+    <table>
         <div class="form-group">
             {{ form }}
         </div>
@@ -13,8 +14,134 @@
             <td colspan="2"><input type="submit" class="btn btn-primary mb-2" value="Calcular"></td>
         </tr>
     </table>
-
 </form>
+{% if esCalculado %}
+<div>
+    <h3>Datos de salida</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Caudales BPD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td>fraccion S&W de Mezcla</td>
+                                <td>{{ calculos.swMezcla }}</td>
+                            </tr>
+                            <tr>
+                                <td>Relacion Diluyente/Mezcla</td>
+                                <td>{{ calculos.relacionOil_Diluyente }}</td>
+                            </tr>
+                            <tr>
+                                <td>% factor de encogimiento</td>
+                                <td>{{ calculos.factorEncogimiento }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td>ACEITE Qo</td>
+                                <td>{{ calculos.aceite }}</td>
+                            </tr>
+                            <tr>
+                                <td>DILUYENTE Qd</td>
+                                <td>{{ calculos.diluyente }}</td>
+                            </tr>
+                            <tr>
+                                <td>AGUA Qw</td>
+                                <td>{{ calculos.agua }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h3>Propiedades de fluidos calculadas</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Gravedad Especifica @60ºF</th>
+                <th>API @60ºF</th>
+                <th>Densidad lb/ft <sup>3</sup></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td>ACEITE CABEZA</td>
+                                <td>{{ calculos.geAceite }}</td>
+                            </tr>
+                            <tr>
+                                <td>DILUYENTE</td>
+                                <td>{{ calculos.geDiluyente }}</td>
+                            </tr>
+                            <tr>
+                                <td>MEZCLA</td>
+                                <td>{{ calculos.geMezclaSeco }}</td>
+                            </tr>
+                            <tr>
+                                <td>AGUA</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>LIQUIDO</td>
+                                <td>{{ calculos.geLiquido }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td>MEZCLA</td>
+                                <td>{{ calculos.apiMezclaSeco }}</td>
+                            </tr>
+                            <tr>
+                                <td>LIQUIDO</td>
+                                <td>{{ calculos.apiMezclaHumedo }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td>MEZCLA</td>
+                                <td>{{ calculos.densidadEmulsion }}</td>
+                            </tr>
+                            <tr>
+                                <td>DILUYENTE</td>
+                                <td>{{ calculos.densidadDiluyente }}</td>
+                            </tr>
+                            <tr>
+                                <td>LIQUIDO</td>
+                                <td>{{ calculos.densidadLiquido }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
 
 
 {% endblock %}
