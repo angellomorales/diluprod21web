@@ -1,3 +1,4 @@
+from Basic.calculos import NewCalculos
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,7 +7,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import User
-from .forms import *
+from .forms import NewCalculosForm
+from .calculos import NewCalculos
 
 
 def index(request):
@@ -37,17 +39,25 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+
 @login_required(login_url="index")
 def calculos_view(request):
     if request.method == "POST":
         form = NewCalculosForm(request.POST)
         if form.is_valid():
-            aceitePruebaAnterior = form.cleaned_data["aceitePruebaAnterior"]
-            fraccionSYWCabeza = form.cleaned_data["fraccionSYWCabeza"]
-            APICabeza = form.cleaned_data["APICabeza"]
-            APIDiluyente = form.cleaned_data["APIDiluyente"]
-            TipoCalculo = form.cleaned_data["TipoCalculo"]
-            return HttpResponseRedirect(reverse("index"))
+            aceite = form.cleaned_data["aceitePruebaAnterior"]
+            swCabeza = form.cleaned_data["fraccionSYWCabeza"]
+            apiCabeza = form.cleaned_data["APICabeza"]
+            apiDiluyente = form.cleaned_data["APIDiluyente"]
+            tipoCalculo = form.cleaned_data["tipoCalculo"]
+            variableACalcular = form.cleaned_data["variableACalcular"]
+            calculos= NewCalculos()
+            calculos.calcularDiluyente(apiCabeza,apiDiluyente,variableACalcular,aceite,swCabeza,True)
+            return render(request, "Basic/calculos.html", {
+                "form": form,
+                "esCalculado": True,
+                "calculos":calculos
+            })
         else:
             # form.fields['category'].choices = CategoryChoices.choices#add a choices in category
             return render(request, "Basic/calculos.html", {
@@ -57,4 +67,3 @@ def calculos_view(request):
     return render(request, "Basic/calculos.html", {
         "form": form
     })
-
