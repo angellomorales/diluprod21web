@@ -24,7 +24,7 @@ class NewCalculos():
         geDiluyente = 141.5 / (apiDiluyente + 131.5)
 
         agua = (aceite * swCabeza) / (1 - swCabeza)
-        if apiMezclaDeseado < 66:
+        if apiMezclaDeseado < apiDiluyente:
             while condicion:
                 geMezclaSeco = 141.5 / (apiMezclaObjetivo + 131.5)
                 diluyente = (aceite * (geAceite - geMezclaSeco) + agua *
@@ -70,7 +70,7 @@ class NewCalculos():
                               relacion1_3=aceite/3)
         else:
             self.setVariables(
-                status="el valor de API es muy alto")
+                status="el valor de API supera al del diluyente")
 
     def calcularAPI(self, decApiCabeza, decApiDiluyente, decDiluyente, decAceite, decSwCabeza):
         apiCabeza = float(decApiCabeza)
