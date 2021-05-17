@@ -14,7 +14,7 @@ class NewCalculosForm(forms.Form):
     apiDiluyente = forms.DecimalField(
         decimal_places=2, required=True, label="API Diluyente @60ºF")
     tipoCalculo = forms.ChoiceField(
-        choices=CHOICES, required=True, label="Tipo calculo", widget= forms.RadioSelect)
+        choices=CHOICES, required=True, label="Tipo calculo", widget= forms.RadioSelect, initial='apiMezcla')
     variableACalcular = forms.DecimalField(
-        decimal_places=2, required=True, label="Variable a calcular")
+        decimal_places=2, required=True, label="Diluyente a inyectar BPD")
 

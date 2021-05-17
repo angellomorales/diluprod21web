@@ -6,6 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function showLabel(text) {
-  alert('funciona');
-  // document.querySelector('#id_variableACalcular').value = text;
+  // alert('funciona');
+  document.querySelector('label[for="id_variableACalcular"]').innerText = text;
 }
