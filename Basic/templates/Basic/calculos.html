@@ -1,4 +1,5 @@
 {% extends "Basic/layout.html" %}
+{% load static %}
 
 
 {% block body %}
@@ -148,4 +149,8 @@
 {% endif %}
 
 
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'Basic/js/calculos.js' %}"></script>
 {% endblock %}
