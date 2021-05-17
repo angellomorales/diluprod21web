@@ -8,4 +8,5 @@ document.addEventListener('DOMContentLoaded', function () {
 function showLabel(text) {
   // alert('funciona');
   document.querySelector('label[for="id_variableACalcular"]').innerText = text;
+  document.querySelector('#id_variableACalcular').value='';
 }
