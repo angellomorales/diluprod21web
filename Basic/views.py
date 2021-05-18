@@ -71,3 +71,7 @@ def calculos_view(request):
     return render(request, "Basic/calculos.html", {
         "form": form
     })
+
+@login_required(login_url="index")
+def graficas_view(request):
+    return render(request, "Basic/graficas.html")
