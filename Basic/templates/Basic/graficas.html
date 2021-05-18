@@ -3,9 +3,12 @@
 
 {% 
 {% block body %}
-    
+<div>
+    <canvas id="chart">la grafica</canvas>
+</div>
 {% endblock body %}
 
 {% block script %}
-    <script src="{% static 'Basic/js/graficas.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'Basic/js/graficas.js' %}"></script>
 {% endblock %}
