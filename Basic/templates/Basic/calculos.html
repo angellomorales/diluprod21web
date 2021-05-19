@@ -10,14 +10,15 @@
         <form method="POST">
             {% csrf_token %}
             <!-- <table class="table table-borderless table-sm"> -->
-            <table>
-                <div class="form-group">
+            <div class="form-group">
+                <table>
                     {{ form }}
-                </div>
-                <tr>
-                    <td colspan="2"><input type="submit" class="btn btn-primary mb-2" value="Calcular"></td>
-                </tr>
-            </table>
+                    <tr class="submitr">
+                        <td></td>
+                        <td><input type="submit" class="btn btn-primary mt-3 mb-2" value="Calcular"></td>
+                    </tr>
+                </table>
+            </div>
         </form>
     </div>
 
