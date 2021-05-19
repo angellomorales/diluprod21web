@@ -3,29 +3,34 @@
 
 
 {% block body %}
-<h1>Cálculos</h1>
-<form method="POST">
-    {% csrf_token %}
-    <!-- <table class="table table-borderless table-sm"> -->
-    <table>
-        <div class="form-group">
-            {{ form }}
-        </div>
-        <tr class="submitr">
-            <td colspan="2"><input type="submit" class="btn btn-primary mb-2" value="Calcular"></td>
-        </tr>
-    </table>
-</form>
-
+<div>
+    <h1>Cálculos</h1>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <!-- <table class="table table-borderless table-sm"> -->
+            <table>
+                <div class="form-group">
+                    {{ form }}
+                </div>
+                <tr class="submitr">
+                    <td colspan="2"><input type="submit" class="btn btn-primary mb-2" value="Calcular"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+    {% if esCalculado %}
+    <div>
+        <canvas id="chart">la grafica</canvas>
+    </div>
+    {% endif %}
+</div>
 {% if calculos.status %}
 <h1>{{ calculos.status }}</h1>
 {% elif esCalculado %}
 <div>
-    <canvas id="chart">la grafica</canvas>
-</div>
-<div>
     <h3>Datos de salida</h3>
-    cambiar las tablas incrustadas a divs con un flex o algo asi pq no es responsive
     <table class="table">
         <thead>
             <tr>
