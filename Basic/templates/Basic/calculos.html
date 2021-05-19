@@ -25,7 +25,16 @@
 
     {% if esCalculado %}
     <div class="col">
-        <canvas id="chart">la grafica</canvas>
+        <div class="row">
+            <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
+                <button type="button" class="btn btn-outline-primary">Left</button>
+                <button type="button" class="btn btn-outline-primary">Middle</button>
+                <button type="button" class="btn btn-outline-primary">Right</button>
+            </div>
+        </div>
+        <div class="row">
+            <canvas id="chart">la grafica</canvas>
+        </div>
     </div>
     {% endif %}
 </div>
