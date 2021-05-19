@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import User
-from .forms import NewCalculosForm
+from .forms import CalculosForm
 from .calculos import NewCalculos
 
 
@@ -43,7 +43,7 @@ def logout_view(request):
 @login_required(login_url="index")
 def calculos_view(request):
     if request.method == "POST":
-        form = NewCalculosForm(request.POST)
+        form = CalculosForm(request.POST)
         if form.is_valid():
             pozo=form.cleaned_data["pozo"]
             aceite = form.cleaned_data["aceite"]
@@ -67,7 +67,7 @@ def calculos_view(request):
             return render(request, "Basic/calculos.html", {
                 "form": form
             })
-    form = NewCalculosForm()
+    form = CalculosForm()
     return render(request, "Basic/calculos.html", {
         "form": form
     })

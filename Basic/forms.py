@@ -1,7 +1,7 @@
 from django import forms
 
 
-class NewCalculosForm(forms.Form):
+class CalculosForm(forms.Form):
     CHOICES = [('apiMezcla', 'Calcular Api de Mezcla'),
                ('diluyenteRequerido', 'Calcular Diluyente Requerido')]
     pozo = forms.CharField(required=False, label="Pozo")
@@ -17,4 +17,6 @@ class NewCalculosForm(forms.Form):
         choices=CHOICES, required=True, label="Tipo calculo", widget= forms.RadioSelect, initial='apiMezcla')
     variableACalcular = forms.DecimalField(
         decimal_places=2, required=True, label="Diluyente a inyectar BPD")
+
+    
 
