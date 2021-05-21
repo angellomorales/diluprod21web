@@ -1,4 +1,4 @@
-class NewCalculos():
+class Calculos():
     def __init__(self):
         # self.aceite = kargs["aceite"]
         # self.swCabeza = kargs["swCabeza"]
