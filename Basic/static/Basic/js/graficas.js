@@ -1,38 +1,42 @@
-const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-];
-
-const data = {
-    labels: labels,
-    datasets: [{
-        label: 'Mi primer dataset',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
-    }]
-};
+var data = [{ x: 'Sales', y1: 1500, y2: 2000 }, { x: 'Purchases', y1: 500, y2: 1500 }, { x: 'Sales2', y1: 1500, y2: 1000 }]
 
 const config = {
     type: 'line',
-    data,
-    options: {}
+    data: {
+        datasets: [{
+            label: 'y1 dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: data,
+            parsing: {
+                yAxisKey: 'y1'
+            }
+        }, 
+        //un dataset por cada serie que desee agregar
+        {
+            label: 'y2 dataset',
+            backgroundColor: 'rgb(180, 99, 200)',
+            borderColor: 'rgb(180, 99, 200)',
+            data: data,
+            parsing: {
+                yAxisKey: 'y2'
+            }
+        }]
+    },
+    options: {
+        parsing: {
+            xAxisKey: 'x'
+        }
+    }
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    // listeners para obtener los datos de la grafica
     if (document.getElementById('relacionDiluyente')) {
         document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
     }
-    if (document.getElementById('chart')) {
-        var myChart = new Chart(
-            document.getElementById('chart'),
-            config
-        );
-    }
+    // grafica
+    load_data('relacionDiluyente');
 
 
 });
@@ -63,6 +67,7 @@ function load_data(graphId) {
             // Print data
             console.log(`${graphId}:`);
             console.log(dataGraph);
+            graficar(dataGraph)
 
             // ... do something else with dataGraph ...
         })
@@ -84,4 +89,21 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function graficar(dataValue) {
+    // countValue = 0;
+    // dataValue.series1.forEach(element => {
+    //     data.labels =countValue;
+    //     countValue++;
+    // });
+    var chart = document.getElementById('chart').getContext("2d");
+    if (chart) {
+        // chart.remove;
+        var myChart = new Chart(
+            document.getElementById('chart'),
+            config
+        );
+        // myChart.destroy;//para agregar una nueva serie
+    }
 }
