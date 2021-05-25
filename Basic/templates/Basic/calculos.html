@@ -27,7 +27,7 @@
     <div class="col">
         <div class="row">
             <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
-                <button type="button" class="btn btn-outline-primary">Left</button>
+                <button type="button" class="btn btn-outline-primary" id="relacionDiluyente">Relación diluyente</button>
                 <button type="button" class="btn btn-outline-primary">Middle</button>
                 <button type="button" class="btn btn-outline-primary">Right</button>
             </div>
@@ -142,7 +142,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Líquido</th>
-                    <td>{{ calculos.apiMezclaHumedo|floatformat:2 }}</td>
+                    <td id="id_apiMezclaHumedo">{{ calculos.apiMezclaHumedo|floatformat:2 }}</td>
                 </tr>
             </tbody>
         </table>
