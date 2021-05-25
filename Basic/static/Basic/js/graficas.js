@@ -1,25 +1,26 @@
-var data = [{ x: 'Sales', y1: 1500, y2: 2000 }, { x: 'Purchases', y1: 500, y2: 1500 }, { x: 'Sales2', y1: 1500, y2: 1000 }]
+// var data = [{ x: 'Sales', series1: 1500, series2:0 }, { x: 'Purchases', series1: 500, series2:0 }, { x: 'Sales2', series1: 1500, series2:0 }]
+var data = []
 
 const config = {
     type: 'line',
     data: {
         datasets: [{
-            label: 'y1 dataset',
+            label: 'series1 dataset',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: data,
             parsing: {
-                yAxisKey: 'y1'
+                yAxisKey: 'series1'
             }
         }, 
         //un dataset por cada serie que desee agregar
         {
-            label: 'y2 dataset',
+            label: 'series2 dataset',
             backgroundColor: 'rgb(180, 99, 200)',
             borderColor: 'rgb(180, 99, 200)',
             data: data,
             parsing: {
-                yAxisKey: 'y2'
+                yAxisKey: 'series2'
             }
         }]
     },
@@ -65,8 +66,8 @@ function load_data(graphId) {
         // .then(status)
         .then(dataGraph => {
             // Print data
-            console.log(`${graphId}:`);
-            console.log(dataGraph);
+            // console.log(`${graphId}:`);
+            // console.log(dataGraph);
             graficar(dataGraph)
 
             // ... do something else with dataGraph ...
@@ -92,11 +93,10 @@ function getCookie(name) {
 }
 
 function graficar(dataValue) {
-    // countValue = 0;
-    // dataValue.series1.forEach(element => {
-    //     data.labels =countValue;
-    //     countValue++;
-    // });
+    dataValue.relacionDiluyente.forEach(element => {
+        data.push(element);
+    });
+    console.log(data)
     var chart = document.getElementById('chart').getContext("2d");
     if (chart) {
         // chart.remove;
