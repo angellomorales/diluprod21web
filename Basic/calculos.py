@@ -24,8 +24,9 @@ class Calculos():
         geDiluyente = 141.5 / (apiDiluyente + 131.5)
 
         agua = (aceite * swCabeza) / (1 - swCabeza)
+        ejecucion=True
         if apiMezclaDeseado < apiDiluyente:
-            while condicion:
+            while ejecucion:
                 geMezclaSeco = 141.5 / (apiMezclaObjetivo + 131.5)
                 diluyente = (aceite * (geAceite - geMezclaSeco) + agua *
                              (geAgua - geMezclaSeco)) / (geMezclaSeco - geDiluyente)
@@ -60,7 +61,9 @@ class Calculos():
                 else:
                     apiMezclaObjetivo = apiMezclaObjetivo + 0.01
                 if ((res < 0.01 and res > -0.01) or (res < 0.5 and res > -0.5 and swCabeza > 0.9) or (res < 0.1 and res > -0.1 and swCabeza > 0.7)):
-                    condicion = False
+                    ejecucion = False
+                if not condicion:
+                    ejecucion=condicion
             self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
                               agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
                               apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
