@@ -91,10 +91,25 @@ def graficas_view(request, graphId):
         for i in range(99):
             calculos.calcularDiluyente(
                 apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
-            dataGraph.append(
-                {'x': str(i), 'series1': calculos.swMezcla, 'series2': calculos.relacionOil_Diluyente})#dict
-        if graphId == "relacionDiluyente":
-            # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-            return JsonResponse({graphId: dataGraph})
+            if graphId == "relacionDiluyente":
+                # configurar para cada grafica
+                dataGraph.append(
+                    {'x': str(i), 's&w': calculos.swMezcla, 'relacionOil_Diluyente': calculos.relacionOil_Diluyente})  # dict
+                params = {'s&w':
+                          {
+                              'label': "Fracción Volumétrica de Agua de Mezcla",
+                              'backgroundColor': 'rgb(255, 99, 132)',
+                              'borderColor': 'rgb(255, 99, 132)',
+                          },
+                          'relacionOil_Diluyente':
+                          {
+                              'label': "Relacion Diluyente Mezcla",
+                              'backgroundColor': 'rgb(180, 99, 200)',
+                              'borderColor': 'rgb(180, 99, 200)',
+                          }
+                          }
+
+        # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
+        return JsonResponse({'datos': dataGraph, 'params': params})
 
     return render(request, "Basic/calculos.html")
