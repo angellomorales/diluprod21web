@@ -98,12 +98,12 @@ function graficar(dataValue) {
         data.push(element);
     });
     console.log(data);
+    document.querySelector("#chartContent").innerHTML = '<canvas id="chart"></canvas>';
     var chart = document.getElementById('chart').getContext("2d");
     if (chart) {
         var myChart = new Chart(
             document.getElementById('chart'),
             config
         );
-        myChart.destroy;//para agregar una nueva serie
     }
 }
