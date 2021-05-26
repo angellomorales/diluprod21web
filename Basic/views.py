@@ -88,6 +88,7 @@ def graficas_view(request, graphId):
         apiDiluyente = data.get("apiDiluyente")
         variableACalcular = data.get("apiMezclaHumedo")
         dataGraph = []  # list
+        maxYValue = 1500
         for i in range(99):
             calculos.calcularDiluyente(
                 apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
@@ -101,16 +102,16 @@ def graficas_view(request, graphId):
                         'label': 'Fracción Volumétrica de Agua de Mezcla',
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle':'circle',
-                        'pointRadius':3
+                        'pointStyle': 'circle',
+                        'pointRadius': 3
                     },
                     'relacionOil_Diluyente':
                     {
                         'label': 'Relación Diluyente/Mezcla',
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle':'star',
-                        'pointRadius':3
+                        'pointStyle': 'star',
+                        'pointRadius': 3
                     }
                 }
                 graphParams = {
@@ -123,29 +124,31 @@ def graficas_view(request, graphId):
                 # configurar para cada grafica
                 dataGraph.append(
                     {'x': str(i), 'diluyente': calculos.diluyente, 'relacion1_3': calculos.relacion1_3})  # dict
+                if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
+                    maxYValue = round(calculos.diluyente*2)
                 serieParams = {
                     'diluyente':
                     {
                         'label': 'Diluyente A Inyectar',
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle':'circle',
-                        'pointRadius':3
+                        'pointStyle': 'circle',
+                        'pointRadius': 3
                     },
                     'relacion1_3':
                     {
                         'label': 'Relacion 1-3',
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle':'star',
-                        'pointRadius':3
+                        'pointStyle': 'star',
+                        'pointRadius': 3
                     }
                 }
                 graphParams = {
                     'title': 'Diluyente Requerido para API mezcla definido',
                     'titleXAxis': 'Porcentaje S&W',
                     'titleYAxis': 'BPD',
-                    'maxYValue': 500
+                    'maxYValue': maxYValue
                 }
             if graphId == "limiteRestriccion":
                 # configurar para cada grafica
@@ -157,16 +160,16 @@ def graficas_view(request, graphId):
                         'label': 'API Seco',
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle':'circle',
-                        'pointRadius':3
+                        'pointStyle': 'circle',
+                        'pointRadius': 3
                     },
                     'limiteSuperior':
                     {
                         'label': 'Restricción por calidad',
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle':'star',
-                        'pointRadius':3
+                        'pointStyle': 'star',
+                        'pointRadius': 3
                     }
                 }
                 graphParams = {
