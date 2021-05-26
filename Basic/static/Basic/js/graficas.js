@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('relacionDiluyente')) {
         document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
     }
+    if (document.getElementById('diluyenteRequerido')) {
+        document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data('diluyenteRequerido'));
+    }
+    if (document.getElementById('limiteRestriccion')) {
+        document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
+    }
     // grafica default
     load_data('relacionDiluyente');
 
@@ -125,6 +131,7 @@ function configGraph(data, serieParams, graphParams) {
                 },
                 y: {
                     display: true,
+                    max: graphParams.maxYValue,
                     title: {
                         display: true,
                         text: graphParams.titleYAxis

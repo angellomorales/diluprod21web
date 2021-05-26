@@ -104,7 +104,7 @@ def graficas_view(request, graphId):
                     },
                     'relacionOil_Diluyente':
                     {
-                        'label': 'Relacion Diluyente Mezcla',
+                        'label': 'Relación Diluyente/Mezcla',
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)'
                     }
@@ -112,7 +112,56 @@ def graficas_view(request, graphId):
                 graphParams = {
                     'title': 'Relación diluyente para API mezcla definido',
                     'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'Fracción volumétrica mezcla x % S&W cabeza'
+                    'titleYAxis': 'Fracción volumétrica mezcla x % S&W cabeza',
+                    'maxYValue': 1
+                }
+            if graphId == "diluyenteRequerido":
+                # configurar para cada grafica
+                dataGraph.append(
+                    {'x': str(i), 'diluyente': calculos.diluyente, 'relacion1_3': calculos.relacion1_3})  # dict
+                serieParams = {
+                    'diluyente':
+                    {
+                        'label': 'Diluyente A Inyectar',
+                        'backgroundColor': 'rgb(100, 116, 254)',
+                        'borderColor': 'rgb(100, 116, 254)'
+                    },
+                    'relacion1_3':
+                    {
+                        'label': 'Relacion 1-3',
+                        'backgroundColor': 'rgb(255, 99, 132)',
+                        'borderColor': 'rgb(255, 99, 132)'
+                    }
+                }
+                graphParams = {
+                    'title': 'Diluyente Requerido para API mezcla definido',
+                    'titleXAxis': 'Porcentaje S&W',
+                    'titleYAxis': 'BPD',
+                    'maxYValue': 500
+                }
+            if graphId == "limiteRestriccion":
+                # configurar para cada grafica
+                dataGraph.append(
+                    {'x': str(i), 'apiMezclaSeco': calculos.apiMezclaSeco, 'limiteSuperior': 18})  # dict
+                serieParams = {
+                    'apiMezclaSeco':
+                    {
+                        'label': 'API Seco',
+                        'backgroundColor': 'rgb(100, 116, 254)',
+                        'borderColor': 'rgb(100, 116, 254)'
+                    },
+                    'limiteSuperior':
+                    {
+                        'label': 'Restricción por calidad',
+                        'backgroundColor': 'rgb(255, 99, 132)',
+                        'borderColor': 'rgb(255, 99, 132)'
+                    }
+                }
+                graphParams = {
+                    'title': 'Límite por restricción de flujo y óptima operación MPFM',
+                    'titleXAxis': 'Porcentaje S&W',
+                    'titleYAxis': 'API Seco',
+                    'maxYValue': 30
                 }
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
