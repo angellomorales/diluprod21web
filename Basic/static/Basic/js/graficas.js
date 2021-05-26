@@ -93,17 +93,17 @@ function getCookie(name) {
 }
 
 function graficar(dataValue) {
+    data.splice(0,data.length);
     dataValue.relacionDiluyente.forEach(element => {
         data.push(element);
     });
-    console.log(data)
+    console.log(data);
     var chart = document.getElementById('chart').getContext("2d");
     if (chart) {
-        // chart.remove;
         var myChart = new Chart(
             document.getElementById('chart'),
             config
         );
-        // myChart.destroy;//para agregar una nueva serie
+        myChart.destroy;//para agregar una nueva serie
     }
 }
