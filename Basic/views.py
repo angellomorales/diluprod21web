@@ -95,21 +95,27 @@ def graficas_view(request, graphId):
                 # configurar para cada grafica
                 dataGraph.append(
                     {'x': str(i), 's&w': calculos.swMezcla, 'relacionOil_Diluyente': calculos.relacionOil_Diluyente})  # dict
-                params = {'s&w':
-                          {
-                              'label': "Fracción Volumétrica de Agua de Mezcla",
-                              'backgroundColor': 'rgb(255, 99, 132)',
-                              'borderColor': 'rgb(255, 99, 132)',
-                          },
-                          'relacionOil_Diluyente':
-                          {
-                              'label': "Relacion Diluyente Mezcla",
-                              'backgroundColor': 'rgb(180, 99, 200)',
-                              'borderColor': 'rgb(180, 99, 200)',
-                          }
-                          }
+                serieParams = {
+                    's&w':
+                    {
+                        'label': 'Fracción Volumétrica de Agua de Mezcla',
+                        'backgroundColor': 'rgb(100, 116, 254)',
+                        'borderColor': 'rgb(100, 116, 254)'
+                    },
+                    'relacionOil_Diluyente':
+                    {
+                        'label': 'Relacion Diluyente Mezcla',
+                        'backgroundColor': 'rgb(255, 99, 132)',
+                        'borderColor': 'rgb(255, 99, 132)'
+                    }
+                }
+                graphParams = {
+                    'title': 'Relación diluyente para API mezcla definido',
+                    'titleXAxis': 'Porcentaje S&W',
+                    'titleYAxis': 'Fracción volumétrica mezcla x % S&W cabeza'
+                }
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': dataGraph, 'params': params})
+        return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams})
 
     return render(request, "Basic/calculos.html")

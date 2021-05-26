@@ -36,7 +36,7 @@ function load_data(graphId) {
         .then(dataGraph => {
             // Print data
             // console.log(dataGraph);
-            graficar(dataGraph.datos, dataGraph.params);
+            graficar(dataGraph);
 
         })
         .catch(err => console.log(err));
@@ -59,10 +59,10 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function graficar(dataValue, params) {
+function graficar(dataGraph) {
     var data = [];
     // data.splice(0, data.length);
-    dataValue.forEach(element => {
+    dataGraph.datos.forEach(element => {
         data.push(element);
     });
     // console.log(data);
@@ -71,19 +71,21 @@ function graficar(dataValue, params) {
     if (chart) {
         var myChart = new Chart(
             document.getElementById('chart'),
-            configGraph(data, params)
+            configGraph(data, dataGraph.serieParams, dataGraph.graphParams)
         );
     }
 }
-function configGraph(data, params) {
+function configGraph(data, serieParams, graphParams) {
     selfDataset = [];
     for (var key in data[0]) {
         if (key != 'x') {
             // console.log(params[key].label);
             dataset = {
-                label: params[key].label,
-                backgroundColor: params[key].backgroundColor,
-                borderColor: params[key].borderColor,
+                label: serieParams[key].label,
+                backgroundColor: serieParams[key].backgroundColor,
+                borderColor: serieParams[key].borderColor,
+                tension: 0.4,
+                fill: false,
                 data: data,
                 parsing: {
                     yAxisKey: key
@@ -93,16 +95,42 @@ function configGraph(data, params) {
             // console.log(selfDataset);
         }
     }
+    // console.log(graphParams.titleXAxis);
     var config = {
         type: 'line',
         data: {
             datasets: selfDataset
         },
         options: {
+            responsive: true,
             parsing: {
                 xAxisKey: 'x'
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: graphParams.title
+                }
+            },
+            interaction: {
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: graphParams.titleXAxis
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: graphParams.titleYAxis
+                    }
+                }
             }
-            //configurar titulos y demas
         }
     };
     return config;
