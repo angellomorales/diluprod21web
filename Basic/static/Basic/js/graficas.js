@@ -75,10 +75,9 @@ function graficar(dataGraph) {
     });
     // console.log(data);
     document.querySelector("#chartContent").innerHTML = '<canvas id="chart"></canvas>';
-    var chart = document.getElementById('chart').getContext("2d");
+    var ctx = document.getElementById('chart').getContext("2d");
     if (chart) {
-        var myChart = new Chart(
-            document.getElementById('chart'),
+        var myChart = new Chart(ctx,
             configGraph(data, dataGraph.serieParams, dataGraph.graphParams)
         );
     }
@@ -87,7 +86,7 @@ function configGraph(data, serieParams, graphParams) {
     selfDataset = [];
     for (var key in data[0]) {
         if (key != 'x') {
-            // console.log(params[key].label);
+            // console.log(serieParams[key]);
             dataset = {
                 label: serieParams[key].label,
                 backgroundColor: serieParams[key].backgroundColor,
@@ -95,8 +94,17 @@ function configGraph(data, serieParams, graphParams) {
                 tension: 0.4,
                 fill: false,
                 data: data,
+                pointStyle: serieParams[key].pointStyle,
+                pointRadius: serieParams[key].pointRadius,
+                pointBorderColor: 'rgb(125, 125, 125)',
                 parsing: {
                     yAxisKey: key
+                },
+                animations: {
+                    y: {
+                        duration: 500,
+                        delay: 50
+                    }
                 }
             };
             selfDataset.push(dataset);
@@ -122,6 +130,10 @@ function configGraph(data, serieParams, graphParams) {
             },
             interaction: {
                 intersect: false,
+                mode: 'index'
+            },
+            tooltip: {
+                usePointStyle: true,
             },
             scales: {
                 x: {
@@ -134,10 +146,16 @@ function configGraph(data, serieParams, graphParams) {
                 y: {
                     display: true,
                     max: graphParams.maxYValue,
+                    suggestedMin: 0,
                     title: {
                         display: true,
                         text: graphParams.titleYAxis
                     }
+                }
+            },
+            animations: {
+                y: {
+                    easing: 'linear', 
                 }
             }
         }
