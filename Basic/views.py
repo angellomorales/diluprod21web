@@ -89,11 +89,10 @@ def graficas_view(request, graphId):
         variableACalcular = data.get("apiMezclaHumedo")
         dataGraph = []  # list
         for i in range(99):
-            sw = i*0.01
             calculos.calcularDiluyente(
-                apiCabeza, apiDiluyente, variableACalcular, aceite, sw, False)
+                apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
             dataGraph.append(
-                {'x': str(i), 'series1': calculos.diluyente, 'series2': 0})#dict
+                {'x': str(i), 'series1': calculos.swMezcla, 'series2': calculos.relacionOil_Diluyente})#dict
         if graphId == "relacionDiluyente":
             # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
             return JsonResponse({graphId: dataGraph})
