@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
     }
     // grafica default
-    load_data('relacionDiluyente');
+    if (document.getElementById('id_apiMezclaHumedo')) {
+        load_data('relacionDiluyente');
+    }
 
 
 });
