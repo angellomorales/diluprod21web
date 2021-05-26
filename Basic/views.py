@@ -100,13 +100,17 @@ def graficas_view(request, graphId):
                     {
                         'label': 'Fracción Volumétrica de Agua de Mezcla',
                         'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)'
+                        'borderColor': 'rgb(100, 116, 254)',
+                        'pointStyle':'circle',
+                        'pointRadius':3
                     },
                     'relacionOil_Diluyente':
                     {
                         'label': 'Relación Diluyente/Mezcla',
                         'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)'
+                        'borderColor': 'rgb(255, 99, 132)',
+                        'pointStyle':'star',
+                        'pointRadius':3
                     }
                 }
                 graphParams = {
@@ -124,13 +128,17 @@ def graficas_view(request, graphId):
                     {
                         'label': 'Diluyente A Inyectar',
                         'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)'
+                        'borderColor': 'rgb(100, 116, 254)',
+                        'pointStyle':'circle',
+                        'pointRadius':3
                     },
                     'relacion1_3':
                     {
                         'label': 'Relacion 1-3',
                         'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)'
+                        'borderColor': 'rgb(255, 99, 132)',
+                        'pointStyle':'star',
+                        'pointRadius':3
                     }
                 }
                 graphParams = {
@@ -148,13 +156,17 @@ def graficas_view(request, graphId):
                     {
                         'label': 'API Seco',
                         'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)'
+                        'borderColor': 'rgb(100, 116, 254)',
+                        'pointStyle':'circle',
+                        'pointRadius':3
                     },
                     'limiteSuperior':
                     {
                         'label': 'Restricción por calidad',
                         'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)'
+                        'borderColor': 'rgb(255, 99, 132)',
+                        'pointStyle':'star',
+                        'pointRadius':3
                     }
                 }
                 graphParams = {
