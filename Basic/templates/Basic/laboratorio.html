@@ -1,0 +1,104 @@
+{% extends "Basic/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+
+<h1>Laboratorio</h1>
+<br>
+<div class="row">
+    <div class="col">
+        <form method="POST">
+            {% csrf_token %}
+            <!-- <table class="table table-borderless table-sm"> -->
+            <div class="form-group">
+                <table>
+                    {{ form }}
+                    <tr class="submitr">
+                        <td></td>
+                        <td><input type="submit" class="btn btn-primary mt-3 mb-2" value="Calcular"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+<hr class="my-4">
+{% if esCalculado %}
+<h3>Propiedades Calculadas</h3>
+<br>
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
+                <tr>
+                    <th colspan="2">GRAVEDAD ESPECIFICA @ 60ºF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Mezcla</th>
+                    <td>{{ calculos.geMezclaSeco|floatformat:5 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Agua</th>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <th scope="row">Líquido</th>
+                    <td>{{ calculos.geLiquido|floatformat:5 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col">
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
+                <tr>
+                    <th colspan="2">API @60ºF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Mezcla</th>
+                    <td>{{ calculos.apiMezclaSeco|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Líquido</th>
+                    <td>{{ calculos.apiMezclaHumedo|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col">
+        <table class="table table-bordered table-hover">
+            <thead class="table-secondary">
+                <tr>
+                    <th colspan="2">DENSIDAD lb/ft <sup>3</sup></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Mezcla</th>
+                    <td>{{ calculos.densidadEmulsion|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Agua</th>
+                    <td>{{ calculos.densidadDiluyente|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Líquido</th>
+                    <td>{{ calculos.densidadLiquido|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

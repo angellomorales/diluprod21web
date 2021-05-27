@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import User
-from .forms import CalculosForm
+from .forms import CalculosForm, LaboratorioForm
 from .calculos import Calculos
 
 
@@ -183,3 +183,25 @@ def graficas_view(request, graphId):
         return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams})
 
     return render(request, "Basic/calculos.html")
+
+@login_required(login_url="index")
+def laboratorio_view(request):
+    if request.method == "POST":
+        form = LaboratorioForm(request.POST)
+        if form.is_valid():
+            swMezcla = form.cleaned_data["swMezcla"]
+            apiMezcla = form.cleaned_data["apiMezcla"]
+            calculos = Calculos()
+            return render(request, "Basic/laboratorio.html", {
+                "form": form,
+                "esCalculado": True,
+                "calculos": calculos
+            })
+        else:
+            return render(request, "Basic/laboratorio.html", {
+                "form": form
+            })
+    form = LaboratorioForm()
+    return render(request, "Basic/Laboratorio.html", {
+        "form": form
+    })
