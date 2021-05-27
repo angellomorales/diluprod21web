@@ -24,7 +24,7 @@ class Calculos():
         geDiluyente = 141.5 / (apiDiluyente + 131.5)
 
         agua = (aceite * swCabeza) / (1 - swCabeza)
-        ejecucion=True
+        ejecucion = True
         if apiMezclaDeseado < apiDiluyente:
             while ejecucion:
                 geMezclaSeco = 141.5 / (apiMezclaObjetivo + 131.5)
@@ -63,7 +63,7 @@ class Calculos():
                 if ((res < 0.01 and res > -0.01) or (res < 0.5 and res > -0.5 and swCabeza > 0.9) or (res < 0.1 and res > -0.1 and swCabeza > 0.7)):
                     ejecucion = False
                 if not condicion:
-                    ejecucion=condicion
+                    ejecucion = condicion
             self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
                               agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
                               apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
@@ -114,3 +114,18 @@ class Calculos():
                           densidadEmulsion=self.densidadAgua*geMezclaSeco, densidadDiluyente=self.densidadAgua*geDiluyente, densidadLiquido=self.densidadAgua*geLiquido,
                           relacionOil_Diluyente=diluyente/(aceite+diluyente),
                           relacion1_3=aceite/3)
+
+    def calcularLaboratorio(self, decApiMezcla, decSwMezcla):
+        swMezcla = float(decSwMezcla)
+        apiMezcla = float(decApiMezcla)
+
+        geMezclaSeco = 141.5/(131.5+apiMezcla)
+        densidadEmulsion = geMezclaSeco*self.densidadAgua
+        densidadLiquido = (1-(swMezcla/100))*densidadEmulsion + \
+            (swMezcla/100)*self.densidadAgua
+        geLiquido = densidadLiquido/self.densidadAgua
+        apiLiquido = (141.5/geLiquido)-131.5
+
+        self.setVariables(geMezclaSeco=geMezclaSeco, geLiquido=geLiquido,
+                          apiMezclaHumedo=apiLiquido, apiMezclaSeco=apiMezcla,
+                          densidadEmulsion=densidadEmulsion, densidadLiquido=densidadLiquido, densidaAgua=self.densidadAgua)
