@@ -125,15 +125,29 @@ function configGraph(data, serieParams, graphParams) {
             plugins: {
                 title: {
                     display: true,
-                    text: graphParams.title
+                    text: graphParams.title,
+                    font: {
+                        size: 20,
+                    }
+                },
+                zoom: {
+                    zoom: {
+                        drag: {
+                            enabled: true,
+                        },
+                        wheel: {
+                            enabled: true,
+                        },
+                        mode: 'xy'
+                    }
+                },
+                tooltip: {
+                    position: 'nearest'
                 }
             },
             interaction: {
                 intersect: false,
                 mode: 'index'
-            },
-            tooltip: {
-                usePointStyle: true,
             },
             scales: {
                 x: {
@@ -155,7 +169,7 @@ function configGraph(data, serieParams, graphParams) {
             },
             animations: {
                 y: {
-                    easing: 'linear', 
+                    easing: 'linear',
                 }
             }
         }
