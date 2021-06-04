@@ -1,0 +1,12 @@
+{% extends "Basic/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+<h2>My Map</h2>
+<div id="mapid"></div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'Basic/js/mapa.js' %}"></script>
+{% endblock %}
