@@ -206,3 +206,7 @@ def laboratorio_view(request):
     return render(request, "Basic/Laboratorio.html", {
         "form": form
     })
+
+@login_required(login_url="index")
+def pozoInyector_view(request):
+    return render(request, "Basic/pozoInyector.html")
