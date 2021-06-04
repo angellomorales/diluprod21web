@@ -4,3 +4,6 @@ body {
 .submitr{
     text-align: right;
 }
+#mapid {
+    height: 280px;
+}
