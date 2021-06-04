@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // https://leafletjs.com/examples/quick-start/ para mas ejemplos
     var mymap = L.map('mapid').setView([3.993717, -73.765649], 14);//lat long zoom
 
     // estetica del mapa
