@@ -184,6 +184,7 @@ def graficas_view(request, graphId):
 
     return render(request, "Basic/calculos.html")
 
+
 @login_required(login_url="index")
 def laboratorio_view(request):
     if request.method == "POST":
@@ -192,7 +193,7 @@ def laboratorio_view(request):
             swMezcla = form.cleaned_data["swMezcla"]
             apiMezcla = form.cleaned_data["apiMezcla"]
             calculos = Calculos()
-            calculos.calcularLaboratorio(apiMezcla,swMezcla)
+            calculos.calcularLaboratorio(apiMezcla, swMezcla)
             return render(request, "Basic/laboratorio.html", {
                 "form": form,
                 "esCalculado": True,
@@ -207,6 +208,12 @@ def laboratorio_view(request):
         "form": form
     })
 
+
 @login_required(login_url="index")
 def pozoInyector_view(request):
     return render(request, "Basic/pozoInyector.html")
+
+
+@login_required(login_url="index")
+def dataHistorica_view(request):
+    return render(request, "Basic/dataHistorica.html")

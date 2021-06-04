@@ -25,7 +25,7 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link" href="">Data histórica</a>
+            <a class="nav-link" href="{% url 'dataHistorica' %}">Data histórica</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'pozoInyector' %}">Pozo Inyector</a>

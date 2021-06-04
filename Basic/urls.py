@@ -8,5 +8,6 @@ urlpatterns = [
     path("calculos", views.calculos_view, name="calculos"),
     path("laboratorio", views.laboratorio_view, name="laboratorio"),
     path("pozoInyector", views.pozoInyector_view, name="pozoInyector"),
+    path("dataHistorica", views.dataHistorica_view, name="dataHistorica"),
     path("graficas/<str:graphId>", views.graficas_view, name="graficas"),
 ]
