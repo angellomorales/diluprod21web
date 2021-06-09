@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="{% static 'Basic/css/styles.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    </script>
     {% block script %}
     {% endblock %}
 </head>
@@ -19,7 +22,7 @@
         Logueado como: <strong>{{ user.username }}</strong>.
         {% endif %}
     </div>
-    <ul class="nav">
+    <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">
             <a class="nav-link" href="{% url 'index' %}">Proceso</a>
         </li>
@@ -40,6 +43,9 @@
             <a class="nav-link" href="">Pozo Nuevo</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{% url 'cargarDatos' %}">Cargar Datos</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Salir</a>
         </li>
         {% else %}
@@ -48,7 +54,19 @@
         </li>
         {% endif %}
     </ul>
-    <hr class="my-4">
+    <!-- <ul class="nav nav-tabs">
+        <li class="nav-item" >
+            <button class="nav-link active" data-bs-toggle="tab" >Home</button>
+        </li>
+        <li class="nav-item" >
+            <button class="nav-link" data-bs-toggle="tab" >Profile</button>
+        </li>
+        <li class="nav-item" >
+            <button class="nav-link" data-bs-toggle="tab" >Contact</button>
+        </li>
+    </ul> -->
+
+    <!-- <div class="container-fluid tab-content"> -->
     <div class="container-fluid">
         {% block body %}
         {% endblock %}

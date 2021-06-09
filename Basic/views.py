@@ -1,6 +1,7 @@
 import json
+from tablib import Dataset
+
 from django.http.response import JsonResponse
-from Basic.calculos import Calculos
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User
 from .forms import CalculosForm, LaboratorioForm
 from .calculos import Calculos
+from .resources import DataAVM, DataAVMResource
 
 
 def index(request):
@@ -217,3 +219,22 @@ def pozoInyector_view(request):
 @login_required(login_url="index")
 def dataHistorica_view(request):
     return render(request, "Basic/dataHistorica.html")
+
+
+@login_required(login_url="index")
+def cargarDatos(request):
+    if request.method == 'POST':
+        dataAVM_resource = DataAVMResource()
+        dataset = Dataset()
+        print(dataset)
+        datos_AVM = request.FILES['xlsfile']
+        print(datos_AVM)
+        imported_data = dataset.load(datos_AVM.read())
+        print(dataset)
+        result = dataAVM_resource.import_data(
+            dataset, dry_run=True)  # Test the data import
+        print(result.has_errors())
+        if not result.has_errors():
+            dataAVM_resource.import_data(
+                dataset, dry_run=False)  # Actually import now
+    return render(request, 'Basic/cargarDatos.html')

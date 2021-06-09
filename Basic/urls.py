@@ -9,5 +9,6 @@ urlpatterns = [
     path("laboratorio", views.laboratorio_view, name="laboratorio"),
     path("pozoInyector", views.pozoInyector_view, name="pozoInyector"),
     path("dataHistorica", views.dataHistorica_view, name="dataHistorica"),
+    path("cargarDatos", views.cargarDatos, name="cargarDatos"),
     path("graficas/<str:graphId>", views.graficas_view, name="graficas"),
 ]
