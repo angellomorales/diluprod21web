@@ -65,4 +65,5 @@ class DataStork(models.Model):
 class DataAgar(models.Model):
     dataAVM = models.ForeignKey(
         DataAVM, on_delete=models.CASCADE, related_name="agarAVM", blank=True)
-    reporte = models.IntegerField(blank=True)
+    medidorNo = models.IntegerField(blank=True)
+    comentarios = models.TextField(blank=True)
