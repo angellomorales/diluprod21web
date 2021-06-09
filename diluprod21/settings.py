@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'import-export',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -83,10 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'diluprod21db',
-        'USER':'root',
-        'PASSWORD':'Controwell.2020',
-        'HOST':'localhost',
-        'PORT':'3310',
+        'USER': 'root',
+        'PASSWORD': 'Controwell.2020',
+        'HOST': 'localhost',
+        'PORT': '3310',
     }
 }
 
@@ -129,3 +129,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# para la libreria import-export
+IMPORT_EXPORT_USE_TRANSACTIONS = True
