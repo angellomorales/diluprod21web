@@ -15,13 +15,13 @@ class Campo(models.Model):
 
 
 class Pozo(models.Model):
-    CHOICES = [('ACTIVE', 'Activo'),
-               ('INACTIVE', 'Inactivo')]
-    nombre = models.CharField(max_length=255,primary_key=True)
+    CHOICES = [('Activo', 'Activo'),
+               ('Inactivo', 'Inactivo')]
+    nombre = models.CharField(max_length=255,primary_key=True,blank=False,null=False)
     latitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
     longitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
     estado = models.CharField(
-        max_length=8, choices=CHOICES, default='ACTIVE', blank=False)
+        max_length=8, choices=CHOICES, default='Inactivo', blank=False, null=False)
 
 
 class DataAVM(models.Model):
