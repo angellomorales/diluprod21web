@@ -17,9 +17,9 @@ class Campo(models.Model):
 class Pozo(models.Model):
     CHOICES = [('ACTIVE', 'Activo'),
                ('INACTIVE', 'Inactivo')]
-    nombre = models.CharField(max_length=255)
-    latitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
-    longitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
+    nombre = models.CharField(max_length=255,primary_key=True)
+    latitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
+    longitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
     estado = models.CharField(
         max_length=8, choices=CHOICES, default='ACTIVE', blank=False)
 
@@ -53,17 +53,17 @@ class DataAVM(models.Model):
 
 class DataStork(models.Model):
     dataAVM = models.ForeignKey(
-        DataAVM, on_delete=models.CASCADE, related_name="storkAVM", blank=True)
-    medidorNo = models.IntegerField(blank=True)
-    noWell = models.CharField(max_length=20, blank=True)
-    swMezcla = models.DecimalField(max_digits=11, decimal_places=2, blank=True)
+        DataAVM, on_delete=models.CASCADE, related_name="storkAVM")
+    medidorNo = models.IntegerField(blank=True, null=True)
+    noWell = models.CharField(max_length=20, blank=True, null=True)
+    swMezcla = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
     diluyenteInyectado = models.DecimalField(
-        max_digits=11, decimal_places=2, blank=True)
-    comentarios = models.TextField(blank=True)
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    comentarios = models.TextField(blank=True, null=True)
 
 
 class DataAgar(models.Model):
     dataAVM = models.ForeignKey(
-        DataAVM, on_delete=models.CASCADE, related_name="agarAVM", blank=True)
-    medidorNo = models.IntegerField(blank=True)
-    comentarios = models.TextField(blank=True)
+        DataAVM, on_delete=models.CASCADE, related_name="agarAVM")
+    medidorNo = models.IntegerField(blank=True, null=True)
+    comentarios = models.TextField(blank=True, null=True)
