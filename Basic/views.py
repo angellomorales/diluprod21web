@@ -1,4 +1,5 @@
 import json
+from import_export.results import Result
 from tablib import Dataset
 
 from django.http.response import JsonResponse
@@ -12,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User
 from .forms import CalculosForm, LaboratorioForm
 from .calculos import Calculos
-from .resources import DataAVM, DataAVMResource
+from .resources import DataAVM, DataPozoResource
 
 
 def index(request):
@@ -223,18 +224,24 @@ def dataHistorica_view(request):
 
 @login_required(login_url="index")
 def cargarDatos(request):
+    message = ''
     if request.method == 'POST':
-        dataAVM_resource = DataAVMResource()
+        pozo_resource = DataPozoResource()
         dataset = Dataset()
-        print(dataset)
-        datos_AVM = request.FILES['xlsfile']
-        print(datos_AVM)
-        imported_data = dataset.load(datos_AVM.read())
-        print(dataset)
-        result = dataAVM_resource.import_data(
+        # print(f"dataset antes: {dataset}")
+        datos_pozo = request.FILES['xlsfile']
+        # print(f"datos_pozo: {datos_pozo}")
+        imported_data = dataset.load(datos_pozo.read())
+        # print(f"{dataset}")
+
+        result = pozo_resource.import_data(
             dataset, dry_run=True)  # Test the data import
-        print(result.has_errors())
-        if not result.has_errors():
-            dataAVM_resource.import_data(
+        if result.has_errors():
+            message = 'Error al importar el archivo, verifique espacios en blanco'
+        else:
+            message = 'Archivo cargado correctamente'
+            pozo_resource.import_data(
                 dataset, dry_run=False)  # Actually import now
-    return render(request, 'Basic/cargarDatos.html')
+    return render(request, 'Basic/cargarDatos.html', {
+        "message": message
+    })
