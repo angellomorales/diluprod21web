@@ -17,9 +17,12 @@ class Campo(models.Model):
 class Pozo(models.Model):
     CHOICES = [('Activo', 'Activo'),
                ('Inactivo', 'Inactivo')]
-    nombre = models.CharField(max_length=255,primary_key=True,blank=False,null=False)
-    latitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
-    longitud = models.DecimalField(max_digits=6, decimal_places=6, blank=True, null=True)
+    nombre = models.CharField(
+        max_length=255, primary_key=True, blank=False, null=False)
+    latitud = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True, null=True)
+    longitud = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True, null=True)
     estado = models.CharField(
         max_length=8, choices=CHOICES, default='Inactivo', blank=False, null=False)
 
@@ -29,26 +32,41 @@ class DataAVM(models.Model):
                ('PENDIE', 'Pendiente')]
     pozo = models.ForeignKey(Pozo, on_delete=models.CASCADE)
     fecha = models.DateField(auto_now=False, auto_now_add=False)
-    bsw = models.DecimalField(max_digits=7, decimal_places=2)
-    api = models.DecimalField(max_digits=7, decimal_places=2)
-    tasaLiquido = models.DecimalField(max_digits=11, decimal_places=2)
-    tasaGas = models.DecimalField(max_digits=11, decimal_places=2)
-    tasaAgua = models.DecimalField(max_digits=11, decimal_places=2)
-    tasaAceite = models.DecimalField(max_digits=11, decimal_places=2)
-    gor = models.DecimalField(max_digits=7, decimal_places=2)
-    thp = models.DecimalField(max_digits=11, decimal_places=2)
-    velocidadBomba = models.DecimalField(max_digits=7, decimal_places=2)
-    corrienteVSD = models.DecimalField(max_digits=7, decimal_places=2)
-    pip = models.DecimalField(max_digits=11, decimal_places=2)
-    voltajeOutVSD = models.DecimalField(max_digits=7, decimal_places=2)
-    tempCabeza = models.DecimalField(max_digits=7, decimal_places=2)
+    bsw = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    api = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    tasaLiquido = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    tasaGas = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    tasaAgua = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    tasaAceite = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    gor = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    thp = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    velocidadBomba = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    corrienteVSD = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    pip = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    voltajeOutVSD = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
+    tempCabeza = models.DecimalField(
+        max_digits=7, decimal_places=2, blank=True, null=True)
     pruebaValida = models.CharField(
         max_length=6, choices=CHOICES, default='VALIDA', blank=False)
-    comentarios = models.TextField()
-    salinidad = models.DecimalField(max_digits=11, decimal_places=2)
+    comentarios = models.TextField(blank=True, null=True)
+    salinidad = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
 
-    def __str__(self):
-        return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} Estado: {self.pruebaValida}"
+    # def __str__(self):
+    #     # return f"{self.fecha}: {self.pozo__nombre} Fluido Total: {self.tasaLiquido} Estado: {self.pruebaValida}"
+    #     return f"{self.fecha}: {self.pozo__nombre}"
 
 
 class DataStork(models.Model):
@@ -56,7 +74,8 @@ class DataStork(models.Model):
         DataAVM, on_delete=models.CASCADE, related_name="storkAVM")
     medidorNo = models.IntegerField(blank=True, null=True)
     noWell = models.CharField(max_length=20, blank=True, null=True)
-    swMezcla = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
+    swMezcla = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
     diluyenteInyectado = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
     comentarios = models.TextField(blank=True, null=True)
