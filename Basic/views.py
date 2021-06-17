@@ -1,10 +1,8 @@
 import json
-from import_export.results import Result
 from tablib import Dataset
 
 from django.http.response import JsonResponse
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -13,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User
 from .forms import CalculosForm, LaboratorioForm
 from .calculos import Calculos
-from .resources import DataAVM, DataPozoResource
+from .resources import DataAVMResource, DataPozoResource
 
 
 def index(request):
@@ -226,22 +224,23 @@ def dataHistorica_view(request):
 def cargarDatos(request):
     message = ''
     if request.method == 'POST':
-        pozo_resource = DataPozoResource()
+        data_resource = DataAVMResource()
         dataset = Dataset()
         # print(f"dataset antes: {dataset}")
-        datos_pozo = request.FILES['xlsfile']
+        datos_file = request.FILES['xlsfile']
         # print(f"datos_pozo: {datos_pozo}")
-        imported_data = dataset.load(datos_pozo.read())
+        imported_data = dataset.load(datos_file.read())
         # print(f"{dataset}")
 
-        result = pozo_resource.import_data(
+        result = data_resource.import_data(
             dataset, dry_run=True)  # Test the data import
         if result.has_errors():
-            message = 'Error al importar el archivo, verifique espacios en blanco'
+            message = f"Error al importar el archivo"
         else:
             message = 'Archivo cargado correctamente'
-            pozo_resource.import_data(
+            data_resource.import_data(
                 dataset, dry_run=False)  # Actually import now
+
     return render(request, 'Basic/cargarDatos.html', {
         "message": message
     })
