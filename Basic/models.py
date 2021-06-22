@@ -13,6 +13,9 @@ class Campo(models.Model):
     pozos = models.ManyToManyField(
         'Pozo', blank=True, related_name="ListaPozos")
 
+    def __str__(self):
+        return f"{self.nombre}"
+
 
 class Pozo(models.Model):
     CHOICES = [('Activo', 'Activo'),
@@ -25,6 +28,9 @@ class Pozo(models.Model):
         max_digits=6, decimal_places=6, blank=True, null=True)
     estado = models.CharField(
         max_length=8, choices=CHOICES, default='Inactivo', blank=False, null=False)
+    
+    def __str__(self):
+        return f"{self.nombre} estado: {self.estado}"
 
 
 class DataAVM(models.Model):
@@ -66,9 +72,8 @@ class DataAVM(models.Model):
     salinidad = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
 
-    # def __str__(self):
-    #     # return f"{self.fecha}: {self.pozo__nombre} Fluido Total: {self.tasaLiquido} Estado: {self.pruebaValida}"
-    #     return f"{self.fecha}: {self.pozo__nombre}"
+    def __str__(self):
+        return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} es {self.pruebaValida}"
 
 
 class DataStork(models.Model):
