@@ -4,21 +4,39 @@ from import_export.widgets import ForeignKeyWidget
 from .models import DataAVM, Pozo
 
 
-# class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
-#     def __init__(self, model, field='pk', create=False, *args, **kwargs):
-#         self.model = model
-#         self.field = field
-#         self.create = create
-#         # super(ForeignKeyWidgetWithCreation, self).__init__(*args, **kwargs)
+class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
 
-#     def clean(self, value):
-#         val = super(ForeignKeyWidgetWithCreation, self).clean(value)
-#         if self.create:
-#             instance, new = self.model.objects.get_or_create(**{
-#                 self.field: val
-#             })
-#             val = getattr(instance, self.field)
-#         return self.model.objects.get(**{self.field: val}) if val else None
+    def __init__(self, model, field="pk", create=False, **kwargs):
+        self.model = model
+        self.field = field
+        self.create = create
+        # super(ForeignKeyWidgetWithCreation, self).__init__(
+        #     model, field=field, **kwargs)
+
+    def clean(self, value, **kwargs):
+        if not value:
+            return None
+
+        if self.create:
+            instance, new = self.model.objects.get_or_create(
+                **{self.field: value})
+
+        val = super(ForeignKeyWidgetWithCreation, self).clean(value, **kwargs)
+
+        return self.model.objects.get(**{self.field: val}) if val else None
+        # es lo mismo que lo de arriba
+        # if val:
+        #     myreturnobj=self.model.objects.get(**{self.field: val})
+        #     # return myreturnobj
+        # else:
+        #     return None
+
+
+class StoreWidget(ForeignKeyWidget):
+    def clean(self, value, **kwargs):
+        return self.model.objects.get_or_create(nombre=value)
+
+
 class DataPozoResource(resources.ModelResource):
     ESTADO = Field(attribute='estado', saves_null_values=False)
     SARTA = Field(attribute='nombre', saves_null_values=False)
@@ -36,6 +54,13 @@ class DataPozoResource(resources.ModelResource):
 class DataAVMResource(resources.ModelResource):
     SARTA = Field(attribute='pozo', column_name='SARTA', widget=ForeignKeyWidget(
         Pozo, 'nombre'), saves_null_values=False)
+    # no funcionaron bien
+    # SARTA = Field(attribute='pozo', column_name='SARTA', widget=StoreWidget(
+    #     Pozo, 'nombre'), saves_null_values=False)
+    # SARTA = Field(attribute='pozo', column_name='SARTA', saves_null_values=False, widget=ForeignKeyWidgetWithCreation(
+    #     model=Pozo,
+    #     field='nombre',
+    #     create=True))
 
     FECHA = Field(attribute='fecha', column_name='FECHA',
                   saves_null_values=False)
@@ -62,9 +87,12 @@ class DataAVMResource(resources.ModelResource):
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
     SALINIDAD = Field(attribute='salinidad', column_name='SALINIDAD')
 
-    # def clean(self, value):
-    #     val = super(ForeignKeyWidget, self).clean(value)
-    #     object, created = Pozo.objects.get_or_create(nombre='')
+    def before_import_row(self, row, **kwargs):
+        if not(row.get('SARTA') == None):
+            Pozo.objects.get_or_create(
+                nombre=row.get('SARTA'),
+                estado=row.get('ESTADO')
+            )
 
     class Meta:
         model = DataAVM
