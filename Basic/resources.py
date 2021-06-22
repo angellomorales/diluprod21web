@@ -1,7 +1,7 @@
 from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
-from .models import DataAVM, Pozo
+from .models import Campo, DataAVM, Pozo
 
 
 class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
@@ -52,6 +52,9 @@ class DataPozoResource(resources.ModelResource):
 
 
 class DataAVMResource(resources.ModelResource):
+    CAMPO = Field(attribute='campo', column_name='CAMPO', widget=ForeignKeyWidget(
+        Campo, 'nombre'), saves_null_values=False)
+
     SARTA = Field(attribute='pozo', column_name='SARTA', widget=ForeignKeyWidget(
         Pozo, 'nombre'), saves_null_values=False)
     # no funcionaron bien
@@ -89,10 +92,15 @@ class DataAVMResource(resources.ModelResource):
 
     def before_import_row(self, row, **kwargs):
         if not(row.get('SARTA') == None):
-            Pozo.objects.get_or_create(
+            instancePozo, new = Pozo.objects.get_or_create(
                 nombre=row.get('SARTA'),
                 estado=row.get('ESTADO')
             )
+            instanceCampo,new2=Campo.objects.get_or_create(
+                nombre=row.get('CAMPO')
+            )
+            if new:
+                instanceCampo.pozos.add(instancePozo)
 
     class Meta:
         model = DataAVM

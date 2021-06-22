@@ -30,6 +30,8 @@ class Pozo(models.Model):
 class DataAVM(models.Model):
     CHOICES = [('VALIDA', 'Valida'),
                ('PENDIE', 'Pendiente')]
+    campo = models.ForeignKey(
+        Campo, on_delete=models.CASCADE, blank=True, null=True)
     pozo = models.ForeignKey(Pozo, on_delete=models.CASCADE)
     fecha = models.DateField(auto_now=False, auto_now_add=False)
     bsw = models.DecimalField(
