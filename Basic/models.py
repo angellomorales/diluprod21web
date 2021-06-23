@@ -24,18 +24,13 @@ class Pozo(models.Model):
         max_length=255, primary_key=True, blank=False, null=False)
     estado = models.CharField(
         max_length=8, choices=CHOICES, default='Inactivo', blank=False, null=False)
-
-    def __str__(self):
-        return f"{self.nombre} estado: {self.estado}"
-
-
-class Ubicacion(models.Model):
-    pozo = models.ForeignKey(
-        Pozo, on_delete=models.CASCADE, related_name='PozoUbicacion')
     latitud = models.DecimalField(
         max_digits=6, decimal_places=6, blank=True, null=True)
     longitud = models.DecimalField(
         max_digits=6, decimal_places=6, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.nombre} estado: {self.estado}"
 
 
 class DataAVM(models.Model):
