@@ -1,50 +1,18 @@
-// var data = [{ x: 'Sales', series1: 1500, series2:0 }, { x: 'Purchases', series1: 500, series2:0 }, { x: 'Sales2', series1: 1500, series2:0 }]
-
-document.addEventListener('DOMContentLoaded', function () {
-    // listeners para obtener los datos de la grafica
-    if (document.getElementById('relacionDiluyente')) {
-        document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
-    }
-    if (document.getElementById('diluyenteRequerido')) {
-        document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data('diluyenteRequerido'));
-    }
-    if (document.getElementById('limiteRestriccion')) {
-        document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
-    }
-    // grafica default
-    if (document.getElementById('id_apiMezclaHumedo')) {
-        load_data('relacionDiluyente');
-    }
-
-
-});
-
-function load_data(graphId) {
-    const pozo = document.querySelector('#id_pozo').value;
-    const aceite = document.querySelector('#id_aceite').value;
-    const apiCabeza = document.querySelector('#id_apiCabeza').value;
-    const apiDiluyente = document.querySelector('#id_apiDiluyente').value;
-    const apiMezclaHumedo = document.getElementById('id_apiMezclaHumedo').innerHTML;
-    fetch(`/graficas/${graphId}`, {
+function enviarAJAX(url, bodyJson) {
+    fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
-        body: JSON.stringify({
-            pozo: pozo,
-            aceite: aceite,
-            apiCabeza: apiCabeza,
-            apiDiluyente: apiDiluyente,
-            apiMezclaHumedo: apiMezclaHumedo
-        })
+        body: bodyJson
     })
         .then(response => response.json())
         // .then(status)
         .then(dataGraph => {
             // Print data
             // console.log(dataGraph);
-            graficar(dataGraph);
+            graficar(dataGraph, "#chartContent");
 
         })
         .catch(err => console.log(err));
@@ -67,14 +35,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function graficar(dataGraph) {
+function graficar(dataGraph, contenedor) {
     var data = [];
     // data.splice(0, data.length);
     dataGraph.datos.forEach(element => {
         data.push(element);
     });
     // console.log(data);
-    document.querySelector("#chartContent").innerHTML = '<canvas id="chart"></canvas>';
+    document.querySelector(contenedor).innerHTML = '<canvas id="chart"></canvas>';
     var ctx = document.getElementById('chart').getContext("2d");
     if (chart) {
         var myChart = new Chart(ctx,
