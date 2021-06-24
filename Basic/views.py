@@ -8,8 +8,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User
-from .forms import CalculosForm, LaboratorioForm
+from .models import DataAVM, User
+from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
 
@@ -217,7 +217,19 @@ def pozoInyector_view(request):
 
 @login_required(login_url="index")
 def dataHistorica_view(request):
-    return render(request, "Basic/dataHistorica.html")
+    if request.method == "POST":
+        form = DataHistoricaForm(request.POST)
+        if form.is_valid():
+            pozo=form.cleaned_data["pozo"]
+            dataPozo= DataAVM.objects.filter(pozo=pozo).latest()
+            return render(request, "Basic/dataHistorica.html", {
+                "form": form,
+                "dataPozo":dataPozo
+            })
+    form = DataHistoricaForm()
+    return render(request, "Basic/dataHistorica.html", {
+        "form": form
+    })
 
 
 @login_required(login_url="index")

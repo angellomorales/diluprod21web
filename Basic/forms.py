@@ -1,4 +1,7 @@
 from django import forms
+from django.db.models import fields
+from django.forms.models import ModelForm
+from .models import DataAVM
 
 
 class CalculosForm(forms.Form):
@@ -33,10 +36,11 @@ class CalculosForm(forms.Form):
         self.fields['variableACalcular'].widget.attrs.update(
             {'class': 'form-control mx-sm-3 mb-2'})
 
+
 class LaboratorioForm(forms.Form):
     swMezcla = forms.DecimalField(
         decimal_places=2, required=True, label="% S&W Mezcla")
-    apiMezcla= forms.DecimalField(
+    apiMezcla = forms.DecimalField(
         decimal_places=2, required=True, label="API Mezcla @60ºF")
 
     def __init__(self, *args, **kwargs):
@@ -45,3 +49,9 @@ class LaboratorioForm(forms.Form):
             {'class': 'form-control mx-sm-3 mb-2'})
         self.fields['apiMezcla'].widget.attrs.update(
             {'class': 'form-control mx-sm-3 mb-2'})
+
+
+class DataHistoricaForm(ModelForm):
+    class Meta:
+        model = DataAVM
+        fields = ['pozo']

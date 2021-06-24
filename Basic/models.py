@@ -30,7 +30,7 @@ class Pozo(models.Model):
         max_digits=6, decimal_places=6, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.nombre} estado: {self.estado}"
+        return f"{self.nombre}"
 
 
 class DataAVM(models.Model):
@@ -75,6 +75,10 @@ class DataAVM(models.Model):
 
     def __str__(self):
         return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} es {self.pruebaValida}"
+    
+    class Meta:
+        ordering=["fecha"]
+        get_latest_by = "fecha"
 
 
 class DataStork(models.Model):
