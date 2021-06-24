@@ -25,13 +25,15 @@ function load_data(graphId) {
     const apiCabeza = document.querySelector('#id_apiCabeza').value;
     const apiDiluyente = document.querySelector('#id_apiDiluyente').value;
     const apiMezclaHumedo = document.getElementById('id_apiMezclaHumedo').innerHTML;
-    url = `/graficas/${graphId}`;
+    const idContenedor=document.querySelector('#chartCalculos').id;
+    url = `/graficarCalculos/${graphId}`;
     bodyJson = JSON.stringify({
         pozo: pozo,
         aceite: aceite,
         apiCabeza: apiCabeza,
         apiDiluyente: apiDiluyente,
-        apiMezclaHumedo: apiMezclaHumedo
+        apiMezclaHumedo: apiMezclaHumedo,
+        idContenedor:idContenedor
     });
     enviarAJAX(url, bodyJson);
 

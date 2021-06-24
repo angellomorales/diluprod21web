@@ -79,7 +79,7 @@ def calculos_view(request):
 
 
 @login_required(login_url="index")
-def graficas_view(request, graphId):
+def graficarCalculos_view(request, graphId):
     if request.method == "POST":
         data = json.loads(request.body)
         calculos = Calculos()
@@ -88,6 +88,7 @@ def graficas_view(request, graphId):
         apiCabeza = data["apiCabeza"]
         apiDiluyente = data.get("apiDiluyente")
         variableACalcular = data.get("apiMezclaHumedo")
+        idContenedor=data.get("idContenedor")
         dataGraph = []  # list
         maxYValue = 1500
         for i in range(99):
@@ -181,7 +182,7 @@ def graficas_view(request, graphId):
                 }
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams})
+        return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
 
@@ -220,12 +221,12 @@ def dataHistorica_view(request):
     if request.method == "POST":
         form = DataHistoricaForm(request.POST)
         if form.is_valid():
-            pozo=form.cleaned_data["pozo"]
-            dataPozo= DataAVM.objects.filter(pozo=pozo).latest()
+            pozo = form.cleaned_data["pozo"]
+            dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
             return render(request, "Basic/dataHistorica.html", {
                 "form": form,
-                "dataPozo":dataPozo,
-                "esCalculado":True
+                "dataPozo": dataPozo,
+                "esCalculado": True
             })
     form = DataHistoricaForm()
     return render(request, "Basic/dataHistorica.html", {

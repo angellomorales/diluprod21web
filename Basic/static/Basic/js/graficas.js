@@ -12,7 +12,7 @@ function enviarAJAX(url, bodyJson) {
         .then(dataGraph => {
             // Print data
             // console.log(dataGraph);
-            graficar(dataGraph, "#chartCalculos");
+            graficar(dataGraph);
 
         })
         .catch(err => console.log(err));
@@ -35,14 +35,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function graficar(dataGraph, contenedor) {
+function graficar(dataGraph) {
     var data = [];
     // data.splice(0, data.length);
     dataGraph.datos.forEach(element => {
         data.push(element);
     });
     // console.log(data);
-    document.querySelector(contenedor).innerHTML = '<canvas id="chart"></canvas>';
+    document.querySelector(dataGraph.contenedor).innerHTML = '<canvas id="chart"></canvas>';
     var ctx = document.getElementById('chart').getContext("2d");
     if (chart) {
         var myChart = new Chart(ctx,
