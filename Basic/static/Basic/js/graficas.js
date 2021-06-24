@@ -12,7 +12,7 @@ function enviarAJAX(url, bodyJson) {
         .then(dataGraph => {
             // Print data
             // console.log(dataGraph);
-            graficar(dataGraph, "#chartContent");
+            graficar(dataGraph, "#chartCalculos");
 
         })
         .catch(err => console.log(err));
