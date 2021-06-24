@@ -21,6 +21,12 @@
             </div>
         </form>
     </div>
+    {% if esCalculado %}
+    <div class="col">
+        <div class="row" id="chartDataHistorica">
+        </div>
+    </div>
+    {% endif %}
 </div>
 <br>
 {% if esCalculado %}
@@ -144,4 +150,8 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.0/chartjs-plugin-zoom.min.js"></script>
+<script src="{% static 'Basic/js/graficas.js' %}"></script>
+<script src="{% static 'Basic/js/enviarDataHistorica.js' %}"></script>
 {% endblock %}
