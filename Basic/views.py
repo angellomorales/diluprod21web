@@ -224,7 +224,8 @@ def dataHistorica_view(request):
             dataPozo= DataAVM.objects.filter(pozo=pozo).latest()
             return render(request, "Basic/dataHistorica.html", {
                 "form": form,
-                "dataPozo":dataPozo
+                "dataPozo":dataPozo,
+                "esCalculado":True
             })
     form = DataHistoricaForm()
     return render(request, "Basic/dataHistorica.html", {
