@@ -25,6 +25,7 @@
 //     const apiCabeza = document.querySelector('#id_apiCabeza').value;
 //     const apiDiluyente = document.querySelector('#id_apiDiluyente').value;
 //     const apiMezclaHumedo = document.getElementById('id_apiMezclaHumedo').innerHTML;
+//     const idContenedor=document.querySelector('#chartDataHistorica').id;
 //     url = `/graficarDataHistorica/${graphId}`;
 //     bodyJson = JSON.stringify({
 //         pozo: pozo,
@@ -32,6 +33,7 @@
 //         apiCabeza: apiCabeza,
 //         apiDiluyente: apiDiluyente,
 //         apiMezclaHumedo: apiMezclaHumedo
+//         idContenedor:idContenedor
 //     });
 //     enviarAJAX(url, bodyJson);
 
