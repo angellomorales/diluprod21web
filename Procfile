@@ -1,0 +1,1 @@
+web: gunicorn diluprod21.wsgi --log-file -
