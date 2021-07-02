@@ -61,20 +61,15 @@
                     {% for contenido in tabla.contenido %}
                     <tr>
                         <th scope="row">{{ contenido.cabecera }}</th>
+                        {% if contenido.td_id %}
+                        <td id="{{ contenido.td_id }}">
+                        {% else %}
+                        <td>
+                        {% endif %}
                         {% if tabla.titulo == "GRAVEDAD ESPECIFICA @ 60ºF" %}
-                            {% if contenido.td_id %}
-                            <td id="{{ contenido.td_id }}">
-                                {% else %}
-                            <td>
-                            {% endif %}
                         {{ contenido.valor|floatformat:5 }}
                         </td>
                         {% else %}
-                            {% if contenido.td_id %}
-                            <td id="{{ contenido.td_id }}">
-                                {% else %}
-                            <td>
-                            {% endif %}
                         {{ contenido.valor|floatformat:2 }}
                         </td>
                         {% endif %}

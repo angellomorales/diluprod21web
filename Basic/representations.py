@@ -81,13 +81,13 @@ class Representations():
             }, {
                 "titulo": "CAUDALES BPD",
                 "contenido": [{
-                    "cabecera": "ACEITE Qo",
+                    "cabecera": "Aceite Qo",
                     "valor": calculos.aceite
                 }, {
-                    "cabecera": "DILUYENTE Qd",
+                    "cabecera": "Diluyente Qd",
                     "valor": calculos.diluyente
                 }, {
-                    "cabecera": "AGUA Qw",
+                    "cabecera": "Agua Qw",
                     "valor": calculos.agua
                 }]
             }, {
