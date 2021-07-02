@@ -59,7 +59,9 @@ class Representations():
                 }]
             }, {
                 "titulo": "COMENTARIOS",
-                "contenido": dataPozo.comentarios
+                "contenido": [{
+                    "valor": dataPozo.comentarios
+                }]
             }]
         }
         return dataPozoRepresentation

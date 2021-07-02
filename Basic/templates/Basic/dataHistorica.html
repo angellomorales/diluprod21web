@@ -44,20 +44,15 @@
                 </tr>
             </thead>
             <tbody>
-                
-                {% if tabla.contenido.id %}
+                {% for contenido in tabla.contenido %}
                 <tr>
-                    <td>{{ contenido|default_if_none:"No Registra" }}</td>
+                    {% if contenido.cabecera %}
+                    <th scope="row">{{ contenido.cabecera }}</th>
+                    {% endif %}
+                    <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
                 </tr>
-                {% else %}
-                    {% for contenido in tabla.contenido %}
-                    {{ contenido.id }}
-                    <tr>
-                        <th scope="row">{{ contenido.id }}</th>
-                        <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
+
+                {% endfor %}
             </tbody>
         </table>
     </div>
