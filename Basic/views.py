@@ -88,7 +88,7 @@ def graficarCalculos_view(request, graphId):
         apiCabeza = data["apiCabeza"]
         apiDiluyente = data.get("apiDiluyente")
         variableACalcular = data.get("apiMezclaHumedo")
-        idContenedor=data.get("idContenedor")
+        idContenedor = data.get("idContenedor")
         dataGraph = []  # list
         maxYValue = 1500
         for i in range(99):
