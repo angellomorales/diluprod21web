@@ -114,7 +114,7 @@ class Representations():
                     "cabecera": "Mezcla",
                     "valor": calculos.apiMezclaSeco,
                 }, {
-                    "td_id":"id_apiMezclaHumedo",
+                    "td_id": "id_apiMezclaHumedo",
                     "cabecera": "Líquido",
                     "valor": calculos.apiMezclaHumedo
                 }]
@@ -126,6 +126,45 @@ class Representations():
                 }, {
                     "cabecera": "Diluyente",
                     "valor": calculos.densidadDiluyente
+                }, {
+                    "cabecera": "Líquido",
+                    "valor": calculos.densidadLiquido
+                }]
+            }]
+        }
+        return representation
+
+    def representacionLaboratorio(self, calculos):
+        representation = {
+            "tablas": [{
+                "titulo": "GRAVEDAD ESPECIFICA @ 60ºF",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.geMezclaSeco
+                }, {
+                    "cabecera": "Agua",
+                    "valor": 1
+                }, {
+                    "cabecera": "Líquido",
+                    "valor": calculos.geLiquido
+                }]
+            }, {
+                "titulo": "API @ 60ºF",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.apiMezclaSeco,
+                }, {
+                    "cabecera": "Líquido",
+                    "valor": calculos.apiMezclaHumedo
+                }]
+            }, {
+                "titulo": "DENSIDAD lb/ft <sup>3</sup>",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.densidadEmulsion
+                }, {
+                    "cabecera": "Agua",
+                    "valor": calculos.densidadAgua
                 }, {
                     "cabecera": "Líquido",
                     "valor": calculos.densidadLiquido

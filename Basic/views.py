@@ -199,10 +199,12 @@ def laboratorio_view(request):
             apiMezcla = form.cleaned_data["apiMezcla"]
             calculos = Calculos()
             calculos.calcularLaboratorio(apiMezcla, swMezcla)
+            representation=Representations()
+            data=representation.representacionLaboratorio(calculos)
             return render(request, "Basic/laboratorio.html", {
                 "form": form,
                 "esCalculado": True,
-                "calculos": calculos
+                "data": data
             })
         else:
             return render(request, "Basic/laboratorio.html", {
