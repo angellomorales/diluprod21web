@@ -9,52 +9,52 @@ class Representations():
             "tablas": [{
                 "titulo": "VARIABLES VARIADOR",
                 "contenido": [{
-                    "id": "Frecuencia",
+                    "cabecera": "Frecuencia",
                     "valor": dataPozo.velocidadBomba
                 }, {
-                    "id": "PIP",
+                    "cabecera": "PIP",
                     "valor": dataPozo.pip
                 }, {
-                    "id": "Corriente",
+                    "cabecera": "Corriente",
                     "valor": dataPozo.corrienteVSD
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
                 "contenido": [{
-                    "id": "THP",
+                    "cabecera": "THP",
                     "valor": dataPozo.thp
                 }, {
-                    "id": "THT",
+                    "cabecera": "THT",
                     "valor": dataPozo.tempCabeza
                 }]
             }, {
                 "titulo": "CAUDALES",
                 "contenido": [{
-                    "id": "ACEITE BPD",
+                    "cabecera": "ACEITE BPD",
                     "valor": dataPozo.tasaAceite
                 }, {
-                    "id": "AGUA BPD",
+                    "cabecera": "AGUA BPD",
                     "valor": dataPozo.tasaAgua
                 }, {
-                    "id": "FLUIDO BPD",
+                    "cabecera": "FLUIDO BPD",
                     "valor": dataPozo.tasaLiquido
                 }, {
-                    "id": "GAS MSFCD",
+                    "cabecera": "GAS MSFCD",
                     "valor": dataPozo.tasaGas
                 }]
             }, {
                 "titulo": "PROPIEDADES",
                 "contenido": [{
-                    "id": "%S&W",
+                    "cabecera": "%S&W",
                     "valor": dataPozo.bsw
                 }, {
-                    "id": "API @60ºF",
+                    "cabecera": "API @60ºF",
                     "valor": dataPozo.api
                 }, {
-                    "id": "CLORUROS",
+                    "cabecera": "CLORUROS",
                     "valor": dataPozo.salinidad
                 }, {
-                    "id": "DILUYENTE",
+                    "cabecera": "DILUYENTE",
                     "valor": None
                 }]
             }, {
@@ -64,63 +64,72 @@ class Representations():
         }
         return dataPozoRepresentation
 
-    # def representacionCalculos(self, dataPozo):
-    #     dataPozoRepresentation = {
-    #         "fecha": dataPozo.fecha,
-    #         "tablas": [{
-    #             "titulo": "VARIABLES VARIADOR",
-    #             "contenido": [{
-    #                 "id": "Frecuencia",
-    #                 "valor": dataPozo.velocidadBomba
-    #             }, {
-    #                 "id": "PIP",
-    #                 "valor": dataPozo.pip
-    #             }, {
-    #                 "id": "Corriente",
-    #                 "valor": dataPozo.corrienteVSD
-    #             }]
-    #         }, {
-    #             "titulo": "VARIABLES SUPERFICIE",
-    #             "contenido": [{
-    #                 "id": "THP",
-    #                 "valor": dataPozo.thp
-    #             }, {
-    #                 "id": "THT",
-    #                 "valor": dataPozo.tempCabeza
-    #             }]
-    #         }, {
-    #             "titulo": "CAUDALES",
-    #             "contenido": [{
-    #                 "id": "ACEITE BPD",
-    #                 "valor": dataPozo.tasaAceite
-    #             }, {
-    #                 "id": "AGUA BPD",
-    #                 "valor": dataPozo.tasaAgua
-    #             }, {
-    #                 "id": "FLUIDO BPD",
-    #                 "valor": dataPozo.tasaLiquido
-    #             }, {
-    #                 "id": "GAS MSFCD",
-    #                 "valor": dataPozo.tasaGas
-    #             }]
-    #         }, {
-    #             "titulo": "PROPIEDADES",
-    #             "contenido": [{
-    #                 "id": "%S&W",
-    #                 "valor": dataPozo.bsw
-    #             }, {
-    #                 "id": "API @60ºF",
-    #                 "valor": dataPozo.api
-    #             }, {
-    #                 "id": "CLORUROS",
-    #                 "valor": dataPozo.salinidad
-    #             }, {
-    #                 "id": "DILUYENTE",
-    #                 "valor": None
-    #             }]
-    #         }, {
-    #             "titulo": "COMENTARIOS",
-    #             "contenido": dataPozo.comentarios
-    #         }]
-    #     }
-    #     return dataPozoRepresentation
+    def representacionCalculos(self, calculos):
+        representation = {
+            "tablas": [{
+                "titulo": "GENERAL",
+                "contenido": [{
+                    "cabecera": "fracción S&W de Mezcla",
+                    "valor": calculos.swMezcla
+                }, {
+                    "cabecera": "Relación Diluyente/Mezcla",
+                    "valor": calculos.relacionOil_Diluyente
+                }, {
+                    "cabecera": "% Factor de encogimiento",
+                    "valor": calculos.factorEncogimiento
+                }]
+            }, {
+                "titulo": "CAUDALES BPD",
+                "contenido": [{
+                    "cabecera": "ACEITE Qo",
+                    "valor": calculos.aceite
+                }, {
+                    "cabecera": "DILUYENTE Qd",
+                    "valor": calculos.diluyente
+                }, {
+                    "cabecera": "AGUA Qw",
+                    "valor": calculos.agua
+                }]
+            }, {
+                "titulo": "GRAVEDAD ESPECIFICA @ 60ºF",
+                "contenido": [{
+                    "cabecera": "Aceite Cabeza",
+                    "valor": calculos.geAceite
+                }, {
+                    "cabecera": "Diluyente",
+                    "valor": calculos.geDiluyente
+                }, {
+                    "cabecera": "Mezcla",
+                    "valor": calculos.geMezclaSeco
+                }, {
+                    "cabecera": "Agua",
+                    "valor": 1
+                }, {
+                    "cabecera": "Líquido",
+                    "valor": calculos.geLiquido
+                }]
+            }, {
+                "titulo": "API @ 60ºF",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.apiMezclaSeco,
+                }, {
+                    "td_id":"id_apiMezclaHumedo",
+                    "cabecera": "Líquido",
+                    "valor": calculos.apiMezclaHumedo
+                }]
+            }, {
+                "titulo": "DENSIDAD lb/ft <sup>3</sup>",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.densidadEmulsion
+                }, {
+                    "cabecera": "Diluyente",
+                    "valor": calculos.densidadDiluyente
+                }, {
+                    "cabecera": "Líquido",
+                    "valor": calculos.densidadLiquido
+                }]
+            }]
+        }
+        return representation

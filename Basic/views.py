@@ -63,10 +63,12 @@ def calculos_view(request):
             else:
                 calculos.calcularDiluyente(
                     apiCabeza, apiDiluyente, variableACalcular, aceite, swCabeza, True)
+            representation=Representations()
+            data=representation.representacionCalculos(calculos)
             return render(request, "Basic/calculos.html", {
                 "form": form,
                 "esCalculado": True,
-                "calculos": calculos
+                "data": data
             })
         else:
             # form.fields['category'].choices = CategoryChoices.choices#add a choices in category

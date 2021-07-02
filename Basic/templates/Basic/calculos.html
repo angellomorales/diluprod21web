@@ -28,8 +28,10 @@
         <div class="row">
             <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
                 <button type="button" class="btn btn-outline-primary" id="relacionDiluyente">Relación diluyente</button>
-                <button type="button" class="btn btn-outline-primary" id="diluyenteRequerido">Diluyente requerido</button>
-                <button type="button" class="btn btn-outline-primary" id="limiteRestriccion">Límite restricción flujo</button>
+                <button type="button" class="btn btn-outline-primary" id="diluyenteRequerido">Diluyente
+                    requerido</button>
+                <button type="button" class="btn btn-outline-primary" id="limiteRestriccion">Límite restricción
+                    flujo</button>
             </div>
         </div>
         <div class="row" id="chartCalculos">
@@ -43,133 +45,53 @@
 {% elif esCalculado %}
 <h3>Datos de salida</h3>
 <br>
-<div class="row">
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">GENERAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">fracción S&W de Mezcla</th>
-                    <td>{{ calculos.swMezcla|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Relación Diluyente/Mezcla</th>
-                    <td>{{ calculos.relacionOil_Diluyente|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">% Factor de encogimiento</th>
-                    <td>{{ calculos.factorEncogimiento|floatformat:2 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">CAUDALES BPD</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Aceite Qo</th>
-                    <td>{{ calculos.aceite|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Diluyente Qd</th>
-                    <td>{{ calculos.diluyente|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Agua Qw</th>
-                    <td>{{ calculos.agua|floatformat:2 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<br>
-<h3>Propiedades de fluidos calculadas</h3>
-<br>
-<div class="row">
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">GRAVEDAD ESPECIFICA @ 60ºF</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Aceite Cabeza</th>
-                    <td>{{ calculos.geAceite|floatformat:5 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Diluyente</th>
-                    <td>{{ calculos.geDiluyente|floatformat:5 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.geMezclaSeco|floatformat:5 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Agua</th>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td>{{ calculos.geLiquido|floatformat:5 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">API @60ºF</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.apiMezclaSeco|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td id="id_apiMezclaHumedo">{{ calculos.apiMezclaHumedo|floatformat:2 }}</td>
-                </tr>
-            </tbody>
-        </table>
+{% for tabla in data.tablas %}
+    {% if forloop.counter == 1 or  forloop.counter == 3 %}
+    <div class="row">
+    {% endif %}
+        <div class="col">
+            <table class="table table-bordered table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th colspan="2">{{ tabla.titulo|safe }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contenido in tabla.contenido %}
+                    <tr>
+                        <th scope="row">{{ contenido.cabecera }}</th>
+                        {% if tabla.titulo == "GRAVEDAD ESPECIFICA @ 60ºF" %}
+                            {% if contenido.td_id %}
+                            <td id="{{ contenido.td_id }}">
+                                {% else %}
+                            <td>
+                            {% endif %}
+                        {{ contenido.valor|floatformat:5 }}
+                        </td>
+                        {% else %}
+                            {% if contenido.td_id %}
+                            <td id="{{ contenido.td_id }}">
+                                {% else %}
+                            <td>
+                            {% endif %}
+                        {{ contenido.valor|floatformat:2 }}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% if forloop.counter == 2 or  forloop.counter == 5%}
     </div>
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">DENSIDAD lb/ft <sup>3</sup></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.densidadEmulsion|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Diluyente</th>
-                    <td>{{ calculos.densidadDiluyente|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td>{{ calculos.densidadLiquido|floatformat:2 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+        {% if forloop.counter == 2%}
+        <br>
+        <h3>Propiedades de fluidos calculadas</h3>
+        <br>
+        {% endif %}
+    {% endif %}
+{% endfor %}
 {% endif %}
 
 {% endblock %}
