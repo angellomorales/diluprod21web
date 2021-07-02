@@ -1,60 +1,64 @@
+import json
+
+
 class Representations():
-    def representacionDataHistoricaJSON(dataPozo):
+    def representacionDataHistoricaJSON(self,dataPozo):
         dataPozoRepresentation = {
+            "fecha": dataPozo.fecha,
             "tablas": [{
                 "titulo": "VARIABLES VARIADOR",
                 "contenido": [{
                     "id": "Frecuencia",
-                    "valor": None
+                    "valor": dataPozo.velocidadBomba
                 }, {
                     "id": "PIP",
-                    "valor": 369
+                    "valor": dataPozo.pip
                 }, {
                     "id": "Corriente",
-                    "valor": 139.3
+                    "valor": dataPozo.corrienteVSD
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
                 "contenido": [{
                     "id": "THP",
-                    "valor": 200
+                    "valor": dataPozo.thp
                 }, {
                     "id": "THT",
-                    "valor": 369
+                    "valor": dataPozo.tempCabeza
                 }]
             }, {
                 "titulo": "CAUDALES",
                 "contenido": [{
                     "id": "ACEITE BPD",
-                    "valor": 200
+                    "valor": dataPozo.tasaAceite
                 }, {
                     "id": "AGUA BPD",
-                    "valor": 369
+                    "valor": dataPozo.tasaAgua
                 }, {
                     "id": "FLUIDO BPD",
-                    "valor": 369
+                    "valor": dataPozo.tasaLiquido
                 }, {
                     "id": "GAS MSFCD",
-                    "valor": 369
+                    "valor": dataPozo.tasaGas
                 }]
             }, {
                 "titulo": "PROPIEDADES",
                 "contenido": [{
                     "id": "%S&W",
-                    "valor": 200
+                    "valor": dataPozo.bsw
                 }, {
                     "id": "API @60ºF",
-                    "valor": 369
+                    "valor": dataPozo.api
                 }, {
                     "id": "CLORUROS",
-                    "valor": 369
+                    "valor": dataPozo.salinidad
                 }, {
                     "id": "DILUYENTE",
-                    "valor": 369
+                    "valor": None
                 }]
             }, {
                 "titulo": "COMENTARIOS",
-                "contenido": "MPFM1. BSW en seguimiento."
+                "contenido": dataPozo.comentarios
             }]
         }
         return dataPozoRepresentation

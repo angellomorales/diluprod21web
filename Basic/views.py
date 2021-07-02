@@ -12,6 +12,7 @@ from .models import DataAVM, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
+from .representations import Representations
 
 
 def index(request):
@@ -223,9 +224,11 @@ def dataHistorica_view(request):
         if form.is_valid():
             pozo = form.cleaned_data["pozo"]
             dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
+            representation=Representations()
+            data=representation.representacionDataHistoricaJSON(dataPozo)
             return render(request, "Basic/dataHistorica.html", {
                 "form": form,
-                "dataPozo": dataPozo,
+                "data": data,
                 "esCalculado": True
             })
     form = DataHistoricaForm()
