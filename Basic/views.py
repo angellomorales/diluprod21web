@@ -206,7 +206,7 @@ def laboratorio_view(request):
                 "form": form
             })
     form = LaboratorioForm()
-    return render(request, "Basic/Laboratorio.html", {
+    return render(request, "Basic/laboratorio.html", {
         "form": form
     })
 
