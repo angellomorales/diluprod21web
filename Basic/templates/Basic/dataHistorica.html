@@ -35,9 +35,9 @@
 {% for tabla in data.tablas %}
 {% if forloop.counter0|divisibleby:2 %}
 <div class="row">
-{% endif %}
+    {% endif %}
     <div class="col">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered">
             <thead class="table-secondary">
                 <tr>
                     <th colspan="2">{{ tabla.titulo }}</th>
@@ -45,18 +45,33 @@
             </thead>
             <tbody>
                 {% for contenido in tabla.contenido %}
-                <tr>
+                <tr class="trHover">
                     {% if contenido.cabecera %}
                     <th scope="row">{{ contenido.cabecera }}</th>
                     {% endif %}
-                    <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
+                    <td>
+                        <table class="table table-borderless table-inside table-sm">
+                            <tr>
+                                <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
+                                {% if contenido.cabecera %}
+                                <td class="tdInside">
+                                    Graficar
+                                    <div class="swtich-container"> 
+                                        <input type="checkbox" id="switch">
+                                        <label for="switch" class="lbl"></label>
+                                      </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
 
                 {% endfor %}
             </tbody>
         </table>
     </div>
-{% if forloop.counter|divisibleby:2 %}
+    {% if forloop.counter|divisibleby:2 %}
 </div>
 {% endif %}
 {% endfor %}
