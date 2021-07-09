@@ -47,7 +47,7 @@
 <br>
 
 {% for tabla in data.tablas %}
-    {% if forloop.counter == 1 or  forloop.counter == 3 %}
+    {% if forloop.counter0|divisibleby:2 %}
     <div class="row">
     {% endif %}
         <div class="col">
@@ -78,7 +78,7 @@
                 </tbody>
             </table>
         </div>
-    {% if forloop.counter == 2 or  forloop.counter == 5%}
+    {% if forloop.counter|divisibleby:2 %}
     </div>
         {% if forloop.counter == 2%}
         <br>

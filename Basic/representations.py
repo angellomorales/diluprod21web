@@ -111,14 +111,19 @@ class Representations():
                     "valor": calculos.geLiquido
                 }]
             }, {
-                "titulo": "API @ 60ºF",
+                "titulo": "VISCOSIDAD cps",
                 "contenido": [{
+                    "cabecera": "Aceite",
+                    "valor": calculos.viscosidadAceite,
+                },{
+                    "cabecera": "Diluyente",
+                    "valor": calculos.viscosidadDiluyente,
+                },{
                     "cabecera": "Mezcla",
-                    "valor": calculos.apiMezclaSeco,
-                }, {
-                    "td_id": "id_apiMezclaHumedo",
-                    "cabecera": "Líquido",
-                    "valor": calculos.apiMezclaHumedo
+                    "valor": calculos.viscosidadMezcla,
+                },{
+                    "cabecera": "Agua",
+                    "valor": calculos.viscosidadAgua,
                 }]
             }, {
                 "titulo": "DENSIDAD lb/ft <sup>3</sup>",
@@ -131,6 +136,16 @@ class Representations():
                 }, {
                     "cabecera": "Líquido",
                     "valor": calculos.densidadLiquido
+                }]
+            }, {
+                "titulo": "API @ 60ºF",
+                "contenido": [{
+                    "cabecera": "Mezcla",
+                    "valor": calculos.apiMezclaSeco,
+                }, {
+                    "td_id": "id_apiMezclaHumedo",
+                    "cabecera": "Líquido",
+                    "valor": calculos.apiMezclaHumedo
                 }]
             }]
         }
