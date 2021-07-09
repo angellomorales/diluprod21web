@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')6nu)feg%5==x_5-64u3s_x(#m)&!*
 # DEBUG = True
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['diluprod21.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['diluprod21.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
