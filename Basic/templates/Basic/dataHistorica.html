@@ -30,122 +30,55 @@
 </div>
 <br>
 {% if esCalculado %}
-<h3>Fecha del última prueba: {{ dataPozo.fecha }}</h3>
+<h3>Fecha del última prueba: {{ data.fecha }}</h3>
 <br>
+{% for tabla in data.tablas %}
+{% if forloop.counter0|divisibleby:2 %}
 <div class="row">
+    {% endif %}
     <div class="col">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered">
             <thead class="table-secondary">
                 <tr>
-                    <th colspan="2">VARIABLES VARIADOR</th>
+                    <th colspan="2">{{ tabla.titulo }}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">Frecuencia</th>
-                    <td>{{ dataPozo.velocidadBomba|default_if_none:"No Registra" }}</td>
+                {% for contenido in tabla.contenido %}
+                <tr class="trHover">
+                    {% if contenido.cabecera %}
+                    <th scope="row">{{ contenido.cabecera }}</th>
+                    {% endif %}
+                    <td>
+                        <table class="table table-borderless table-inside table-sm">
+                            <tr>
+                                <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
+                                {% if contenido.cabecera %}
+                                <td class="tdInside">
+                                    Graficar
+                                    <div class="swtich-container"> 
+                                        <input type="checkbox" id="switch">
+                                        <label for="switch" class="lbl"></label>
+                                      </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
-                <tr>
-                    <th scope="row">PIP</th>
-                    <td>{{ dataPozo.pip|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Corriente</th>
-                    <td>{{ dataPozo.corrienteVSD|default_if_none:"No Registra" }}</td>
-                </tr>
+
+                {% endfor %}
             </tbody>
         </table>
     </div>
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">VARIABLES DE SUPERFICIE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">THP</th>
-                    <td>{{ dataPozo.thp|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">THT</th>
-                    <td>{{ dataPozo.tempCabeza|default_if_none:"No Registra" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    {% if forloop.counter|divisibleby:2 %}
 </div>
-<div class="row">
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">CAUDALES</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">ACEITE BPD</th>
-                    <td>{{ dataPozo.tasaAceite|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">AGUA BPD</th>
-                    <td>{{ dataPozo.tasaAgua|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">FLUIDO BPD</th>
-                    <td>{{ dataPozo.tasaLiquido|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">GAS MSFCD</th>
-                    <td>{{ dataPozo.tasaGas|default_if_none:"No Registra" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">PROPIEDADES</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">%S&W</th>
-                    <td>{{ dataPozo.bsw|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">API @ 60ºF</th>
-                    <td>{{ dataPozo.api|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">CLORUROS</th>
-                    <td>{{ dataPozo.salinidad|default_if_none:"No Registra" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">DILUYENTE</th>
-                    <td>{{ dataPozo.tasaGas|default_if_none:"No Registra" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <table class="table table-bordered table-hover">
-        <thead class="table-secondary">
-            <tr>
-                <th colspan="2">COMENTARIOS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ dataPozo.comentarios|default_if_none:"No Registra" }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+{% endif %}
+{% endfor %}
+
+
+
+
 {% endif %}
 {% endblock %}
 

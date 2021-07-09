@@ -30,74 +30,36 @@
 {% if esCalculado %}
 <h3>Propiedades Calculadas</h3>
 <br>
-<div class="row">
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">GRAVEDAD ESPECIFICA @ 60ºF</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.geMezclaSeco|floatformat:5 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Agua</th>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td>{{ calculos.geLiquido|floatformat:5 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
+{% for tabla in data.tablas %}
+{% if forloop.first %}
+<div class="row">
+{% endif %}
     <div class="col">
         <table class="table table-bordered table-hover">
             <thead class="table-secondary">
                 <tr>
-                    <th colspan="2">API @60ºF</th>
+                    <th colspan="2">{{ tabla.titulo|safe }}</th>
                 </tr>
             </thead>
             <tbody>
+                {% for contenido in tabla.contenido %}
                 <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.apiMezclaSeco|floatformat:2 }}</td>
+                    <th scope="row">{{ contenido.cabecera }}</th>
+                    {% if tabla.titulo == "GRAVEDAD ESPECIFICA @ 60ºF" %}
+                    <td>{{ contenido.valor|floatformat:5 }}</td>
+                    {% else %}
+                    <td>{{ contenido.valor|floatformat:2 }}</td>
+                    {% endif %}
                 </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td>{{ calculos.apiMezclaHumedo|floatformat:2 }}</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-    <div class="col">
-        <table class="table table-bordered table-hover">
-            <thead class="table-secondary">
-                <tr>
-                    <th colspan="2">DENSIDAD lb/ft <sup>3</sup></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Mezcla</th>
-                    <td>{{ calculos.densidadEmulsion|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Agua</th>
-                    <td>{{ calculos.densidadAgua|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Líquido</th>
-                    <td>{{ calculos.densidadLiquido|floatformat:2 }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+{% if forloop.last %}
 </div>
+{% endif %}
+{% endfor %}
 {% endif %}
 
 {% endblock %}

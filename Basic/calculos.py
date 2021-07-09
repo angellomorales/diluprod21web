@@ -1,3 +1,7 @@
+
+import math
+
+
 class Calculos():
     def __init__(self):
         # self.aceite = kargs["aceite"]
@@ -7,6 +11,20 @@ class Calculos():
         # self.apiCabeza = kargs["apiCabeza"]
         # self.apiDiluyente = kargs["apiDiluyente"]
         self.densidadAgua = 62.3774
+
+        self.apiAgua = 10
+        self.viscosidadAgua = 1.15
+
+        #              tabla5   |   tabla6
+        self.refutaA = 14.534  # 68313767.0487542
+        self.refutaB = 0.8  # 0.736
+        self.refutaC = 10.975  # -868912303.413984
+        self.chevron2A = 1000  # 248.0055810
+        self.chevron2B = 1  # 1
+        self.chevron2C = 1  # 1
+        self.parkashA = 376.38  # 57.00322402
+        self.parkashB = 0.93425  # 0.734
+        self.parkashC = 157.43  # 683.72032059
 
     def setVariables(self, **kargs):
         for k in kargs.keys():
@@ -64,6 +82,8 @@ class Calculos():
                     ejecucion = False
                 if not condicion:
                     ejecucion = condicion
+            self.calcularViscosidad(apiCabeza, apiDiluyente,
+                                    apiMezclaHumedo, aceite, agua, diluyente)
             self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
                               agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
                               apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
@@ -108,6 +128,9 @@ class Calculos():
 
         geLiquido = 141.5 / (131.5 + apiMezclaHumedo)
 
+        self.calcularViscosidad(apiCabeza, apiDiluyente,
+                                apiMezclaHumedo, aceite, agua, diluyente)
+
         self.setVariables(geMezclaSeco=geMezclaSeco, geDiluyente=geDiluyente, geAceite=geAceite, geLiquido=geLiquido,
                           agua=agua, swMezcla=swMezcla, diluyente=diluyente, aceite=aceite,  factorEncogimiento=factorS,
                           apiMezclaHumedo=apiMezclaHumedo, apiMezclaSeco=apiMezclaSeco,
@@ -129,3 +152,33 @@ class Calculos():
         self.setVariables(geMezclaSeco=geMezclaSeco, geLiquido=geLiquido,
                           apiMezclaHumedo=apiLiquido, apiMezclaSeco=apiMezcla,
                           densidadEmulsion=densidadEmulsion, densidadLiquido=densidadLiquido, densidaAgua=self.densidadAgua)
+
+    def calcularViscosidad(self, apiCabeza, apiDiluyente, apiMezclaHumedo, vAceite, vAgua, vDiluyente):
+        viscosidadCinematicaCrudo = 55332503.7292 * math.exp(-0.6474*apiCabeza)
+        viscosidadCinematicaDiluyente = 4585.7*pow(apiDiluyente, -2.165)
+        irc = self.refutaA * \
+            math.log(math.log(viscosidadCinematicaCrudo +
+                     self.refutaB))+self.refutaC
+        ird = self.refutaA * \
+            math.log(math.log(viscosidadCinematicaDiluyente +
+                     self.refutaB))+self.refutaC
+        irw = self.refutaA * \
+            math.log(math.log(self.viscosidadAgua +
+                     self.refutaB))+self.refutaC
+        vTotal = vAceite+vAgua+vDiluyente
+        xmic = ((131.5+apiMezclaHumedo)/(131.5+apiCabeza))*(vAceite/vTotal)
+        xmid = ((131.5+apiMezclaHumedo)/(131.5+apiDiluyente)) * \
+            (vDiluyente/vTotal)
+        xmiw = ((131.5+apiMezclaHumedo)/(131.5+self.apiAgua))*(vAgua/vTotal)
+        xmiTotal = xmiw+xmic+xmid
+        indiceRefutac = irc*xmic
+        indiceRefutad = ird*xmid
+        indiceRefutaw = irw*xmiw
+        indiceRefutaMezcla = indiceRefutac+indiceRefutad+indiceRefutaw
+
+        viscocidadCinematicaMezcla = pow(pow(math.exp(1), math.exp(
+            1)), (indiceRefutaMezcla-self.refutaC)/self.refutaA)-self.refutaB
+
+        self.setVariables(viscosidadMezcla=viscocidadCinematicaMezcla,
+                          viscosidadAceite=viscosidadCinematicaCrudo,
+                          viscosidadDiluyente=viscosidadCinematicaDiluyente)

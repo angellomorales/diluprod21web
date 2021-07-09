@@ -12,6 +12,7 @@ from .models import DataAVM, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
+from .representations import Representations
 
 
 def index(request):
@@ -62,10 +63,12 @@ def calculos_view(request):
             else:
                 calculos.calcularDiluyente(
                     apiCabeza, apiDiluyente, variableACalcular, aceite, swCabeza, True)
+            representation = Representations()
+            data = representation.representacionCalculos(calculos)
             return render(request, "Basic/calculos.html", {
                 "form": form,
                 "esCalculado": True,
-                "calculos": calculos
+                "data": data
             })
         else:
             # form.fields['category'].choices = CategoryChoices.choices#add a choices in category
@@ -88,7 +91,7 @@ def graficarCalculos_view(request, graphId):
         apiCabeza = data["apiCabeza"]
         apiDiluyente = data.get("apiDiluyente")
         variableACalcular = data.get("apiMezclaHumedo")
-        idContenedor=data.get("idContenedor")
+        idContenedor = data.get("idContenedor")
         dataGraph = []  # list
         maxYValue = 1500
         for i in range(99):
@@ -180,6 +183,36 @@ def graficarCalculos_view(request, graphId):
                     'titleYAxis': 'API Seco',
                     'maxYValue': 30
                 }
+            if graphId == "viscosidadBSW":
+                # configurar para cada grafica
+                dataGraph.append(
+                    {'x': str(i), 's&w': calculos.swMezcla, 'viscosidadMezcla': calculos.viscosidadMezcla})  # dict
+                if(i == 0):
+                    maxYValue = round(calculos.viscosidadMezcla*1.05)
+                serieParams = {
+                    's&w':
+                    {
+                        'label': 'Fracción Volumétrica de Agua de Mezcla',
+                        'backgroundColor': 'rgb(100, 116, 254)',
+                        'borderColor': 'rgb(100, 116, 254)',
+                        'pointStyle': 'circle',
+                        'pointRadius': 3
+                    },
+                    'viscosidadMezcla':
+                    {
+                        'label': 'Viscosidad Mezcla csp',
+                        'backgroundColor': 'rgb(255, 99, 132)',
+                        'borderColor': 'rgb(255, 99, 132)',
+                        'pointStyle': 'star',
+                        'pointRadius': 3
+                    }
+                }
+                graphParams = {
+                    'title': 'Viscosidad del sistema',
+                    'titleXAxis': 'Porcentaje S&W',
+                    'titleYAxis': 'Viscosidad Mezcla csp x % S&W ',
+                    'maxYValue': maxYValue
+                }
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
         return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
@@ -196,10 +229,12 @@ def laboratorio_view(request):
             apiMezcla = form.cleaned_data["apiMezcla"]
             calculos = Calculos()
             calculos.calcularLaboratorio(apiMezcla, swMezcla)
+            representation = Representations()
+            data = representation.representacionLaboratorio(calculos)
             return render(request, "Basic/laboratorio.html", {
                 "form": form,
                 "esCalculado": True,
-                "calculos": calculos
+                "data": data
             })
         else:
             return render(request, "Basic/laboratorio.html", {
@@ -223,9 +258,11 @@ def dataHistorica_view(request):
         if form.is_valid():
             pozo = form.cleaned_data["pozo"]
             dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
+            representation = Representations()
+            data = representation.representacionDataHistorica(dataPozo)
             return render(request, "Basic/dataHistorica.html", {
                 "form": form,
-                "dataPozo": dataPozo,
+                "data": data,
                 "esCalculado": True
             })
     form = DataHistoricaForm()
