@@ -186,13 +186,13 @@ def graficarCalculos_view(request, graphId):
             if graphId == "viscosidadBSW":
                 # configurar para cada grafica
                 dataGraph.append(
-                    {'x': str(i), 's&w': calculos.swMezcla, 'viscosidadMezcla': calculos.viscosidadMezcla})  # dict
+                    {'x': str(i), 'referencia': 400, 'viscosidadMezcla': calculos.viscosidadMezcla})  # dict
                 if(i == 0):
                     maxYValue = round(calculos.viscosidadMezcla*1.05)
                 serieParams = {
-                    's&w':
+                    'referencia':
                     {
-                        'label': 'Fracción Volumétrica de Agua de Mezcla',
+                        'label': 'Viscosidad Transporte crudo cSt',
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
                         'pointStyle': 'circle',
@@ -200,7 +200,7 @@ def graficarCalculos_view(request, graphId):
                     },
                     'viscosidadMezcla':
                     {
-                        'label': 'Viscosidad Mezcla csp',
+                        'label': 'Viscosidad Mezcla cSt',
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
                         'pointStyle': 'star',
@@ -210,7 +210,7 @@ def graficarCalculos_view(request, graphId):
                 graphParams = {
                     'title': 'Viscosidad del sistema',
                     'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'Viscosidad Mezcla csp x % S&W ',
+                    'titleYAxis': 'Viscosidad Mezcla cSt x % S&W ',
                     'maxYValue': maxYValue
                 }
 

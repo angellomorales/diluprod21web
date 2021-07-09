@@ -111,7 +111,7 @@ class Representations():
                     "valor": calculos.geLiquido
                 }]
             }, {
-                "titulo": "VISCOSIDAD cps",
+                "titulo": "VISCOSIDAD cSt",
                 "contenido": [{
                     "cabecera": "Aceite",
                     "valor": calculos.viscosidadAceite,
