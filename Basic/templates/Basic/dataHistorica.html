@@ -23,6 +23,12 @@
     </div>
     {% if esCalculado %}
     <div class="col">
+        <!-- <div class="row">
+            <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
+                <button type="button" class="btn btn-outline-primary" id="historial">Historial</button>
+                <button type="button" class="btn btn-outline-primary" id="produccionVSpip">produccion vs pip</button>
+            </div>
+        </div> -->
         <div class="row" id="chartDataHistorica">
         </div>
     </div>
@@ -37,7 +43,7 @@
 <div class="row">
     {% endif %}
     <div class="col">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             <thead class="table-secondary">
                 <tr>
                     <th colspan="2">{{ tabla.titulo }}</th>
@@ -45,25 +51,25 @@
             </thead>
             <tbody>
                 {% for contenido in tabla.contenido %}
-                <tr class="trHover">
+                <tr>
                     {% if contenido.cabecera %}
                     <th scope="row">{{ contenido.cabecera }}</th>
                     {% endif %}
                     <td>
-                        <table class="table table-borderless table-inside table-sm">
-                            <tr>
-                                <td>{{ contenido.valor|default_if_none:"No Registra" }}</td>
-                                {% if contenido.cabecera %}
-                                <td class="tdInside">
-                                    Graficar
-                                    <div class="swtich-container"> 
-                                        <input type="checkbox" id="switch">
-                                        <label for="switch" class="lbl"></label>
-                                      </div>
-                                </td>
-                                {% endif %}
-                            </tr>
-                        </table>
+                        <div class="row">
+                            <div class="col">
+                                {{ contenido.valor|default_if_none:"No Registra" }}
+                            </div>
+                            {% if not tabla.titulo == 'COMENTARIOS'  %}
+                            <div class="col divInside">
+                                Graficar
+                                <div>
+                                    <input class="checkSeriesData" type="checkbox" id="{{ contenido.id }}">
+                                    <label for="{{ contenido.id }}" class="lbl"></label>
+                                </div>
+                            </div>
+                            {% endif %} 
+                        </div>
                     </td>
                 </tr>
 
@@ -86,5 +92,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.0/chartjs-plugin-zoom.min.js"></script>
 <script src="{% static 'Basic/js/graficas.js' %}"></script>
-<script src="{% static 'Basic/js/enviarDataHistorica.js' %}"></script>
+<script src="{% static 'Basic/js/enviarGraficaDataHistorica.js' %}"></script>
 {% endblock %}

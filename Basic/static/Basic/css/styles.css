@@ -10,11 +10,7 @@ body {
     height: 280px;
 }
 
-.trHover:hover {
-    background-color: #f5f5f5;
-}
-
-.tdInside {
+.divInside {
     text-align: right;
 }
 
@@ -42,14 +38,14 @@ body {
     transition: .2s;
 }
 
-#switch:checked+.lbl::after {
+.checkSeriesData:checked+.lbl::after {
     left: 20px;
 }
 
-#switch:checked+.lbl {
+.checkSeriesData:checked+.lbl {
     background: #068ad6;
 }
 
-#switch {
+.checkSeriesData {
     display: none;
 }

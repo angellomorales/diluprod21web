@@ -9,57 +9,71 @@ class Representations():
             "tablas": [{
                 "titulo": "VARIABLES VARIADOR",
                 "contenido": [{
+                    "id": "id_frecuencia",
                     "cabecera": "Frecuencia",
                     "valor": dataPozo.velocidadBomba
                 }, {
+                    "id": "id_pip",
                     "cabecera": "PIP",
                     "valor": dataPozo.pip
                 }, {
+                    "id": "id_corriente",
                     "cabecera": "Corriente",
                     "valor": dataPozo.corrienteVSD
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
                 "contenido": [{
+                    "id": "id_thp",
                     "cabecera": "THP",
                     "valor": dataPozo.thp
                 }, {
+                    "id": "id_tht",
                     "cabecera": "THT",
                     "valor": dataPozo.tempCabeza
                 }]
             }, {
                 "titulo": "CAUDALES",
                 "contenido": [{
+                    "id": "id_aceite",
                     "cabecera": "ACEITE BPD",
                     "valor": dataPozo.tasaAceite
                 }, {
+                    "id": "id_agua",
                     "cabecera": "AGUA BPD",
                     "valor": dataPozo.tasaAgua
                 }, {
+                    "id": "id_liquido",
                     "cabecera": "FLUIDO BPD",
                     "valor": dataPozo.tasaLiquido
                 }, {
+                    "id": "id_gas",
                     "cabecera": "GAS MSFCD",
                     "valor": dataPozo.tasaGas
                 }]
             }, {
                 "titulo": "PROPIEDADES",
                 "contenido": [{
+                    "id": "id_bsw",
                     "cabecera": "%S&W",
                     "valor": dataPozo.bsw
                 }, {
+                    "id": "id_api",
                     "cabecera": "API @60ºF",
                     "valor": dataPozo.api
                 }, {
+                    "id": "id_cloruros",
                     "cabecera": "CLORUROS",
                     "valor": dataPozo.salinidad
                 }, {
+                    "id": "id_diluyente",
                     "cabecera": "DILUYENTE",
                     "valor": None
                 }]
             }, {
                 "titulo": "COMENTARIOS",
                 "contenido": [{
+                    "id": "id_comentarios",
                     "valor": dataPozo.comentarios
                 }]
             }]
