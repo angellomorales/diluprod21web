@@ -64,7 +64,7 @@ function configGraph(data, serieParams, graphParams) {
                 data: data,
                 pointStyle: serieParams[key].pointStyle,
                 pointRadius: serieParams[key].pointRadius,
-                pointBorderColor: 'rgb(125, 125, 125)',
+                pointBorderColor: serieParams[key].pointBorderColor,
                 parsing: {
                     yAxisKey: key
                 },

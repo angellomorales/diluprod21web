@@ -108,7 +108,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
                         'pointStyle': 'circle',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     },
                     'relacionOil_Diluyente':
                     {
@@ -116,7 +117,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
                         'pointStyle': 'star',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     }
                 }
                 graphParams = {
@@ -138,7 +140,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
                         'pointStyle': 'circle',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     },
                     'relacion1_3':
                     {
@@ -146,7 +149,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
                         'pointStyle': 'star',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     }
                 }
                 graphParams = {
@@ -166,7 +170,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
                         'pointStyle': 'circle',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     },
                     'limiteSuperior':
                     {
@@ -174,7 +179,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
                         'pointStyle': 'star',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     }
                 }
                 graphParams = {
@@ -196,7 +202,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(100, 116, 254)',
                         'borderColor': 'rgb(100, 116, 254)',
                         'pointStyle': 'circle',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     },
                     'viscosidadMezcla':
                     {
@@ -204,7 +211,8 @@ def graficarCalculos_view(request, graphId):
                         'backgroundColor': 'rgb(255, 99, 132)',
                         'borderColor': 'rgb(255, 99, 132)',
                         'pointStyle': 'star',
-                        'pointRadius': 3
+                        'pointRadius': 3,
+                        'pointBorderColor': 'rgb(125, 125, 125)',
                     }
                 }
                 graphParams = {
