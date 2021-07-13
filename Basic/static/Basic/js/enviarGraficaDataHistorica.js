@@ -48,6 +48,6 @@ function load_data(graphId) {
     });
     console.log('json enviado');
     // console.log(bodyJson);
-    // enviarAJAX(url, bodyJson);
+    enviarAJAX(url, bodyJson);
 
 }
