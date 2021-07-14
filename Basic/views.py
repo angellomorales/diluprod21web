@@ -13,6 +13,7 @@ from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
 from .representations import Representations
+from .grafica import Grafica
 
 
 def index(request):
@@ -101,10 +102,10 @@ def graficarCalculos_view(request, graphId):
             # ------------------------------------------graph1---------------------------------------------
             if graphId == "relacionDiluyente":
                 # configurar para cada grafica
-                series1='s&w'
-                series2='relacionOil_Diluyente'
-                maxYValue=1
-                
+                series1 = 's&w'
+                series2 = 'relacionOil_Diluyente'
+                maxYValue = 1
+
                 dataGraph.append(
                     {'x': str(i), series1: calculos.swMezcla, series2: calculos.relacionOil_Diluyente})  # dict
 
@@ -139,14 +140,14 @@ def graficarCalculos_view(request, graphId):
             # ------------------------------------------graph2---------------------------------------------
             if graphId == "diluyenteRequerido":
                 # configurar para cada grafica
-                series1='diluyente'
-                series2='relacion1_3'
+                series1 = 'diluyente'
+                series2 = 'relacion1_3'
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
 
                 dataGraph.append(
                     {'x': str(i), series1: calculos.diluyente, series2: calculos.relacion1_3})  # dict
-                    
+
                 serieParams = {
                     series1:
                     {
@@ -178,9 +179,9 @@ def graficarCalculos_view(request, graphId):
             # ------------------------------------------graph3---------------------------------------------
             if graphId == "limiteRestriccion":
                 # configurar para cada grafica
-                series1='apiMezclaSeco'
-                series2='limiteSuperior'
-                maxYValue=30
+                series1 = 'apiMezclaSeco'
+                series2 = 'limiteSuperior'
+                maxYValue = 30
 
                 dataGraph.append(
                     {'x': str(i), series1: calculos.apiMezclaSeco, series2: 18})  # dict
@@ -212,15 +213,15 @@ def graficarCalculos_view(request, graphId):
                     'titleYAxis': 'API Seco',
                     'maxYValue': maxYValue
                 }
-                
+
             # ------------------------------------------graph4---------------------------------------------
             if graphId == "viscosidadBSW":
                 # configurar para cada grafica
-                series1='referencia'
-                series2='viscosidadMezcla'
+                series1 = 'referencia'
+                series2 = 'viscosidadMezcla'
                 if(i == 0):
                     maxYValue = round(calculos.viscosidadMezcla*1.05)
-                
+
                 dataGraph.append(
                     {'x': str(i), series1: 400, series2: calculos.viscosidadMezcla})  # dict
 
@@ -333,3 +334,46 @@ def cargarDatos(request):
     return render(request, 'Basic/cargarDatos.html', {
         "message": message
     })
+
+
+@login_required(login_url="index")
+def graficarDataHistorica_view(request, graphId):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        pozo = data.get("pozo")
+        series = data["series"]
+        idContenedor = data.get("idContenedor")
+        dataGraph = []  # list
+
+        dataPozo = DataAVM.objects.filter(pozo=pozo)
+
+        if graphId == "historial":
+            grafica = Grafica(title='Relación diluyente para API mezcla definido',
+                        titleXAxis='Porcentaje S&W',
+                        titleYAxis='Fracción volumétrica mezcla x % S&W cabeza')
+            # ------------------------------------------graph1---------------------------------------------
+            for i in range(99):
+                # configurar para cada grafica
+                series1 = 'serie1'
+                series2 = 'serie2'
+                maxYValue = 500
+                grafica.addParameters(maxYValue=maxYValue)
+
+                dataGraph.append(
+                    {'x': str(i), series1: 200, series2: 400})  # dict
+                grafica.addSerieParameters(serie=series1,
+                                     label='Fracción Volumétrica de Agua de Mezcla',
+                                     backgroundColor='rgb(100, 116, 254)',
+                                     borderColor='rgb(100, 116, 254)',
+                                     pointStyle='circle')
+                grafica.addSerieParameters(serie=series2,
+                                     label='Relación Diluyente/Mezcla',
+                                     backgroundColor='rgb(255, 99, 132)',
+                                     borderColor='rgb(255, 99, 132)',
+                                     pointStyle='star')
+
+                graphParams = grafica.getGraphParams()
+
+        return JsonResponse({'datos': dataGraph, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
+
+    return render(request, "Basic/calculos.html")

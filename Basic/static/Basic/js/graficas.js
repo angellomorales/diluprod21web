@@ -46,7 +46,7 @@ function graficar(dataGraph) {
     var ctx = document.getElementById('chart').getContext("2d");
     if (chart) {
         var myChart = new Chart(ctx,
-            configGraph(data, dataGraph.serieParams, dataGraph.graphParams)
+            configGraph(data, dataGraph.graphParams.seriesParams, dataGraph.graphParams)
         );
     }
 }
