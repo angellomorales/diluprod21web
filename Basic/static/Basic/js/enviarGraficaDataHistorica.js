@@ -46,7 +46,7 @@ function load_data(graphId) {
         series:series,
         idContenedor:idContenedor
     });
-    console.log('json enviado');
+    // console.log('json enviado');
     // console.log(bodyJson);
     enviarAJAX(url, bodyJson);
 
