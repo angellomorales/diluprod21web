@@ -314,45 +314,52 @@ def graficarDataHistorica_view(request, graphId):
     if request.method == "POST":
         data = json.loads(request.body)
         pozo = data.get("pozo")
-        series = data["series"]
+        idSeries = data["series"]
         idContenedor = data.get("idContenedor")
         grafica = Grafica()
+        series = []
         dataPozo = DataAVM.objects.filter(pozo=pozo)
 
-        if graphId == "historial":
-            # ------------------------------------------graph1---------------------------------------------
-            for i in range(99):
+        # ------------------------------------------graph1---------------------------------------------
+        for item in dataPozo:
+            if graphId == "historial":
                 # configurar para cada grafica
-                series1 = 's&w'
-                series2 = 'relacionOil_Diluyente'
-                title = 'Relación diluyente para API mezcla definido'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'Fracción volumétrica mezcla x % S&W cabeza'
-                labelSeries1 = 'Fracción Volumétrica de Agua de Mezcla'
-                labelSeries2 = 'Relación Diluyente/Mezcla'
-                maxYValue = 500
+                for idSerie in idSeries:
+                    # stringLabel=''.join( x for x in idSerie if x not in "id_")
+                    series.append({
+                        'nombre': idSerie,
+                        'variable': item.__dict__.get(idSerie),
+                        'label': idSerie,
+                        'backgroundColor': 'rgb(100, 116, 254)',
+                        'borderColor': 'rgb(100, 116, 254)',
+                        'pointStyle': 'circle'
+                    })
+                title = 'Histórico de datos'
+                titleXAxis = 'Tiempo'
+                titleYAxis = ''
+                maxYValue = 420
 
-                grafica.addSeriesData(
-                    **{'x': str(i), series1: 200, series2: 400})
+            datos = {'x': str(item.fecha)}
+
+            # ---------------------------construccion de data--------------------------------
+            for serie in series:
+                datos[serie['nombre']] = serie['variable']
+            grafica.addSeriesData(**datos)  # dict
+
+        # --------------------------------construccion de grafica----------------------------
         grafica.addParameters(title=title,
                               titleXAxis=titleXAxis,
                               titleYAxis=titleYAxis,
                               maxYValue=maxYValue)
-        grafica.addSerieParameters(serie=series1,
-                                   label=labelSeries1,
-                                   backgroundColor='rgb(100, 116, 254)',
-                                   borderColor='rgb(100, 116, 254)',
-                                   pointStyle='circle',
-                                   pointRadius=3,
-                                   pointBorderColor='rgb(125, 125, 125)')
-        grafica.addSerieParameters(serie=series2,
-                                   label=labelSeries2,
-                                   backgroundColor='rgb(255, 99, 132)',
-                                   borderColor='rgb(255, 99, 132)',
-                                   pointStyle='star',
-                                   pointRadius=3,
-                                   pointBorderColor='rgb(125, 125, 125)')
+        for ser in series:
+            grafica.addSerieParameters(serie=ser['nombre'],
+                                       label=ser['label'],
+                                       backgroundColor=ser['backgroundColor'],
+                                       borderColor=ser['borderColor'],
+                                       pointStyle=ser['pointStyle'],
+                                       pointRadius=3,
+                                       pointBorderColor='rgb(125, 125, 125)')
 
+        # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
         return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
-
     return render(request, "Basic/calculos.html")

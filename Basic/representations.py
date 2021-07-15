@@ -9,71 +9,71 @@ class Representations():
             "tablas": [{
                 "titulo": "VARIABLES VARIADOR",
                 "contenido": [{
-                    "id": "id_frecuencia",
+                    "id": "velocidadBomba",
                     "cabecera": "Frecuencia",
                     "valor": dataPozo.velocidadBomba
                 }, {
-                    "id": "id_pip",
+                    "id": "pip",
                     "cabecera": "PIP",
                     "valor": dataPozo.pip
                 }, {
-                    "id": "id_corriente",
+                    "id": "corrienteVSD",
                     "cabecera": "Corriente",
                     "valor": dataPozo.corrienteVSD
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
                 "contenido": [{
-                    "id": "id_thp",
+                    "id": "thp",
                     "cabecera": "THP",
                     "valor": dataPozo.thp
                 }, {
-                    "id": "id_tht",
+                    "id": "tempCabeza",
                     "cabecera": "THT",
                     "valor": dataPozo.tempCabeza
                 }]
             }, {
                 "titulo": "CAUDALES",
                 "contenido": [{
-                    "id": "id_aceite",
+                    "id": "tasaAceite",
                     "cabecera": "ACEITE BPD",
                     "valor": dataPozo.tasaAceite
                 }, {
-                    "id": "id_agua",
+                    "id": "tasaAgua",
                     "cabecera": "AGUA BPD",
                     "valor": dataPozo.tasaAgua
                 }, {
-                    "id": "id_liquido",
+                    "id": "tasaLiquido",
                     "cabecera": "FLUIDO BPD",
                     "valor": dataPozo.tasaLiquido
                 }, {
-                    "id": "id_gas",
+                    "id": "tasaGas",
                     "cabecera": "GAS MSFCD",
                     "valor": dataPozo.tasaGas
                 }]
             }, {
                 "titulo": "PROPIEDADES",
                 "contenido": [{
-                    "id": "id_bsw",
+                    "id": "bsw",
                     "cabecera": "%S&W",
                     "valor": dataPozo.bsw
                 }, {
-                    "id": "id_api",
+                    "id": "api",
                     "cabecera": "API @60ºF",
                     "valor": dataPozo.api
                 }, {
-                    "id": "id_cloruros",
+                    "id": "salinidad",
                     "cabecera": "CLORUROS",
                     "valor": dataPozo.salinidad
                 }, {
-                    "id": "id_diluyente",
+                    "id": "diluyente",
                     "cabecera": "DILUYENTE",
                     "valor": None
                 }]
             }, {
                 "titulo": "COMENTARIOS",
                 "contenido": [{
-                    "id": "id_comentarios",
+                    "id": "comentarios",
                     "valor": dataPozo.comentarios
                 }]
             }]
