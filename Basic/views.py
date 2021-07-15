@@ -93,7 +93,7 @@ def graficarCalculos_view(request, graphId):
         apiDiluyente = data.get("apiDiluyente")
         variableACalcular = data.get("apiMezclaHumedo")
         idContenedor = data.get("idContenedor")
-        dataGraph = []  # list
+        grafica = Grafica()
         maxYValue = 1500
 
         for i in range(99):
@@ -112,8 +112,8 @@ def graficarCalculos_view(request, graphId):
                 labelSeries2 = 'Relación Diluyente/Mezcla'
                 maxYValue = 1
 
-                dataGraph.append(
-                    {'x': str(i), series1: calculos.swMezcla, series2: calculos.relacionOil_Diluyente})  # dict
+                grafica.addSeriesData(
+                    **{'x': str(i), series1: calculos.swMezcla, series2: calculos.relacionOil_Diluyente})  # dict
 
             # ------------------------------------------graph2---------------------------------------------
             if graphId == "diluyenteRequerido":
@@ -128,8 +128,8 @@ def graficarCalculos_view(request, graphId):
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
 
-                dataGraph.append(
-                    {'x': str(i), series1: calculos.diluyente, series2: calculos.relacion1_3})  # dict
+                grafica.addSeriesData(
+                    **{'x': str(i), series1: calculos.diluyente, series2: calculos.relacion1_3})  # dict
 
             # ------------------------------------------graph3---------------------------------------------
             if graphId == "limiteRestriccion":
@@ -143,8 +143,8 @@ def graficarCalculos_view(request, graphId):
                 labelSeries2 = 'Restricción por calidad'
                 maxYValue = 30
 
-                dataGraph.append(
-                    {'x': str(i), series1: calculos.apiMezclaSeco, series2: 18})  # dict
+                grafica.addSeriesData(
+                    **{'x': str(i), series1: calculos.apiMezclaSeco, series2: 18})  # dict
 
             # ------------------------------------------graph4---------------------------------------------
             if graphId == "viscosidadBSW":
@@ -157,18 +157,18 @@ def graficarCalculos_view(request, graphId):
                 labelSeries1 = 'Viscosidad Transporte crudo cSt'
                 labelSeries2 = 'Viscosidad Mezcla cSt'
                 if(i == 0):
-                    if(calculos.viscosidadMezcla>400):
+                    if(calculos.viscosidadMezcla > 400):
                         maxYValue = round(calculos.viscosidadMezcla*1.05)
                     else:
                         maxYValue = 420
 
-                dataGraph.append(
-                    {'x': str(i), series1: 400, series2: calculos.viscosidadMezcla})  # dict
+                grafica.addSeriesData(
+                    **{'x': str(i), series1: 400, series2: calculos.viscosidadMezcla})  # dict
 
-        grafica = Grafica(title=title,
-                          titleXAxis=titleXAxis,
-                          titleYAxis=titleYAxis,
-                          maxYValue=maxYValue)
+        grafica.addParameters(title=title,
+                              titleXAxis=titleXAxis,
+                              titleYAxis=titleYAxis,
+                              maxYValue=maxYValue)
         grafica.addSerieParameters(serie=series1,
                                    label=labelSeries1,
                                    backgroundColor='rgb(100, 116, 254)',
@@ -185,7 +185,7 @@ def graficarCalculos_view(request, graphId):
                                    pointBorderColor='rgb(125, 125, 125)')
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
+        return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
 
@@ -274,14 +274,10 @@ def graficarDataHistorica_view(request, graphId):
         pozo = data.get("pozo")
         series = data["series"]
         idContenedor = data.get("idContenedor")
-        dataGraph = []  # list
-
+        grafica=Grafica()
         dataPozo = DataAVM.objects.filter(pozo=pozo)
 
         if graphId == "historial":
-            grafica = Grafica(title='Relación diluyente para API mezcla definido',
-                              titleXAxis='Porcentaje S&W',
-                              titleYAxis='Fracción volumétrica mezcla x % S&W cabeza')
             # ------------------------------------------graph1---------------------------------------------
             for i in range(99):
                 # configurar para cada grafica
@@ -294,12 +290,12 @@ def graficarDataHistorica_view(request, graphId):
                 labelSeries2 = 'Relación Diluyente/Mezcla'
                 maxYValue = 500
 
-                dataGraph.append(
-                    {'x': str(i), series1: 200, series2: 400})  # dict
-        grafica = Grafica(title=title,
-                          titleXAxis=titleXAxis,
-                          titleYAxis=titleYAxis,
-                          maxYValue=maxYValue)
+                grafica.addSeriesData(
+                    **{'x': str(i), series1: 200, series2: 400})
+        grafica.addParameters(title=title,
+                              titleXAxis=titleXAxis,
+                              titleYAxis=titleYAxis,
+                              maxYValue=maxYValue)
         grafica.addSerieParameters(serie=series1,
                                    label=labelSeries1,
                                    backgroundColor='rgb(100, 116, 254)',
@@ -315,6 +311,6 @@ def graficarDataHistorica_view(request, graphId):
                                    pointRadius=3,
                                    pointBorderColor='rgb(125, 125, 125)')
 
-        return JsonResponse({'datos': dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
+        return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
