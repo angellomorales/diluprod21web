@@ -157,7 +157,10 @@ def graficarCalculos_view(request, graphId):
                 labelSeries1 = 'Viscosidad Transporte crudo cSt'
                 labelSeries2 = 'Viscosidad Mezcla cSt'
                 if(i == 0):
-                    maxYValue = round(calculos.viscosidadMezcla*1.05)
+                    if(calculos.viscosidadMezcla>400):
+                        maxYValue = round(calculos.viscosidadMezcla*1.05)
+                    else:
+                        maxYValue = 420
 
                 dataGraph.append(
                     {'x': str(i), series1: 400, series2: calculos.viscosidadMezcla})  # dict
@@ -181,10 +184,8 @@ def graficarCalculos_view(request, graphId):
                                    pointRadius=3,
                                    pointBorderColor='rgb(125, 125, 125)')
 
-        graphParams = graphParams = grafica.getGraphParams()
-
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': dataGraph, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
+        return JsonResponse({'datos': dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
 
@@ -314,8 +315,6 @@ def graficarDataHistorica_view(request, graphId):
                                    pointRadius=3,
                                    pointBorderColor='rgb(125, 125, 125)')
 
-        graphParams = graphParams = grafica.getGraphParams()
-
-        return JsonResponse({'datos': dataGraph, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
+        return JsonResponse({'datos': dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
