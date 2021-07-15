@@ -18,7 +18,5 @@ class Grafica():
         for k in kwargs.keys():
             if k != 'serie':
                 serie[k] = kwargs[k]
-        serie['pointRadius'] = 3
-        serie['pointBorderColor'] = 'rgb(125, 125, 125)'
 
         self.seriesParams[kwargs['serie']]=serie

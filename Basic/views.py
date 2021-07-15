@@ -95,6 +95,7 @@ def graficarCalculos_view(request, graphId):
         idContenedor = data.get("idContenedor")
         dataGraph = []  # list
         maxYValue = 1500
+
         for i in range(99):
             calculos.calcularDiluyente(
                 apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
@@ -104,157 +105,86 @@ def graficarCalculos_view(request, graphId):
                 # configurar para cada grafica
                 series1 = 's&w'
                 series2 = 'relacionOil_Diluyente'
+                title = 'Relación diluyente para API mezcla definido'
+                titleXAxis = 'Porcentaje S&W'
+                titleYAxis = 'Fracción volumétrica mezcla x % S&W cabeza'
+                labelSeries1 = 'Fracción Volumétrica de Agua de Mezcla'
+                labelSeries2 = 'Relación Diluyente/Mezcla'
                 maxYValue = 1
 
                 dataGraph.append(
                     {'x': str(i), series1: calculos.swMezcla, series2: calculos.relacionOil_Diluyente})  # dict
-
-                serieParams = {
-                    series1:
-                    {
-                        'label': 'Fracción Volumétrica de Agua de Mezcla',
-                        'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle': 'circle',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    },
-                    series2:
-                    {
-                        'label': 'Relación Diluyente/Mezcla',
-                        'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle': 'star',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    }
-                }
-
-                graphParams = {
-                    'title': 'Relación diluyente para API mezcla definido',
-                    'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'Fracción volumétrica mezcla x % S&W cabeza',
-                    'maxYValue': maxYValue
-                }
 
             # ------------------------------------------graph2---------------------------------------------
             if graphId == "diluyenteRequerido":
                 # configurar para cada grafica
                 series1 = 'diluyente'
                 series2 = 'relacion1_3'
+                title = 'Diluyente Requerido para API mezcla definido'
+                titleXAxis = 'Porcentaje S&W'
+                titleYAxis = 'BPD'
+                labelSeries1 = 'Diluyente A Inyectar'
+                labelSeries2 = 'Relacion 1-3'
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
 
                 dataGraph.append(
                     {'x': str(i), series1: calculos.diluyente, series2: calculos.relacion1_3})  # dict
 
-                serieParams = {
-                    series1:
-                    {
-                        'label': 'Diluyente A Inyectar',
-                        'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle': 'circle',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    },
-                    series2:
-                    {
-                        'label': 'Relacion 1-3',
-                        'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle': 'star',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    }
-                }
-
-                graphParams = {
-                    'title': 'Diluyente Requerido para API mezcla definido',
-                    'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'BPD',
-                    'maxYValue': maxYValue
-                }
-
             # ------------------------------------------graph3---------------------------------------------
             if graphId == "limiteRestriccion":
                 # configurar para cada grafica
                 series1 = 'apiMezclaSeco'
                 series2 = 'limiteSuperior'
+                title = 'Límite por restricción de flujo y óptima operación MPFM'
+                titleXAxis = 'Porcentaje S&W'
+                titleYAxis = 'API Seco'
+                labelSeries1 = 'API Seco'
+                labelSeries2 = 'Restricción por calidad'
                 maxYValue = 30
 
                 dataGraph.append(
                     {'x': str(i), series1: calculos.apiMezclaSeco, series2: 18})  # dict
-
-                serieParams = {
-                    series1:
-                    {
-                        'label': 'API Seco',
-                        'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle': 'circle',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    },
-                    series2:
-                    {
-                        'label': 'Restricción por calidad',
-                        'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle': 'star',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    }
-                }
-
-                graphParams = {
-                    'title': 'Límite por restricción de flujo y óptima operación MPFM',
-                    'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'API Seco',
-                    'maxYValue': maxYValue
-                }
 
             # ------------------------------------------graph4---------------------------------------------
             if graphId == "viscosidadBSW":
                 # configurar para cada grafica
                 series1 = 'referencia'
                 series2 = 'viscosidadMezcla'
+                title = 'Viscosidad del sistema'
+                titleXAxis = 'Porcentaje S&W'
+                titleYAxis = 'Viscosidad Mezcla cSt x % S&W '
+                labelSeries1 = 'Viscosidad Transporte crudo cSt'
+                labelSeries2 = 'Viscosidad Mezcla cSt'
                 if(i == 0):
                     maxYValue = round(calculos.viscosidadMezcla*1.05)
 
                 dataGraph.append(
                     {'x': str(i), series1: 400, series2: calculos.viscosidadMezcla})  # dict
 
-                serieParams = {
-                    series1:
-                    {
-                        'label': 'Viscosidad Transporte crudo cSt',
-                        'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)',
-                        'pointStyle': 'circle',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    },
-                    series2:
-                    {
-                        'label': 'Viscosidad Mezcla cSt',
-                        'backgroundColor': 'rgb(255, 99, 132)',
-                        'borderColor': 'rgb(255, 99, 132)',
-                        'pointStyle': 'star',
-                        'pointRadius': 3,
-                        'pointBorderColor': 'rgb(125, 125, 125)',
-                    }
-                }
+        grafica = Grafica(title=title,
+                          titleXAxis=titleXAxis,
+                          titleYAxis=titleYAxis,
+                          maxYValue=maxYValue)
+        grafica.addSerieParameters(serie=series1,
+                                   label=labelSeries1,
+                                   backgroundColor='rgb(100, 116, 254)',
+                                   borderColor='rgb(100, 116, 254)',
+                                   pointStyle='circle',
+                                   pointRadius=3,
+                                   pointBorderColor='rgb(125, 125, 125)')
+        grafica.addSerieParameters(serie=series2,
+                                   label=labelSeries2,
+                                   backgroundColor='rgb(255, 99, 132)',
+                                   borderColor='rgb(255, 99, 132)',
+                                   pointStyle='star',
+                                   pointRadius=3,
+                                   pointBorderColor='rgb(125, 125, 125)')
 
-                graphParams = {
-                    'title': 'Viscosidad del sistema',
-                    'titleXAxis': 'Porcentaje S&W',
-                    'titleYAxis': 'Viscosidad Mezcla cSt x % S&W ',
-                    'maxYValue': maxYValue
-                }
+        graphParams = graphParams = grafica.getGraphParams()
 
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': dataGraph, 'serieParams': serieParams, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
+        return JsonResponse({'datos': dataGraph, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
 
     return render(request, "Basic/calculos.html")
 
@@ -349,30 +279,42 @@ def graficarDataHistorica_view(request, graphId):
 
         if graphId == "historial":
             grafica = Grafica(title='Relación diluyente para API mezcla definido',
-                        titleXAxis='Porcentaje S&W',
-                        titleYAxis='Fracción volumétrica mezcla x % S&W cabeza')
+                              titleXAxis='Porcentaje S&W',
+                              titleYAxis='Fracción volumétrica mezcla x % S&W cabeza')
             # ------------------------------------------graph1---------------------------------------------
             for i in range(99):
                 # configurar para cada grafica
-                series1 = 'serie1'
-                series2 = 'serie2'
+                series1 = 's&w'
+                series2 = 'relacionOil_Diluyente'
+                title = 'Relación diluyente para API mezcla definido'
+                titleXAxis = 'Porcentaje S&W'
+                titleYAxis = 'Fracción volumétrica mezcla x % S&W cabeza'
+                labelSeries1 = 'Fracción Volumétrica de Agua de Mezcla'
+                labelSeries2 = 'Relación Diluyente/Mezcla'
                 maxYValue = 500
-                grafica.addParameters(maxYValue=maxYValue)
 
                 dataGraph.append(
                     {'x': str(i), series1: 200, series2: 400})  # dict
-                grafica.addSerieParameters(serie=series1,
-                                     label='Fracción Volumétrica de Agua de Mezcla',
-                                     backgroundColor='rgb(100, 116, 254)',
-                                     borderColor='rgb(100, 116, 254)',
-                                     pointStyle='circle')
-                grafica.addSerieParameters(serie=series2,
-                                     label='Relación Diluyente/Mezcla',
-                                     backgroundColor='rgb(255, 99, 132)',
-                                     borderColor='rgb(255, 99, 132)',
-                                     pointStyle='star')
+        grafica = Grafica(title=title,
+                          titleXAxis=titleXAxis,
+                          titleYAxis=titleYAxis,
+                          maxYValue=maxYValue)
+        grafica.addSerieParameters(serie=series1,
+                                   label=labelSeries1,
+                                   backgroundColor='rgb(100, 116, 254)',
+                                   borderColor='rgb(100, 116, 254)',
+                                   pointStyle='circle',
+                                   pointRadius=3,
+                                   pointBorderColor='rgb(125, 125, 125)')
+        grafica.addSerieParameters(serie=series2,
+                                   label=labelSeries2,
+                                   backgroundColor='rgb(255, 99, 132)',
+                                   borderColor='rgb(255, 99, 132)',
+                                   pointStyle='star',
+                                   pointRadius=3,
+                                   pointBorderColor='rgb(125, 125, 125)')
 
-                graphParams = grafica.getGraphParams()
+        graphParams = graphParams = grafica.getGraphParams()
 
         return JsonResponse({'datos': dataGraph, 'graphParams': graphParams, 'contenedor': f"#{idContenedor}"})
 
