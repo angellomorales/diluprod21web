@@ -14,7 +14,10 @@ class Grafica():
             self.__setattr__(k, kwargs[k])
 
     def addSerieParameters(self, **kwargs):
-        serie = {}
+        if(kwargs['serie'] in self.seriesParams):
+            serie = self.seriesParams[kwargs['serie']]
+        else:
+            serie={}
         for k in kwargs.keys():
             if k != 'serie':
                 serie[k] = kwargs[k]
