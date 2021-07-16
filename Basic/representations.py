@@ -11,64 +11,90 @@ class Representations():
                 "contenido": [{
                     "id": "velocidadBomba",
                     "cabecera": "Frecuencia",
-                    "valor": dataPozo.velocidadBomba
+                    "valor": dataPozo.velocidadBomba,
+                    "unidades":"Hz",
+                    "color":"rgb(100, 116, 254)"#Azul
                 }, {
                     "id": "pip",
                     "cabecera": "PIP",
-                    "valor": dataPozo.pip
+                    "valor": dataPozo.pip,
+                    "unidades":"Psi",
+                    "color":"rgb(255, 99, 132)"#rojo claro
                 }, {
                     "id": "corrienteVSD",
                     "cabecera": "Corriente",
-                    "valor": dataPozo.corrienteVSD
+                    "valor": dataPozo.corrienteVSD,
+                    "unidades":"A",
+                    "color":"rgb(96, 249, 33)"#Verde
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
                 "contenido": [{
                     "id": "thp",
                     "cabecera": "THP",
-                    "valor": dataPozo.thp
+                    "valor": dataPozo.thp,
+                    "unidades":"Psi",
+                    "color":"rgb(241, 255, 99)"#Amarillo
                 }, {
                     "id": "tempCabeza",
                     "cabecera": "THT",
-                    "valor": dataPozo.tempCabeza
+                    "valor": dataPozo.tempCabeza,
+                    "unidades":"ºF",
+                    "color":"rgb(248, 99, 255)"#Purpura
                 }]
             }, {
                 "titulo": "CAUDALES",
                 "contenido": [{
                     "id": "tasaAceite",
                     "cabecera": "ACEITE BPD",
-                    "valor": dataPozo.tasaAceite
+                    "valor": dataPozo.tasaAceite,
+                    "unidades":"BPD",
+                    "color":"rgb(152, 115, 101)"#Cafe
                 }, {
                     "id": "tasaAgua",
                     "cabecera": "AGUA BPD",
-                    "valor": dataPozo.tasaAgua
+                    "valor": dataPozo.tasaAgua,
+                    "unidades":"BPD",
+                    "color":"rgb(133, 221, 255)"#Azul claro
                 }, {
                     "id": "tasaLiquido",
                     "cabecera": "FLUIDO BPD",
-                    "valor": dataPozo.tasaLiquido
+                    "valor": dataPozo.tasaLiquido,
+                    "unidades":"BPD",
+                    "color":"rgb(235, 138, 57)"#Naranja
                 }, {
                     "id": "tasaGas",
                     "cabecera": "GAS MSFCD",
-                    "valor": dataPozo.tasaGas
+                    "valor": dataPozo.tasaGas,
+                    "unidades":"MSFCD",
+                    "color":"rgb(167, 164, 161)"#Gris
                 }]
             }, {
                 "titulo": "PROPIEDADES",
                 "contenido": [{
                     "id": "bsw",
                     "cabecera": "%S&W",
-                    "valor": dataPozo.bsw
+                    "valor": dataPozo.bsw,
+                    "unidades":"%",
+                    "color":"rgb(160, 227, 201)"#Aguamarina
                 }, {
                     "id": "api",
                     "cabecera": "API @60ºF",
-                    "valor": dataPozo.api
+                    "valor": dataPozo.api,
+                    "unidades":"",
+                    "color":"rgb(43, 81, 92)"#Azul-Negro
                 }, {
                     "id": "salinidad",
                     "cabecera": "CLORUROS",
-                    "valor": dataPozo.salinidad
+                    "valor": dataPozo.salinidad,
+                    "unidades":"Ppm",
+                    "color":"rgb(170, 145, 13)"#Amarillo quemado
                 }, {
                     "id": "diluyente",
                     "cabecera": "DILUYENTE",
-                    "valor": None
+                    "valor": None,
+                    "unidades":"BPD",
+                    "color":"rgb(179, 242, 216)"#Verde Crema
                 }]
             }, {
                 "titulo": "COMENTARIOS",
