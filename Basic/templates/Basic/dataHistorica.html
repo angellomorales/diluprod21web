@@ -66,6 +66,8 @@
                                 <div>
                                     <input class="checkSeriesData" type="checkbox" id="{{ contenido.id }}">
                                     <label for="{{ contenido.id }}" class="lbl"></label>
+                                    <input type="hidden" id="{{ contenido.id }}_color" value="{{ contenido.color }}">
+                                    <input type="hidden" id="{{ contenido.id }}_unidades" value="{{ contenido.unidades }}">
                                 </div>
                             </div>
                             {% endif %} 
@@ -81,9 +83,6 @@
 </div>
 {% endif %}
 {% endfor %}
-
-
-
 
 {% endif %}
 {% endblock %}
