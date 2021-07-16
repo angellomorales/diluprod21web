@@ -35,7 +35,7 @@ class Pozo(models.Model):
 
 class DataAVM(models.Model):
     CHOICES = [('VALIDA', 'Valida'),
-               ('PENDIE', 'Pendiente')]
+               ('PENDIENTE', 'Pendiente')]
     campo = models.ForeignKey(
         Campo, on_delete=models.CASCADE, blank=True, null=True)
     pozo = models.ForeignKey(
@@ -68,7 +68,7 @@ class DataAVM(models.Model):
     tempCabeza = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
     pruebaValida = models.CharField(
-        max_length=6, choices=CHOICES, default='VALIDA', blank=False)
+        max_length=10, choices=CHOICES, default='VALIDA', blank=False)
     comentarios = models.TextField(blank=True, null=True)
     salinidad = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
