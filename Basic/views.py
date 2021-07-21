@@ -331,7 +331,7 @@ def graficarDataHistorica_view(request, graphId):
                     series.append({
                         'nombre': idSerie['id'],
                         'variable': item.__dict__.get(idSerie['id']),
-                        'label': f"{idSerie['id']} ({idSerie['unidades']})",
+                        'label': f"{idSerie['label']} ({idSerie['unidades']})",
                         'backgroundColor': idSerie['color'],
                         'borderColor': idSerie['color'],
                         'pointStyle': 'circle'

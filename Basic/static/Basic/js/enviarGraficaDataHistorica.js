@@ -47,6 +47,7 @@ function recorrerSeriesActivas(serie) {
 
         seriesActivas.add({
             'id': serie.id,
+            'label':document.querySelector(`#${serie.id}_label`).value,
             'color': document.querySelector(`#${serie.id}_color`).value,
             'unidades': document.querySelector(`#${serie.id}_unidades`).value
         });
