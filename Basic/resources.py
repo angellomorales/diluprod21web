@@ -77,7 +77,7 @@ class DataAVMResource(resources.ModelResource):
                            column_name='TASA DE ACEITE')
     GOR = Field(attribute='gor', column_name='GOR')
     THP = Field(attribute='thp', column_name='THP')
-    VELOCIDAD_BOMBA = Field(attribute='velocidaBomba',
+    VELOCIDAD_BOMBA = Field(attribute='velocidadBomba',
                             column_name='VELOCIDAD BOMBA')
     CORRIENTE_VSD = Field(attribute='corrienteVSD',
                           column_name='CORRIENTE VSD')
