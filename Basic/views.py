@@ -1,4 +1,5 @@
 import json
+import decimal
 from tablib import Dataset
 
 from django.http.response import JsonResponse
@@ -319,6 +320,7 @@ def graficarDataHistorica_view(request, graphId):
         grafica = Grafica()
         series = []
         dataPozo = DataAVM.objects.filter(pozo=pozo)
+        maxYValue = 100
 
         # ------------------------------------------graph1---------------------------------------------
         for item in dataPozo:
@@ -327,23 +329,25 @@ def graficarDataHistorica_view(request, graphId):
                 for idSerie in idSeries:
                     # stringLabel=''.join( x for x in idSerie if x not in "id_")
                     series.append({
-                        'nombre': idSerie,
-                        'variable': item.__dict__.get(idSerie),
-                        'label': idSerie,
-                        'backgroundColor': 'rgb(100, 116, 254)',
-                        'borderColor': 'rgb(100, 116, 254)',
+                        'nombre': idSerie['id'],
+                        'variable': item.__dict__.get(idSerie['id']),
+                        'label': f"{idSerie['id']} ({idSerie['unidades']})",
+                        'backgroundColor': idSerie['color'],
+                        'borderColor': idSerie['color'],
                         'pointStyle': 'circle'
                     })
                 title = 'Histórico de datos'
                 titleXAxis = 'Tiempo'
                 titleYAxis = ''
-                maxYValue = 420
 
             datos = {'x': str(item.fecha)}
 
             # ---------------------------construccion de data--------------------------------
             for serie in series:
                 datos[serie['nombre']] = serie['variable']
+                if not (serie['variable']== None):
+                    if maxYValue < serie['variable']*decimal.Decimal(1.05):
+                        maxYValue = round(serie['variable']*decimal.Decimal(1.05))
             grafica.addSeriesData(**datos)  # dict
 
         # --------------------------------construccion de grafica----------------------------
