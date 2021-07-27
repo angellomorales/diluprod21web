@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'diluprod21.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'diluprod21db',
-        'USER': 'root',
-        'PASSWORD': 'Controwell.2020',
-        'HOST': 'localhost',
-        'PORT': '3310',
+        'NAME': os.environ.get('DATABASE_NAME','diluprod21db'),
+        'USER': os.environ.get('DATABASE_USER','root'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD','Controwell.2020'),
+        'HOST': os.environ.get('DATABASE_HOST','localhost'),
+        'PORT': os.environ.get('DATABASE_PORT','3310'),
     }
 }
 
