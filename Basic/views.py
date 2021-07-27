@@ -345,9 +345,10 @@ def graficarDataHistorica_view(request, graphId):
             # ---------------------------construccion de data--------------------------------
             for serie in series:
                 datos[serie['nombre']] = serie['variable']
-                if not (serie['variable']== None):
+                if not (serie['variable'] == None):
                     if maxYValue < serie['variable']*decimal.Decimal(1.05):
-                        maxYValue = round(serie['variable']*decimal.Decimal(1.05))
+                        maxYValue = round(
+                            serie['variable']*decimal.Decimal(1.05))
             grafica.addSeriesData(**datos)  # dict
 
         # --------------------------------construccion de grafica----------------------------
