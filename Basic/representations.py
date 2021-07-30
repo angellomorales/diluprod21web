@@ -272,7 +272,7 @@ class Representations():
                 'title': 'Diluyente Requerido para API mezcla definido',
                 'titleXAxis': 'Porcentaje S&W',
                 'titleYAxis': 'BPD',
-                'maxYValue': 1500
+                'maxYValue': calculos.relacion1_3*2.5
             },
             'limiteRestriccion': {
                 'series': [{
