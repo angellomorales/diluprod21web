@@ -95,111 +95,25 @@ def graficarCalculos_view(request, graphId):
         variableACalcular = data.get("apiMezclaHumedo")
         idContenedor = data.get("idContenedor")
         grafica = Grafica()
-        maxYValue = 1500
         series = []
+        representation = Representations()
 
         for i in range(99):
             calculos.calcularDiluyente(
                 apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
+            dataSerie = representation.representacionGraficasCalculos(calculos)
 
-            # ------------------------------------------graph1---------------------------------------------
-            if graphId == "relacionDiluyente":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 's&w',
-                    'variable': calculos.swMezcla,
-                    'label': 'Fracción Volumétrica de Agua de Mezcla',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'relacionOil_Diluyente',
-                    'variable': calculos.relacionOil_Diluyente,
-                    'label': 'Relación Diluyente/Mezcla',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Relación diluyente para API mezcla definido'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'Fracción volumétrica mezcla x % S&W cabeza'
-                maxYValue = 1
-
-            # ------------------------------------------graph2---------------------------------------------
+            # configurar para cada grafica
+            series = dataSerie.get(f"{graphId}")['series']
+            title = dataSerie.get(f"{graphId}")['title']
+            titleXAxis = dataSerie.get(f"{graphId}")['titleXAxis']
+            titleYAxis = dataSerie.get(f"{graphId}")['titleYAxis']
+            maxYValue = dataSerie.get(f"{graphId}")['maxYValue']
+            
             if graphId == "diluyenteRequerido":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'diluyente',
-                    'variable': calculos.diluyente,
-                    'label': 'Diluyente A Inyectar',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'relacion1_3',
-                    'variable': calculos.relacion1_3,
-                    'label': 'Relacion 1-3',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Diluyente Requerido para API mezcla definido'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'BPD'
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
-
-            # ------------------------------------------graph3---------------------------------------------
-            if graphId == "limiteRestriccion":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'apiMezclaSeco',
-                    'variable': calculos.apiMezclaSeco,
-                    'label': 'API Seco',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'limiteSuperior',
-                    'variable': 16,
-                    'label': 'Restricción por calidad superior',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }, {
-                    'nombre': 'limiteInferior',
-                    'variable': 13,
-                    'label': 'Restricción por calidad inferior',
-                    'backgroundColor': 'rgb(96, 249, 33)',
-                    'borderColor': 'rgb(96, 249, 33)',
-                    'pointStyle': 'crossRot',
-                }]
-                title = 'Límite por restricción de flujo y óptima operación MPFM'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'API Seco'
-                maxYValue = 30
-
-            # ------------------------------------------graph4---------------------------------------------
             if graphId == "viscosidadBSW":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'referencia',
-                    'variable': 400,
-                    'label': 'Viscosidad Transporte crudo cSt',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'viscosidadMezcla',
-                    'variable': calculos.viscosidadMezcla,
-                    'label': 'Viscosidad Mezcla cSt',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Viscosidad del sistema'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'Viscosidad Mezcla cSt x % S&W '
                 if(i == 0):
                     if(calculos.viscosidadMezcla > 400):
                         maxYValue = round(calculos.viscosidadMezcla*1.05)

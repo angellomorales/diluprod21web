@@ -12,20 +12,20 @@ class Representations():
                     "id": "velocidadBomba",
                     "cabecera": "Frecuencia",
                     "valor": dataPozo.velocidadBomba,
-                    "unidades":"Hz",
-                    "color":"rgb(100, 116, 254)"#Azul
+                    "unidades": "Hz",
+                    "color": "rgb(100, 116, 254)"  # Azul
                 }, {
                     "id": "pip",
                     "cabecera": "PIP",
                     "valor": dataPozo.pip,
-                    "unidades":"Psi",
-                    "color":"rgb(255, 99, 132)"#rojo claro
+                    "unidades": "Psi",
+                    "color": "rgb(255, 99, 132)"  # rojo claro
                 }, {
                     "id": "corrienteVSD",
                     "cabecera": "Corriente",
                     "valor": dataPozo.corrienteVSD,
-                    "unidades":"A",
-                    "color":"rgb(96, 249, 33)"#Verde
+                    "unidades": "A",
+                    "color": "rgb(96, 249, 33)"  # Verde
                 }]
             }, {
                 "titulo": "VARIABLES SUPERFICIE",
@@ -33,14 +33,14 @@ class Representations():
                     "id": "thp",
                     "cabecera": "THP",
                     "valor": dataPozo.thp,
-                    "unidades":"Psi",
-                    "color":"rgb(241, 255, 99)"#Amarillo
+                    "unidades": "Psi",
+                    "color": "rgb(241, 255, 99)"  # Amarillo
                 }, {
                     "id": "tempCabeza",
                     "cabecera": "THT",
                     "valor": dataPozo.tempCabeza,
-                    "unidades":"ºF",
-                    "color":"rgb(248, 99, 255)"#Purpura
+                    "unidades": "ºF",
+                    "color": "rgb(248, 99, 255)"  # Purpura
                 }]
             }, {
                 "titulo": "CAUDALES",
@@ -48,26 +48,26 @@ class Representations():
                     "id": "tasaAceite",
                     "cabecera": "ACEITE BPD",
                     "valor": dataPozo.tasaAceite,
-                    "unidades":"BPD",
-                    "color":"rgb(152, 115, 101)"#Cafe
+                    "unidades": "BPD",
+                    "color": "rgb(152, 115, 101)"  # Cafe
                 }, {
                     "id": "tasaAgua",
                     "cabecera": "AGUA BPD",
                     "valor": dataPozo.tasaAgua,
-                    "unidades":"BPD",
-                    "color":"rgb(133, 221, 255)"#Azul claro
+                    "unidades": "BPD",
+                    "color": "rgb(133, 221, 255)"  # Azul claro
                 }, {
                     "id": "tasaLiquido",
                     "cabecera": "FLUIDO BPD",
                     "valor": dataPozo.tasaLiquido,
-                    "unidades":"BPD",
-                    "color":"rgb(235, 138, 57)"#Naranja
+                    "unidades": "BPD",
+                    "color": "rgb(235, 138, 57)"  # Naranja
                 }, {
                     "id": "tasaGas",
                     "cabecera": "GAS MSFCD",
                     "valor": dataPozo.tasaGas,
-                    "unidades":"MSFCD",
-                    "color":"rgb(167, 164, 161)"#Gris
+                    "unidades": "MSFCD",
+                    "color": "rgb(167, 164, 161)"  # Gris
                 }]
             }, {
                 "titulo": "PROPIEDADES",
@@ -75,26 +75,26 @@ class Representations():
                     "id": "bsw",
                     "cabecera": "%S&W",
                     "valor": dataPozo.bsw,
-                    "unidades":"%",
-                    "color":"rgb(160, 227, 201)"#Aguamarina
+                    "unidades": "%",
+                    "color": "rgb(160, 227, 201)"  # Aguamarina
                 }, {
                     "id": "api",
                     "cabecera": "API @60ºF",
                     "valor": dataPozo.api,
-                    "unidades":"",
-                    "color":"rgb(43, 81, 92)"#Azul-Negro
+                    "unidades": "",
+                    "color": "rgb(43, 81, 92)"  # Azul-Negro
                 }, {
                     "id": "salinidad",
                     "cabecera": "CLORUROS",
                     "valor": dataPozo.salinidad,
-                    "unidades":"Ppm",
-                    "color":"rgb(170, 145, 13)"#Amarillo quemado
+                    "unidades": "Ppm",
+                    "color": "rgb(170, 145, 13)"  # Amarillo quemado
                 }, {
                     "id": "diluyente",
                     "cabecera": "DILUYENTE",
                     "valor": None,
-                    "unidades":"BPD",
-                    "color":"rgb(179, 242, 216)"#Verde Crema
+                    "unidades": "BPD",
+                    "color": "rgb(179, 242, 216)"  # Verde Crema
                 }]
             }, {
                 "titulo": "COMENTARIOS",
@@ -155,13 +155,13 @@ class Representations():
                 "contenido": [{
                     "cabecera": "Aceite",
                     "valor": calculos.viscosidadAceite,
-                },{
+                }, {
                     "cabecera": "Diluyente",
                     "valor": calculos.viscosidadDiluyente,
-                },{
+                }, {
                     "cabecera": "Mezcla",
                     "valor": calculos.viscosidadMezcla,
-                },{
+                }, {
                     "cabecera": "Agua",
                     "valor": calculos.viscosidadAgua,
                 }]
@@ -227,5 +227,101 @@ class Representations():
                     "valor": calculos.densidadLiquido
                 }]
             }]
+        }
+        return representation
+
+    def representacionGraficasCalculos(self, calculos):
+        representation = {
+            'relacionDiluyente': {
+                'series': [{
+                    'nombre': 's&w',
+                    'variable': calculos.swMezcla,
+                    'label': 'Fracción Volumétrica de Agua de Mezcla',
+                    'backgroundColor': 'rgb(100, 116, 254)',
+                    'borderColor': 'rgb(100, 116, 254)',
+                    'pointStyle': 'circle',
+                }, {
+                    'nombre': 'relacionOil_Diluyente',
+                    'variable': calculos.relacionOil_Diluyente,
+                    'label': 'Relación Diluyente/Mezcla',
+                    'backgroundColor': 'rgb(255, 99, 132)',
+                    'borderColor': 'rgb(255, 99, 132)',
+                    'pointStyle': 'star',
+                }],
+                'title': 'Relación diluyente para API mezcla definido',
+                'titleXAxis': 'Porcentaje S&W',
+                'titleYAxis': 'Fracción volumétrica mezcla x % S&W cabeza',
+                'maxYValue': 1
+            },
+            'diluyenteRequerido': {
+                'series': [{
+                    'nombre': 'diluyente',
+                    'variable': calculos.diluyente,
+                    'label': 'Diluyente A Inyectar',
+                    'backgroundColor': 'rgb(100, 116, 254)',
+                    'borderColor': 'rgb(100, 116, 254)',
+                    'pointStyle': 'circle',
+                }, {
+                    'nombre': 'relacion1_3',
+                    'variable': calculos.relacion1_3,
+                    'label': 'Relacion 1-3',
+                    'backgroundColor': 'rgb(255, 99, 132)',
+                    'borderColor': 'rgb(255, 99, 132)',
+                    'pointStyle': 'star',
+                }],
+                'title': 'Diluyente Requerido para API mezcla definido',
+                'titleXAxis': 'Porcentaje S&W',
+                'titleYAxis': 'BPD',
+                'maxYValue': 1500
+            },
+            'limiteRestriccion': {
+                'series': [{
+                    'nombre': 'apiMezclaSeco',
+                    'variable': calculos.apiMezclaSeco,
+                    'label': 'API Seco',
+                    'backgroundColor': 'rgb(100, 116, 254)',
+                    'borderColor': 'rgb(100, 116, 254)',
+                    'pointStyle': 'circle',
+                }, {
+                    'nombre': 'limiteSuperior',
+                    'variable': 16,
+                    'label': 'Restricción por calidad superior',
+                    'backgroundColor': 'rgb(255, 99, 132)',
+                    'borderColor': 'rgb(255, 99, 132)',
+                    'pointStyle': 'star',
+                }, {
+                    'nombre': 'limiteInferior',
+                    'variable': 13,
+                    'label': 'Restricción por calidad inferior',
+                    'backgroundColor': 'rgb(96, 249, 33)',
+                    'borderColor': 'rgb(96, 249, 33)',
+                    'pointStyle': 'crossRot',
+                }],
+                'title': 'Límite por restricción de flujo y óptima operación MPFM',
+                'titleXAxis': 'Porcentaje S&W',
+                'titleYAxis': 'API Seco',
+                'maxYValue': 30
+            },
+            'viscosidadBSW': {
+                'series': [{
+                    'nombre': 'referencia',
+                    'variable': 400,
+                    'label': 'Viscosidad Transporte crudo cSt',
+                    'backgroundColor': 'rgb(100, 116, 254)',
+                    'borderColor': 'rgb(100, 116, 254)',
+                    'pointStyle': 'circle',
+                }, {
+                    'nombre': 'viscosidadMezcla',
+                    'variable': calculos.viscosidadMezcla,
+                    'label': 'Viscosidad Mezcla cSt',
+                    'backgroundColor': 'rgb(255, 99, 132)',
+                    'borderColor': 'rgb(255, 99, 132)',
+                    'pointStyle': 'star',
+                }],
+                'title': 'Viscosidad del sistema',
+                'titleXAxis': 'Porcentaje S&W',
+                'titleYAxis': 'Viscosidad Mezcla cSt x % S&W ',
+                'maxYValue': 420
+            }
         }
         return representation
