@@ -1,0 +1,21 @@
+{% extends "Basic/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+<h1>Pruebas celery</h1>
+<br>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary mt-3 mb-2">ejecutar tarea</button>
+</form>
+<form method="get">
+    <button type="submit" class="btn btn-primary mt-3 mb-2">validar estado tarea</button>
+</form>
+
+<h3>{{ message }}</h3>
+<h3>{{ value }}</h3>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
