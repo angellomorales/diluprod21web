@@ -13,13 +13,12 @@ logger = get_task_logger(__name__)
 
 @app.task(bind=True,)
 def import_data_task(self, data_resource,dataset):
-    message=None
     logger.info(f"crear instancia de taskTracker con tarea {self.__name__}")
     instance = get_task_tracker_instance(self.request.id, self.__name__)
 
     logger.info(f"ejecutar tarea {self.__name__}")
     try:
-        message=import_data(data_resource,dataset)
+        import_data(data_resource,dataset)
     except Exception as exc:
         instance.status = 'FAILED'
         instance.type_error=exc
@@ -32,8 +31,7 @@ def import_data_task(self, data_resource,dataset):
 
     # print('Executing task id {0.id}, args: {0.args} kwargs: {0.kwargs}'.format(
     #     self.request))
-
-    return message
+    logger.info("tarea finalizada")
 
 
 def get_task_tracker_instance(id, task_name):
@@ -57,9 +55,7 @@ def import_data(data_resource,dataset):
         result = data_resource.import_data(
             dataset, dry_run=True)  # Test the data import
         if result.has_errors():
-            message = f"Error al importar el archivo"
-        else:
-            message = 'Archivo cargado correctamente'
+            raise ValueError("error al cargar el archivo")
+        # else:
             # data_resource.import_data(
             #     dataset, dry_run=False)  # Actually import now
-        return message

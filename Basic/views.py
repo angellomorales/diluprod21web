@@ -208,14 +208,14 @@ def cargarDatos(request):
         # print(f"dataset antes: {dataset}")
         datos_file = request.FILES['xlsfile']
         # print(f"datos_pozo: {datos_pozo}")
-        imported_data = dataset.load(datos_file.read())
+        dataset.load(datos_file.read())
         # print(f"{dataset}")
 
-        msg= import_data_task.delay(data_resource, dataset)
+        import_data_task.delay(data_resource, dataset)
 
     task = taskTracker.objects.filter(task=import_data_task.__name__)
     if task.exists():
-        msg2 = task.get().status
+        msg = task.get().status
 
     return render(request, "Basic/cargarDatos.html", {
         "message": msg
