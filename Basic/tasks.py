@@ -56,6 +56,6 @@ def import_data(data_resource,dataset):
             dataset, dry_run=True)  # Test the data import
         if result.has_errors():
             raise ValueError("error al cargar el archivo")
-        # else:
-            # data_resource.import_data(
-            #     dataset, dry_run=False)  # Actually import now
+        else:
+            data_resource.import_data(
+                dataset, dry_run=False)  # Actually import now
