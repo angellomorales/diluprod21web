@@ -151,3 +151,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Simplified static file serving.---------------------cambios para produccion-------------------------
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# resolver el problema de serializar objetos que no son json
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['pickle']

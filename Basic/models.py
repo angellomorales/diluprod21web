@@ -8,6 +8,21 @@ class User(AbstractUser):
     pass
 
 
+class taskTracker(models.Model):
+    CHOICESSTATUS = [('FINISHED', 'FINISHED'),
+                     ('WORKING', 'WORKING'),
+                     ('FAILED', 'FAILED')]
+    task = models.CharField(
+        max_length=255, primary_key=True, blank=False, null=False)
+    task_id = models.CharField(max_length=255)
+    status = models.CharField(
+        max_length=12, choices=CHOICESSTATUS, default='FINISHED', blank=False, null=False)
+    type_error = models.TextField(blank=True ,null=True)
+
+    def __str__(self):
+        return f"{self.task} status: {self.status}"
+
+
 class Campo(models.Model):
     nombre = models.CharField(max_length=255)
     pozos = models.ManyToManyField(
@@ -75,9 +90,9 @@ class DataAVM(models.Model):
 
     def __str__(self):
         return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} es {self.pruebaValida}"
-    
+
     class Meta:
-        ordering=["fecha"]
+        ordering = ["fecha"]
         get_latest_by = "fecha"
 
 

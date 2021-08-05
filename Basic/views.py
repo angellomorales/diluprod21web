@@ -9,12 +9,13 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import DataAVM, User
+from .models import DataAVM, taskTracker, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
 from .representations import Representations
 from .grafica import Grafica
+from .tasks import import_data_task
 
 
 def index(request):
@@ -109,7 +110,7 @@ def graficarCalculos_view(request, graphId):
             titleXAxis = dataSerie.get(f"{graphId}")['titleXAxis']
             titleYAxis = dataSerie.get(f"{graphId}")['titleYAxis']
             maxYValue = dataSerie.get(f"{graphId}")['maxYValue']
-            
+
             if graphId == "diluyenteRequerido":
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
@@ -200,7 +201,7 @@ def dataHistorica_view(request):
 
 @login_required(login_url="index")
 def cargarDatos(request):
-    message = ''
+    msg = None
     if request.method == 'POST':
         data_resource = DataAVMResource()
         dataset = Dataset()
@@ -210,17 +211,14 @@ def cargarDatos(request):
         imported_data = dataset.load(datos_file.read())
         # print(f"{dataset}")
 
-        result = data_resource.import_data(
-            dataset, dry_run=True)  # Test the data import
-        if result.has_errors():
-            message = f"Error al importar el archivo"
-        else:
-            message = 'Archivo cargado correctamente'
-            data_resource.import_data(
-                dataset, dry_run=False)  # Actually import now
+        msg= import_data_task.delay(data_resource, dataset)
 
-    return render(request, 'Basic/cargarDatos.html', {
-        "message": message
+    task = taskTracker.objects.filter(task=import_data_task.__name__)
+    if task.exists():
+        msg2 = task.get().status
+
+    return render(request, "Basic/cargarDatos.html", {
+        "message": msg
     })
 
 
@@ -282,3 +280,13 @@ def graficarDataHistorica_view(request, graphId):
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
         return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
     return render(request, "Basic/calculos.html")
+
+
+@login_required(login_url="index")
+def pozoNuevo_view(request):
+    msg = None
+    if request.method == "POST":
+        msg = None
+    return render(request, "Basic/pozoNuevo.html", {
+        "message": msg
+    })
