@@ -157,4 +157,4 @@ CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['pickle']
 
 # usar broker de rediss heroku, para el cual se utiliza la REDIS_TLS_URL en las config vars, si no quiero usar redis quitar linea e instalar rabbit MQ en el equipo donde corre celery
-CELERY_BROKER_URL='rediss://:p9287001193ee93f6b150df968e319f40c88de7d19f5e4654651f9d8dd510411c@ec2-52-207-173-244.compute-1.amazonaws.com:21870'
+CELERY_BROKER_URL=os.environ.get('REDIS_TLS_URL','rediss://:p9287001193ee93f6b150df968e319f40c88de7d19f5e4654651f9d8dd510411c@ec2-52-207-173-244.compute-1.amazonaws.com:21870')
