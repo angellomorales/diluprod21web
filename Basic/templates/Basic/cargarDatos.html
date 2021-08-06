@@ -5,6 +5,11 @@
 {% block body %}
 <h1>Cargar data histórica desde archivo</h1>
 <br>
+
+{% if message == 'WORKING' %}
+<h3>CARGANDO...</h3>
+{% else %}
+    
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
@@ -13,7 +18,11 @@
     <button type="submit" class="btn btn-primary mt-3 mb-2">Subir</button>
 </form>
 
-<h3>{{ message }}</h3>
+{% if message == 'FAILED' %}
+<h3>ERROR AL CARGAR EL ARCHIVO</h3>
+{% endif %}
+
+{% endif %}
 {% endblock %}
 
 {% block script %}

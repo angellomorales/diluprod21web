@@ -9,12 +9,13 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import DataAVM, User
+from .models import DataAVM, taskTracker, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
 from .representations import Representations
 from .grafica import Grafica
+from .tasks import import_data_task
 
 
 def index(request):
@@ -95,111 +96,25 @@ def graficarCalculos_view(request, graphId):
         variableACalcular = data.get("apiMezclaHumedo")
         idContenedor = data.get("idContenedor")
         grafica = Grafica()
-        maxYValue = 1500
         series = []
+        representation = Representations()
 
         for i in range(99):
             calculos.calcularDiluyente(
                 apiCabeza, apiDiluyente, variableACalcular, aceite, i, False)
+            dataSerie = representation.representacionGraficasCalculos(calculos)
 
-            # ------------------------------------------graph1---------------------------------------------
-            if graphId == "relacionDiluyente":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 's&w',
-                    'variable': calculos.swMezcla,
-                    'label': 'Fracción Volumétrica de Agua de Mezcla',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'relacionOil_Diluyente',
-                    'variable': calculos.relacionOil_Diluyente,
-                    'label': 'Relación Diluyente/Mezcla',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Relación diluyente para API mezcla definido'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'Fracción volumétrica mezcla x % S&W cabeza'
-                maxYValue = 1
+            # configurar para cada grafica
+            series = dataSerie.get(f"{graphId}")['series']
+            title = dataSerie.get(f"{graphId}")['title']
+            titleXAxis = dataSerie.get(f"{graphId}")['titleXAxis']
+            titleYAxis = dataSerie.get(f"{graphId}")['titleYAxis']
+            maxYValue = dataSerie.get(f"{graphId}")['maxYValue']
 
-            # ------------------------------------------graph2---------------------------------------------
             if graphId == "diluyenteRequerido":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'diluyente',
-                    'variable': calculos.diluyente,
-                    'label': 'Diluyente A Inyectar',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'relacion1_3',
-                    'variable': calculos.relacion1_3,
-                    'label': 'Relacion 1-3',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Diluyente Requerido para API mezcla definido'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'BPD'
                 if(abs(calculos.diluyente-calculos.relacion1_3) < 20):
                     maxYValue = round(calculos.diluyente*2)
-
-            # ------------------------------------------graph3---------------------------------------------
-            if graphId == "limiteRestriccion":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'apiMezclaSeco',
-                    'variable': calculos.apiMezclaSeco,
-                    'label': 'API Seco',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'limiteSuperior',
-                    'variable': 16,
-                    'label': 'Restricción por calidad superior',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }, {
-                    'nombre': 'limiteInferior',
-                    'variable': 13,
-                    'label': 'Restricción por calidad inferior',
-                    'backgroundColor': 'rgb(96, 249, 33)',
-                    'borderColor': 'rgb(96, 249, 33)',
-                    'pointStyle': 'crossRot',
-                }]
-                title = 'Límite por restricción de flujo y óptima operación MPFM'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'API Seco'
-                maxYValue = 30
-
-            # ------------------------------------------graph4---------------------------------------------
             if graphId == "viscosidadBSW":
-                # configurar para cada grafica
-                series = [{
-                    'nombre': 'referencia',
-                    'variable': 400,
-                    'label': 'Viscosidad Transporte crudo cSt',
-                    'backgroundColor': 'rgb(100, 116, 254)',
-                    'borderColor': 'rgb(100, 116, 254)',
-                    'pointStyle': 'circle',
-                }, {
-                    'nombre': 'viscosidadMezcla',
-                    'variable': calculos.viscosidadMezcla,
-                    'label': 'Viscosidad Mezcla cSt',
-                    'backgroundColor': 'rgb(255, 99, 132)',
-                    'borderColor': 'rgb(255, 99, 132)',
-                    'pointStyle': 'star',
-                }]
-                title = 'Viscosidad del sistema'
-                titleXAxis = 'Porcentaje S&W'
-                titleYAxis = 'Viscosidad Mezcla cSt x % S&W '
                 if(i == 0):
                     if(calculos.viscosidadMezcla > 400):
                         maxYValue = round(calculos.viscosidadMezcla*1.05)
@@ -286,27 +201,26 @@ def dataHistorica_view(request):
 
 @login_required(login_url="index")
 def cargarDatos(request):
-    message = ''
+    msg = None
+
+    task = taskTracker.objects.filter(task=import_data_task.__name__)
+    if task.exists():
+        msg = task.get().status
+
     if request.method == 'POST':
         data_resource = DataAVMResource()
         dataset = Dataset()
         # print(f"dataset antes: {dataset}")
         datos_file = request.FILES['xlsfile']
         # print(f"datos_pozo: {datos_pozo}")
-        imported_data = dataset.load(datos_file.read())
+        dataset.load(datos_file.read())
         # print(f"{dataset}")
 
-        result = data_resource.import_data(
-            dataset, dry_run=True)  # Test the data import
-        if result.has_errors():
-            message = f"Error al importar el archivo"
-        else:
-            message = 'Archivo cargado correctamente'
-            data_resource.import_data(
-                dataset, dry_run=False)  # Actually import now
+        import_data_task.delay(data_resource, dataset)
+        return HttpResponseRedirect(reverse("index"))
 
-    return render(request, 'Basic/cargarDatos.html', {
-        "message": message
+    return render(request, "Basic/cargarDatos.html", {
+        "message": msg
     })
 
 
@@ -368,3 +282,13 @@ def graficarDataHistorica_view(request, graphId):
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
         return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
     return render(request, "Basic/calculos.html")
+
+
+@login_required(login_url="index")
+def pozoNuevo_view(request):
+    msg = None
+    if request.method == "POST":
+        msg = None
+    return render(request, "Basic/pozoNuevo.html", {
+        "message": msg
+    })

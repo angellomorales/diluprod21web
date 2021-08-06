@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'diluprod21.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'diluprod21db',
-        'USER': 'root',
-        'PASSWORD': 'Controwell.2020',
-        'HOST': 'localhost',
-        'PORT': '3310',
+        'NAME': os.environ.get('DATABASE_NAME','diluprod21db'),
+        'USER': os.environ.get('DATABASE_USER','root'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD','Controwell.2020'),
+        'HOST': os.environ.get('DATABASE_HOST','localhost'),
+        'PORT': os.environ.get('DATABASE_PORT','3310'),
     }
 }
 
@@ -151,3 +151,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Simplified static file serving.---------------------cambios para produccion-------------------------
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# resolver el problema de serializar objetos que no son json
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['pickle']
+
+# usar broker de rediss heroku, para el cual se utiliza la REDIS_TLS_URL en las config vars, si no quiero usar redis quitar linea e instalar rabbit MQ en el equipo donde corre celery
+CELERY_BROKER_URL='rediss://:p9287001193ee93f6b150df968e319f40c88de7d19f5e4654651f9d8dd510411c@ec2-52-207-173-244.compute-1.amazonaws.com:21870'
