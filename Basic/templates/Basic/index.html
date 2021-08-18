@@ -2,26 +2,72 @@
 {% load static %}
 
 {% block body %}
-
-<!-- inicio template -->
 <h1 class="app-page-title">Proceso</h1>
 
 <hr class="my-4">
-<div class="row bordered">
-    <div class="col">
-        <img src="{% static 'Basic/img/REMMS.gif' %}" alt="">
-    </div>
-    <div class="col">
-        <p class="text-justify">En las pruebas de producción donde se realice la dilución del crudo de producción con el
-            diluyente nafta, es vital conocer un valor aproximado del gasto necesario de diluyente para que la mezcla de
-            fluidos tenga la densidad requerida para la conveniencia óptima del proceso; sin incurrir en sobrediluciones
-            o falta de diluyente que conlleven a una obstrucción del equipo de medición. Teniendo en cuenta otros
-            factores que pueden influenciar errores en la medición como por ejemplo alta presencia de vapor en la fase
-            liquida.</p>
-    </div>
-</div>
 
-<hr class="my-4">
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-6">
+        <div class="app-card app-card-progress-list h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">Flujo</h4>
+                    </div>
+                    <!--//col-->
+                </div>
+                <!--//row-->
+            </div>
+            <!--//app-card-header-->
+            <div class="app-card-body">
+                <div class="item p-3">
+                    <div class="row align-items-center">
+                            <img src="{% static 'Basic/img/REMMS.gif' %}" alt="">
+                    </div>
+                    <!--//row-->
+                </div>
+                <!--//item-->
+
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
+    <!--//col-->
+
+    <div class="col-12 col-lg-6">
+        <div class="app-card app-card-progress-list h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">Descripción</h4>
+                    </div>
+                    <!--//col-->
+                </div>
+                <!--//row-->
+            </div>
+            <!--//app-card-header-->
+            <div class="app-card-body">
+                <div class="item p-3">
+                    <div class="row align-items-center">
+                        <p class="text-justify">En las pruebas de producción donde se realice la dilución del crudo de producción con el
+                            diluyente nafta, es vital conocer un valor aproximado del gasto necesario de diluyente para que la mezcla de
+                            fluidos tenga la densidad requerida para la conveniencia óptima del proceso; sin incurrir en sobrediluciones
+                            o falta de diluyente que conlleven a una obstrucción del equipo de medición. Teniendo en cuenta otros
+                            factores que pueden influenciar errores en la medición como por ejemplo alta presencia de vapor en la fase
+                            liquida.</p>
+                    </div>
+                    <!--//row-->
+                </div>
+                <!--//item-->
+
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
+    <!--//col-->
+</div>
 
 <div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
     <div class="inner">
@@ -533,8 +579,5 @@
     <!--//col-->
 </div>
 <!--//row-->
-
-
-<!-- fin template -->
 
 {% endblock %}
