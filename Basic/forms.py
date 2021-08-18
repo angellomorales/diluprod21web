@@ -59,4 +59,4 @@ class DataHistoricaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DataHistoricaForm, self).__init__(*args, **kwargs)
         self.fields['pozo'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-select w-auto'})

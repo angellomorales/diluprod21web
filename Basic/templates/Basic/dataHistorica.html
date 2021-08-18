@@ -4,40 +4,73 @@
 
 {% block body %}
 
-<h1>Data Histórica</h1>
-<br>
-<div class="row">
-    <div class="col">
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <table>
-                    {{ form }}
-                    <tr class="submitr">
-                        <td></td>
-                        <td><input type="submit" class="btn btn-primary mt-3 mb-2" value="Calcular"></td>
-                    </tr>
-                </table>
+<h1 class="app-page-title mb-0">Data Histórica</h1>
+
+<hr class="my-4">
+
+<div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+        <div class="page-utilities">
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto">
+                    <form class="docs-search-form row gx-1 align-items-center" method="POST">
+                        {% csrf_token %}
+                        <div class="col-auto">
+                            <h5 class="app-card-title">Pozo:</h5>
+                        </div>
+                        <div class="col-auto">
+                            {{ form.pozo}}
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn app-btn-primary" value="Calcular"><svg width="1em"
+                                    height="1em" viewBox="0 0 16 16" class="bi bi-upload me-2" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z">
+                                    </path>
+                                    <path fill-rule="evenodd"
+                                        d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z">
+                                    </path>
+                                </svg>Actualizar</button>
+                        </div>
+                    </form>
+
+                </div>
+                <!--//col-->
             </div>
-        </form>
-    </div>
-    {% if esCalculado %}
-    <div class="col">
-        <!-- <div class="row">
-            <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
-                <button type="button" class="btn btn-outline-primary" id="historial">Historial</button>
-                <button type="button" class="btn btn-outline-primary" id="produccionVSpip">produccion vs pip</button>
-            </div>
-        </div> -->
-        <div class="row" id="chartDataHistorica">
+            <!--//row-->
         </div>
+        <!--//table-utilities-->
     </div>
-    {% endif %}
+    <!--//col-->
+
+    <div class="col-auto">
+        {% if esCalculado %}
+        <div class="app-card app-card-orders-table mb-0">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0 text-left">
+                        <tbody>
+                            <tr>
+                                <td class="cell">Fecha del última prueba:</td>
+                                <th class="cell">{{ data.fecha }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--//table-responsive-->
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-body¡-->
+        {% endif %}
+    </div>
+    <!--//col-->
 </div>
-<br>
+<!--//form de solicitud -->
+
 {% if esCalculado %}
-<h3>Fecha del última prueba: {{ data.fecha }}</h3>
-<br>
 {% for tabla in data.tablas %}
 {% if forloop.counter0|divisibleby:2 %}
 <div class="row">
@@ -68,10 +101,11 @@
                                     <label for="{{ contenido.id }}" class="lbl"></label>
                                     <input type="hidden" id="{{ contenido.id }}_label" value="{{ contenido.cabecera }}">
                                     <input type="hidden" id="{{ contenido.id }}_color" value="{{ contenido.color }}">
-                                    <input type="hidden" id="{{ contenido.id }}_unidades" value="{{ contenido.unidades }}">
+                                    <input type="hidden" id="{{ contenido.id }}_unidades"
+                                        value="{{ contenido.unidades }}">
                                 </div>
                             </div>
-                            {% endif %} 
+                            {% endif %}
                         </div>
                     </td>
                 </tr>
@@ -84,6 +118,17 @@
 </div>
 {% endif %}
 {% endfor %}
+
+<div class="row">
+        <!-- <div class="row">
+            <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
+                <button type="button" class="btn btn-outline-primary" id="historial">Historial</button>
+                <button type="button" class="btn btn-outline-primary" id="produccionVSpip">produccion vs pip</button>
+            </div>
+        </div> -->
+        <div class="row" id="chartDataHistorica">
+        </div>
+</div>
 
 {% endif %}
 {% endblock %}
