@@ -2,23 +2,29 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // listeners para obtener los datos de la grafica
-    if (document.getElementById('relacionDiluyente')) {
-        document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
-    }
-    if (document.getElementById('diluyenteRequerido')) {
-        document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data('diluyenteRequerido'));
-    }
-    if (document.getElementById('limiteRestriccion')) {
-        document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
-    }
-    if (document.getElementById('viscosidadBSW')) {
-        document.getElementById('viscosidadBSW').addEventListener('click', () => load_data('viscosidadBSW'));
-    }
+    // if (document.getElementById('relacionDiluyente')) {
+    //     document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
+    // }
+    // if (document.getElementById('diluyenteRequerido')) {
+    //     document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data('diluyenteRequerido'));
+    // }
+    // if (document.getElementById('limiteRestriccion')) {
+    //     document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
+    // }
+    // if (document.getElementById('viscosidadBSW')) {
+    //     document.getElementById('viscosidadBSW').addEventListener('click', () => load_data('viscosidadBSW'));
+    // }
+    
     // grafica default
     if (document.getElementById('id_apiMezclaHumedo')) {
         load_data('relacionDiluyente');
     }
 
+    const selectElement = document.querySelector('#selectCalculos');
+
+    selectElement.addEventListener('change', (event) => {
+        load_data(`${event.target.value}`);
+    });
 
 });
 

@@ -4,10 +4,11 @@
 
 {% block body %}
 
-<h1>Cálculos</h1>
-<br>
-<div class="row">
-    <div class="col">
+<h1 class="app-page-title mb-0">Cálculos</h1>
+<hr class="my-4">
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-md-4">
         <form method="POST">
             {% csrf_token %}
             <!-- <table class="table table-borderless table-sm"> -->
@@ -24,69 +25,99 @@
     </div>
 
     {% if esCalculado %}
-    <div class="col">
-        <div class="row">
-            <div class="btn-group btn-group-sm" role="group" aria-label="tipos graficos">
-                <button type="button" class="btn btn-outline-primary" id="relacionDiluyente">Relación diluyente</button>
-                <button type="button" class="btn btn-outline-primary" id="diluyenteRequerido">Diluyente
-                    requerido</button>
-                <button type="button" class="btn btn-outline-primary" id="limiteRestriccion">Límite restricción
-                    flujo</button>
-                <button type="button" class="btn btn-outline-primary" id="viscosidadBSW">Viscosidad</button>
+    <div class="col-12 col-md-8">
+        <div class="app-card app-card-chart h-10 shadow-sm">
+            <div class="app-card-body p-0 p-lg-4">
+                <div class="mb-3 d-flex">
+                    <select class="form-select form-select-sm ms-auto d-inline-flex w-auto" id="selectCalculos">
+                        <option value="relacionDiluyente" selected="">Relación diluyente</option>
+                        <option value="diluyenteRequerido">Diluyente</option>
+                        <option value="limiteRestriccion">Límite restricción</option>
+                        <option value="viscosidadBSW">Viscosidad</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                        </div>
+                    </div>
+                    <div id="chartCalculos"></div>
+                </div>
             </div>
-        </div>
-        <div class="row" id="chartCalculos">
+            <!--//app-card-body-->
         </div>
     </div>
+    <!--//Grafica-->
     {% endif %}
 </div>
+
 <hr class="my-4">
+
 {% if calculos.status %}
 <h1>{{ calculos.status }}</h1>
 {% elif esCalculado %}
-<h3>Datos de salida</h3>
-<br>
+<div class="row g-4 settings-section mb-4">
+    <h3 class="section-title">Datos de salida</h3>
+</div>
+
 
 {% for tabla in data.tablas %}
-    {% if forloop.counter0|divisibleby:2 %}
-    <div class="row">
-    {% endif %}
-        <div class="col">
-            <table class="table table-bordered table-hover">
-                <thead class="table-secondary">
-                    <tr>
-                        <th colspan="2">{{ tabla.titulo|safe }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for contenido in tabla.contenido %}
-                    <tr>
-                        <th scope="row">{{ contenido.cabecera }}</th>
-                        {% if contenido.td_id %}
-                        <td id="{{ contenido.td_id }}">
-                        {% else %}
-                        <td>
-                        {% endif %}
-                        {% if tabla.titulo == "GRAVEDAD ESPECIFICA @ 60ºF" %}
-                        {{ contenido.valor|floatformat:5 }}
-                        </td>
-                        {% else %}
-                        {{ contenido.valor|floatformat:2 }}
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+{% if forloop.counter0|divisibleby:2 %}
+<div class="row g-4 mb-4">
+{% endif %}
+    <div class="col-12 col-lg-6">
+
+        <div class="app-card app-card-stats-table h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">{{ tabla.titulo|safe }}</h4>
+                    </div>
+                    <!--//col-->
+                </div>
+                <!--//row-->
+            </div>
+            <!--//app-card-header-->
+            <div class="app-card-body p-3 p-lg-4">
+                <div class="table-responsive">
+                    <table class="table table-borderless app-table-hover mb-0">
+                        <tbody>
+                            {% for contenido in tabla.contenido %}
+                            <tr>
+                                <th class="cell" scope="row">{{ contenido.cabecera }}</th>
+                                {% if contenido.td_id %}
+                                <td class="stat-cell" id="{{ contenido.td_id }}">
+                                {% else %}
+                                <td class="stat-cell">
+                                    {% endif %}
+                                    {% if tabla.titulo == "GRAVEDAD ESPECIFICA @ 60ºF" %}
+                                    {{ contenido.valor|floatformat:5 }}
+                                    {% else %}
+                                    {{ contenido.valor|floatformat:2 }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!--//table-responsive-->
+            </div>
+            <!--//app-card-body-->
         </div>
-    {% if forloop.counter|divisibleby:2 %}
     </div>
-        {% if forloop.counter == 2%}
-        <br>
-        <h3>Propiedades de fluidos calculadas</h3>
-        <br>
-        {% endif %}
-    {% endif %}
+{% if forloop.counter|divisibleby:2 %}
+</div>
+{% if forloop.counter == 2%}
+<div class="row g-4 settings-section mb-4">
+    <h3 class="section-title">Propiedades de fluidos calculadas</h3>
+</div>
+{% endif %}
+{% endif %}
 {% endfor %}
 {% endif %}
 
