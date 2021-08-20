@@ -27,8 +27,9 @@ function load_data(graphId) {
     const aceite = document.querySelector('#id_aceite').value;
     const apiCabeza = document.querySelector('#id_apiCabeza').value;
     const apiDiluyente = document.querySelector('#id_apiDiluyente').value;
-    const apiMezclaHumedo = document.getElementById('id_apiMezclaHumedo').innerHTML;
-    const idContenedor=document.querySelector('#chartCalculos').id;
+    var apiMezclaHumedo = 0
+    apiMezclaHumedo = parseFloat(document.getElementById('id_apiMezclaHumedo').innerHTML);
+    const idContenedor = document.querySelector('#chartCalculos').id;
     url = `/graficarCalculos/${graphId}`;
     bodyJson = JSON.stringify({
         pozo: pozo,
@@ -36,7 +37,7 @@ function load_data(graphId) {
         apiCabeza: apiCabeza,
         apiDiluyente: apiDiluyente,
         apiMezclaHumedo: apiMezclaHumedo,
-        idContenedor:idContenedor
+        idContenedor: idContenedor
     });
     enviarAJAX(url, bodyJson);
 
