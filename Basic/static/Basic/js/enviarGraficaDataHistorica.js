@@ -3,7 +3,7 @@ const seriesActivas = new Set();
 
 document.addEventListener('click', event => {
     const element = event.target;
-    if (element.className === 'checkSeriesData') {
+    if (element.className === 'form-check-input') {
         seriesActivas.clear();
         seriesId.forEach(recorrerSeriesActivas);
         // console.log('en click');
@@ -19,7 +19,7 @@ document.addEventListener('click', event => {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    seriesId = document.querySelectorAll('input.checkSeriesData')
+    seriesId = document.querySelectorAll('input.form-check-input')
     // seriesId.forEach(id=>{
     //     alert(id.id;
     // });
