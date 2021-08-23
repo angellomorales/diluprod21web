@@ -14,17 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // if (document.getElementById('viscosidadBSW')) {
     //     document.getElementById('viscosidadBSW').addEventListener('click', () => load_data('viscosidadBSW'));
     // }
-    
+
     // grafica default
     if (document.getElementById('id_apiMezclaHumedo')) {
         load_data('relacionDiluyente');
+        const selectElement = document.querySelector('#selectCalculos');
+
+        selectElement.addEventListener('change', (event) => {
+            load_data(`${event.target.value}`);
+        });
     }
-
-    const selectElement = document.querySelector('#selectCalculos');
-
-    selectElement.addEventListener('change', (event) => {
-        load_data(`${event.target.value}`);
-    });
 
 });
 
