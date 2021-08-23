@@ -24,17 +24,17 @@ class CalculosForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CalculosForm, self).__init__(*args, **kwargs)
         self.fields['pozo'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
         self.fields['aceite'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
         self.fields['swCabeza'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
         self.fields['apiCabeza'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
         self.fields['apiDiluyente'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
         self.fields['variableACalcular'].widget.attrs.update(
-            {'class': 'form-control mx-sm-3 mb-2'})
+            {'class': 'form-control'})
 
 
 class LaboratorioForm(forms.Form):
