@@ -3,26 +3,61 @@
 
 
 {% block body %}
-<h1>Cargar data histórica desde archivo</h1>
-<br>
+<h1 class="app-page-title mb-0">Cargar datos desde archivo excel</h1>
+<hr class="my-4">
+
 
 {% if message == 'WORKING' %}
-<h3>CARGANDO...</h3>
-{% else %}
-    
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="mb-3">
-        <input class="form-control" id="formFile" type="file" name="xlsfile">
+
+<div class="col-12">
+    <div class="row g-4 settings-section mb-4">
+        <h3 class="section-title">Espere mientras se carga la información..... </h3>
     </div>
-    <button type="submit" class="btn btn-primary mt-3 mb-2">Subir</button>
-</form>
+
+    <div class="container">
+        <img class="mx-auto d-block" src="{% static 'Basic/img/cargando.gif' %}" alt="">
+    </div>
+</div>
+{% else %}
+
+<div class="col-4 col-sm-3 mb-2">
+
+    <select class="form-select w-auto">
+        <option selected="" value="option-1">All</option>
+        <option value="option-2">Data AVM</option>
+        <option value="option-3">Data Stork</option>
+        <option value="option-4">Pozo inyector</option>
+    </select>
+</div>
+
+<div class="col-8 col-sm-3 mb-2">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input class="form-control" type="file" name="xlsfile">
+        <button type="submit" class="btn app-btn-primary"><svg width="1em" height="1em" viewBox="0 0 16 16"
+                class="bi bi-upload me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z">
+                </path>
+                <path fill-rule="evenodd"
+                    d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z">
+                </path>
+            </svg>Upload File</button>
+    </form>
+</div>
 
 {% if message == 'FAILED' %}
 <h3>ERROR AL CARGAR EL ARCHIVO</h3>
 {% endif %}
 
 {% endif %}
+
+
+
+<div class="col-auto">
+
+</div>
+
 {% endblock %}
 
 {% block script %}
