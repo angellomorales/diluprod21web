@@ -201,11 +201,7 @@ def dataHistorica_view(request):
 
 @login_required(login_url="index")
 def cargarDatos(request):
-    msg = None
-
-    task = taskTracker.objects.filter(task=import_data_task.__name__)
-    if task.exists():
-        msg = task.get().status
+    msg = taskStatus()
 
     if request.method == 'POST':
         data_resource = DataAVMResource()
@@ -222,6 +218,14 @@ def cargarDatos(request):
     return render(request, "Basic/cargarDatos.html", {
         "message": msg
     })
+
+
+def taskStatus():
+    task = taskTracker.objects.filter(task=import_data_task.__name__)
+    if task.exists():
+        return(task.get().status)
+    else:
+        return None
 
 
 @login_required(login_url="index")
