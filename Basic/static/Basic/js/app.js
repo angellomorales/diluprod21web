@@ -19,13 +19,16 @@ const sidePanelToggler = document.getElementById('sidepanel-toggler');
 const sidePanel = document.getElementById('app-sidepanel');  
 const sidePanelDrop = document.getElementById('sidepanel-drop'); 
 const sidePanelClose = document.getElementById('sidepanel-close'); 
+const labImage=document.getElementById('lab-image');
 
 window.addEventListener('load', function(){
 	responsiveSidePanel(); 
+	responsiveLabImage();
 });
 
 window.addEventListener('resize', function(){
 	responsiveSidePanel(); 
+	responsiveLabImage();
 });
 
 
@@ -42,6 +45,20 @@ function responsiveSidePanel() {
 	    //console.log('smaller');
 	    sidePanel.classList.remove('sidepanel-visible');
 		sidePanel.classList.add('sidepanel-hidden');
+	}
+};
+
+function responsiveLabImage() {
+    let w = window.innerWidth;
+	if(w >= 768) {
+	    // if larger 
+	    //console.log('larger');
+		labImage.style.display='inline';
+		
+	} else {
+	    // if smaller
+	    //console.log('smaller');
+	    labImage.style.display='none';
 	}
 };
 
