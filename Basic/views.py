@@ -215,8 +215,8 @@ def cargarDatos(request):
             dataset.load(datos_file.read())
             # print(f"{dataset}")
 
-            # import_data_task.delay(data_resource, dataset)
-            # return HttpResponseRedirect(reverse("index"))
+            import_data_task.delay(data_resource, dataset)
+            return HttpResponseRedirect(reverse("index"))
     form = CargarDatosForm()
 
     return render(request, "Basic/cargarDatos.html", {
