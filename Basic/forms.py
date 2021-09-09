@@ -1,6 +1,10 @@
 from django import forms
+from django.core import validators
 from django.db.models import fields
 from django.forms.models import ModelForm
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 from .models import DataAVM
 
 
@@ -60,3 +64,26 @@ class DataHistoricaForm(ModelForm):
         super(DataHistoricaForm, self).__init__(*args, **kwargs)
         self.fields['pozo'].widget.attrs.update(
             {'class': 'form-select w-auto'})
+
+
+class CargarDatosForm(forms.Form):
+    CHOICES = [('option-1', 'Data AVM'), ('option-2', 'Data Stork'),
+               ('option-3', 'Data Pozo Inyector'), ('option-4', 'Data Laboratorio')]
+    tipo = forms.ChoiceField(choices=CHOICES, required=True,
+                             label="Archivo", widget=forms.Select, initial='option-1')
+    # archivo = forms.FileField()
+    archivo = forms.FileField(required=False)
+
+    # def validate_file_extension(value):
+    #     if not value.name.endswith('.pdf'):
+    #         raise ValidationError(u'Error message')
+
+    def clean(self):
+        data = self.cleaned_data['archivo']
+
+        # check if the content type is what we expect
+        content_type = data.content_type
+        if content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or content_type == 'application/vnd.ms-excel':
+            return data
+        else:
+            raise ValidationError(_('Invalid content type'), code='invalid')

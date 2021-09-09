@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import DataAVM, taskTracker, User
-from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm
+from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataPozoResource
 from .representations import Representations
@@ -204,19 +204,24 @@ def cargarDatos(request):
     msg = taskStatus()
 
     if request.method == 'POST':
-        data_resource = DataAVMResource()
-        dataset = Dataset()
-        # print(f"dataset antes: {dataset}")
-        datos_file = request.FILES['xlsfile']
-        # print(f"datos_pozo: {datos_pozo}")
-        dataset.load(datos_file.read())
-        # print(f"{dataset}")
 
-        import_data_task.delay(data_resource, dataset)
-        return HttpResponseRedirect(reverse("index"))
+        form = CargarDatosForm(request.POST, request.FILES)
+        if form.is_valid():
+            data_resource = DataAVMResource()
+            dataset = Dataset()
+            # print(f"dataset antes: {dataset}")
+            datos_file = request.FILES['archivo']
+            # print(f"datos_pozo: {datos_pozo}")
+            dataset.load(datos_file.read())
+            # print(f"{dataset}")
+
+            # import_data_task.delay(data_resource, dataset)
+            # return HttpResponseRedirect(reverse("index"))
+    form = CargarDatosForm()
 
     return render(request, "Basic/cargarDatos.html", {
-        "message": msg
+        "message": msg,
+        "form": form
     })
 
 
