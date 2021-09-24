@@ -102,6 +102,9 @@ class DataAVMResource(resources.ModelResource):
             )
             if new:
                 instanceCampo.pozos.add(instancePozo)
+        else:
+            raise ValueError(f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
+
 
     class Meta:
         model = DataAVM

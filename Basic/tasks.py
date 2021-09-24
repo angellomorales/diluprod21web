@@ -54,7 +54,7 @@ def import_data(data_resource, dataset):
     # data_resource = apps.get_model('Basic.{}'.format(data_resource_name)) #cargar modelo solo con el nombre
 
     result = data_resource.import_data(
-        dataset, dry_run=True)  # Test the data import
+        dataset, dry_run=True,raise_errors=True)  # Test the data import
     if result.has_errors():
         raise ValueError("error al cargar el archivo")
     else:
