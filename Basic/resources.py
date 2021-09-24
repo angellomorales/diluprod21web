@@ -94,7 +94,8 @@ class DataAVMResource(resources.ModelResource):
         if not(row.get('SARTA') == None):
             instancePozo, new = Pozo.objects.get_or_create(
                 nombre=row.get('SARTA'),
-                defaults={'estado': row.get('ESTADO')}#https://stackoverflow.com/questions/19362085/get-or-create-throws-integrity-error
+                # https://stackoverflow.com/questions/19362085/get-or-create-throws-integrity-error
+                defaults={'estado': row.get('ESTADO')}
             )
             instanceCampo, new2 = Campo.objects.get_or_create(
                 nombre=row.get('CAMPO')

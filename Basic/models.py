@@ -17,7 +17,7 @@ class taskTracker(models.Model):
     task_id = models.CharField(max_length=255)
     status = models.CharField(
         max_length=12, choices=CHOICESSTATUS, default='FINISHED', blank=False, null=False)
-    type_error = models.TextField(blank=True ,null=True)
+    type_error = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.task} status: {self.status}"
