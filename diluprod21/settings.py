@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import dj_database_url
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,14 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret! ---------------------cambios para produccion-------------------------
 # SECRET_KEY = ')6nu)feg%5==x_5-64u3s_x(#m)&!*m-)cbsqzylif4y(sc^22'
-import os
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')6nu)feg%5==x_5-64u3s_x(#m)&!*m-)cbsqzylif4y(sc^22')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', ')6nu)feg%5==x_5-64u3s_x(#m)&!*m-)cbsqzylif4y(sc^22')
 
 # SECURITY WARNING: don't run with debug turned on in production! ---------------------cambios para produccion-------------------------
 # DEBUG = True
-DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['diluprod21.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['diluprod21.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -86,11 +88,11 @@ WSGI_APPLICATION = 'diluprod21.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME','diluprod21db'),
-        'USER': os.environ.get('DATABASE_USER','root'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD','Controwell.2020'),
-        'HOST': os.environ.get('DATABASE_HOST','localhost'),
-        'PORT': os.environ.get('DATABASE_PORT','3310'),
+        'NAME': os.environ.get('DATABASE_NAME', 'diluprod21db'),
+        'USER': os.environ.get('DATABASE_USER', 'root'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'Controwell.2020'),
+        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('DATABASE_PORT', '3310'),
     }
 }
 
@@ -138,7 +140,6 @@ STATIC_URL = '/static/'
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Heroku: Update database configuration from $DATABASE_URL.---------------------cambios para produccion-------------------------
-import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
@@ -157,4 +158,5 @@ CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['pickle']
 
 # usar broker de rediss heroku, para el cual se utiliza la REDIS_TLS_URL en las config vars, si no quiero usar redis quitar linea e instalar rabbit MQ en el equipo donde corre celery
-CELERY_BROKER_URL=os.environ.get('REDIS_TLS_URL','rediss://:p9287001193ee93f6b150df968e319f40c88de7d19f5e4654651f9d8dd510411c@ec2-52-22-1-220.compute-1.amazonaws.com:30040')
+CELERY_BROKER_URL = os.environ.get(
+    'REDIS_TLS_URL', 'rediss://:p9287001193ee93f6b150df968e319f40c88de7d19f5e4654651f9d8dd510411c@ec2-52-22-1-220.compute-1.amazonaws.com:30040')
