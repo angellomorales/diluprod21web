@@ -228,7 +228,7 @@ def cargarDatos(request):
 def taskStatus():
     task = taskTracker.objects.filter(task=import_data_task.__name__)
     if task.exists():
-        return(task.get().status)
+        return(task.get())
     else:
         return None
 
