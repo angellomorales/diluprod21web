@@ -67,10 +67,10 @@ class DataHistoricaForm(ModelForm):
 
 
 class CargarDatosForm(forms.Form):
-    CHOICES = [('option-1', 'Data AVM'), ('option-2', 'Data Stork'),
-               ('option-3', 'Data Pozo Inyector'), ('option-4', 'Data Laboratorio')]
+    CHOICES = [('Data AVM', 'Data AVM'), ('Data Stork', 'Data Stork'),
+               ('Data Pozo Inyector', 'Data Pozo Inyector'), ('Data Laboratorio', 'Data Laboratorio')]
     tipo = forms.ChoiceField(choices=CHOICES, required=True,
-                             label="Archivo", widget=forms.Select, initial='option-1')
+                             label="Archivo", widget=forms.Select, initial='Data AVM')
     # archivo = forms.FileField()
     archivo = forms.FileField(required=False)
 

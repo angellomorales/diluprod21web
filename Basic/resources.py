@@ -103,8 +103,8 @@ class DataAVMResource(resources.ModelResource):
             if new:
                 instanceCampo.pozos.add(instancePozo)
         else:
-            raise ValueError(f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
-
+            raise ValueError(
+                f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
 
     class Meta:
         model = DataAVM
@@ -113,3 +113,21 @@ class DataAVMResource(resources.ModelResource):
         exclude = ('id')
         fields = ('SARTA', 'ESTADO', 'FECHA', 'BSW', 'API', 'TASA DE LIQUIDO', 'TASA DE GAS', 'TASA DE AGUA', 'TASA DE ACEITE', 'GOR',
                   'THP', 'VELOCIDAD BOMBA', 'CORRIENTE VSD', 'PIP', 'VOLTAJE OUT VSD', 'TEMP_ CABEZA', 'PRUEBA VALIDA', 'COMENTARIOS', 'SALINIDAD')
+
+
+class DataStorkResource(resources.ModelResource):
+    def import_data(self, *args, **kwargs):
+        raise ValueError(
+            f"Funcionalidad DataStork deshabilitada temporalmente")
+
+
+class DataPozoInyectorResource(resources.ModelResource):
+    def import_data(self, *args, **kwargs):
+        raise ValueError(
+            f"Funcionalidad Pozo Inyector deshabilitada temporalmente")
+
+
+class DataLaboratorioResource(resources.ModelResource):
+    def import_data(self, *args, **kwargs):
+        raise ValueError(
+            f"Funcionalidad data Laboratorio deshabilitada temporalmente")
