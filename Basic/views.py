@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .models import DataAVM, taskTracker, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm
 from .calculos import Calculos
-from .resources import DataAVMResource, DataPozoResource
+from .resources import DataAVMResource, DataStorkResource, DataPozoInyectorResource, DataLaboratorioResource, DataPozoResource
 from .representations import Representations
 from .grafica import Grafica
 from .tasks import import_data_task
@@ -207,7 +207,15 @@ def cargarDatos(request):
 
         form = CargarDatosForm(request.POST, request.FILES)
         if form.is_valid():
-            data_resource = DataAVMResource()
+            tipo = request.POST['tipo']
+            if tipo == 'Data AVM':
+                data_resource = DataAVMResource()
+            if tipo == 'Data Stork':
+                data_resource = DataStorkResource()
+            if tipo == 'Data Pozo Inyector':
+                data_resource = DataPozoInyectorResource()
+            if tipo == 'Data Laboratorio':
+                data_resource = DataLaboratorioResource()
             dataset = Dataset()
             # print(f"dataset antes: {dataset}")
             datos_file = request.FILES['archivo']
