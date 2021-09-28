@@ -105,6 +105,8 @@ class DataStork(models.Model):
         max_digits=11, decimal_places=2, blank=True, null=True)
     diluyenteInyectado = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
+    fluidoTotal = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
     comentarios = models.TextField(blank=True, null=True)
 
 
