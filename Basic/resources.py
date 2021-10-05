@@ -2,6 +2,7 @@ from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 from .models import Campo, DataAVM, DataStork, Pozo
+from decimal import Decimal
 
 
 # class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
@@ -43,8 +44,8 @@ class ForeignKeyWidgetMultipleFields(ForeignKeyWidget):
         if value:
             print(self.field, value)
             return self.get_queryset(value, row, *args, **kwargs).get(**{self.field: value}) if self.get_queryset(value, row, *args, **kwargs).exists() else None
-        else:
-            raise ValueError(self.field + " required")
+        # else:
+        #     raise ValueError(self.field + " required")
 
     def get_queryset(self, value, row):
         return self.model.objects.filter(pozo=row["POZO"], fecha=row["FECHA DE INICIO DE LA PRUEBA"])
@@ -142,6 +143,13 @@ class DataStorkResource(resources.ModelResource):
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
 
     def skip_row(self, instance, original):
+        if not (getattr(original, 'dataAVM_id') == None):
+            diff_orig = getattr(original, 'dataAVM').bsw / \
+                100 - getattr(original, 'bsw')
+            diff_actual = getattr(instance, 'dataAVM').bsw / \
+                100 - Decimal(getattr(instance, 'bsw'))
+            if diff_orig < diff_actual:
+                return True
         skip = getattr(instance, 'dataAVM_id') == None
         return skip
 
