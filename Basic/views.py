@@ -15,7 +15,7 @@ from .calculos import Calculos
 from .resources import DataAVMResource, DataStorkResource, DataPozoInyectorResource, DataLaboratorioResource, DataPozoResource
 from .representations import Representations
 from .grafica import Grafica
-from .tasks import import_data_task
+from .tasks import import_data, import_data_task
 
 
 def index(request):
@@ -224,6 +224,7 @@ def cargarDatos(request):
             # print(f"{dataset}")
 
             import_data_task.delay(data_resource, dataset)
+            # import_data(data_resource, dataset)
             return HttpResponseRedirect(reverse("index"))
     form = CargarDatosForm()
 

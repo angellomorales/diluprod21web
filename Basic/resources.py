@@ -1,40 +1,53 @@
 from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
-from .models import Campo, DataAVM, Pozo
+from .models import Campo, DataAVM, DataStork, Pozo
 
 
-class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
+# class ForeignKeyWidgetWithCreation(ForeignKeyWidget):
 
-    def __init__(self, model, field="pk", create=False, **kwargs):
-        self.model = model
-        self.field = field
-        self.create = create
-        # super(ForeignKeyWidgetWithCreation, self).__init__(
-        #     model, field=field, **kwargs)
+#     def __init__(self, model, field="pk", create=False, **kwargs):
+#         self.model = model
+#         self.field = field
+#         self.create = create
+#         # super(ForeignKeyWidgetWithCreation, self).__init__(
+#         #     model, field=field, **kwargs)
 
-    def clean(self, value, **kwargs):
-        if not value:
-            return None
+#     def clean(self, value, **kwargs):
+#         if not value:
+#             return None
 
-        if self.create:
-            instance, new = self.model.objects.get_or_create(
-                **{self.field: value})
+#         if self.create:
+#             instance, new = self.model.objects.get_or_create(
+#                 **{self.field: value})
 
-        val = super(ForeignKeyWidgetWithCreation, self).clean(value, **kwargs)
+#         val = super(ForeignKeyWidgetWithCreation, self).clean(value, **kwargs)
 
-        return self.model.objects.get(**{self.field: val}) if val else None
-        # es lo mismo que lo de arriba
-        # if val:
-        #     myreturnobj=self.model.objects.get(**{self.field: val})
-        #     # return myreturnobj
-        # else:
-        #     return None
+#         return self.model.objects.get(**{self.field: val}) if val else None
+#         # es lo mismo que lo de arriba
+#         # if val:
+#         #     myreturnobj=self.model.objects.get(**{self.field: val})
+#         #     # return myreturnobj
+#         # else:
+#         #     return None
 
 
-class StoreWidget(ForeignKeyWidget):
-    def clean(self, value, **kwargs):
-        return self.model.objects.get_or_create(nombre=value)
+# class StoreWidget(ForeignKeyWidget):
+#     def clean(self, value, **kwargs):
+#         return self.model.objects.get_or_create(nombre=value)
+
+
+class ForeignKeyWidgetMultipleFields(ForeignKeyWidget):
+
+    def clean(self, value, row=None, *args, **kwargs):
+        if value:
+            print(self.field, value)
+            return self.get_queryset(value, row, *args, **kwargs).get(**{self.field: value}) if self.get_queryset(value, row, *args, **kwargs).exists() else None
+        else:
+            raise ValueError(self.field + " required")
+
+    def get_queryset(self, value, row):
+        return self.model.objects.filter(pozo=row["POZO"], fecha=row["FECHA DE INICIO DE LA PRUEBA"])
 
 
 class DataPozoResource(resources.ModelResource):
@@ -116,9 +129,27 @@ class DataAVMResource(resources.ModelResource):
 
 
 class DataStorkResource(resources.ModelResource):
-    def import_data(self, *args, **kwargs):
-        raise ValueError(
-            f"Funcionalidad DataStork deshabilitada temporalmente")
+    POZO = Field(attribute='dataAVM', column_name='POZO', widget=ForeignKeyWidgetMultipleFields(
+        DataAVM, 'pozo'), saves_null_values=False)
+
+    SW_MEZCLA = Field(attribute='swMezcla', column_name=' % S&W')
+    DILUYENTE = Field(attribute='diluyenteInyectado',
+                      column_name='NAFTA INYECTADA (BPD) (MULTIFASICO)')
+    FLUIDO_TOTAL = Field(attribute='fluidoTotal',
+                         column_name='FLUIDO TOTAL (BFPD)')
+    COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
+
+    def skip_row(self, instance, original):
+        skip = getattr(instance, 'dataAVM_id') == None
+        return skip
+
+    class Meta:
+        model = DataStork
+        skip_unchanged = True
+        import_id_fields = ('POZO',)
+        # exclude = ('id')
+        fields = ('POZO', ' % S&W', 'FLUIDO TOTAL (BFPD)',
+                  'NAFTA INYECTADA (BPD) (MULTIFASICO)', 'COMENTARIOS')
 
 
 class DataPozoInyectorResource(resources.ModelResource):
