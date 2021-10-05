@@ -142,6 +142,13 @@ class DataStorkResource(resources.ModelResource):
                 column_name=' % S&W (MULTIFASICO)')
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
 
+    def before_import_row(self, row, **kwargs):
+        try:
+            val=row[" % S&W (MULTIFASICO)"]
+        except:
+            raise ValueError(
+                f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
+
     def skip_row(self, instance, original):
         if not (getattr(original, 'dataAVM_id') == None):
             diff_orig = getattr(original, 'dataAVM').bsw / \
