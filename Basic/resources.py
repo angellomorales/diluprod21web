@@ -137,6 +137,8 @@ class DataStorkResource(resources.ModelResource):
                       column_name='NAFTA INYECTADA (BPD) (MULTIFASICO)')
     FLUIDO_TOTAL = Field(attribute='fluidoTotal',
                          column_name='FLUIDO TOTAL (BFPD)')
+    BSW = Field(attribute='bsw',
+                column_name=' % S&W (MULTIFASICO)')
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
 
     def skip_row(self, instance, original):
@@ -148,7 +150,7 @@ class DataStorkResource(resources.ModelResource):
         skip_unchanged = True
         import_id_fields = ('POZO',)
         # exclude = ('id')
-        fields = ('POZO', ' % S&W', 'FLUIDO TOTAL (BFPD)',
+        fields = ('POZO', ' % S&W', 'FLUIDO TOTAL (BFPD)', ' % S&W (MULTIFASICO)',
                   'NAFTA INYECTADA (BPD) (MULTIFASICO)', 'COMENTARIOS')
 
 
