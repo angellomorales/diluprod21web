@@ -109,6 +109,8 @@ class DataStork(models.Model):
         max_digits=11, decimal_places=2, blank=True, null=True)
     bsw = models.DecimalField(
         max_digits=11, decimal_places=3, blank=True, null=True)
+    api = models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
     comentarios = models.TextField(blank=True, null=True)
 
 

@@ -140,11 +140,13 @@ class DataStorkResource(resources.ModelResource):
                          column_name='FLUIDO TOTAL (BFPD)')
     BSW = Field(attribute='bsw',
                 column_name=' % S&W (MULTIFASICO)')
+    API = Field(attribute='api',
+                column_name='API MEZCLA  @ 60 °F')
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
 
     def before_import_row(self, row, **kwargs):
         try:
-            val=row[" % S&W (MULTIFASICO)"]
+            val = row[" % S&W (MULTIFASICO)"]
         except:
             raise ValueError(
                 f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
@@ -165,7 +167,7 @@ class DataStorkResource(resources.ModelResource):
         skip_unchanged = True
         import_id_fields = ('POZO',)
         # exclude = ('id')
-        fields = ('POZO', ' % S&W', 'FLUIDO TOTAL (BFPD)', ' % S&W (MULTIFASICO)',
+        fields = ('POZO', ' % S&W', 'FLUIDO TOTAL (BFPD)', ' % S&W (MULTIFASICO)', 'API MEZCLA  @ 60 °F',
                   'NAFTA INYECTADA (BPD) (MULTIFASICO)', 'COMENTARIOS')
 
 
