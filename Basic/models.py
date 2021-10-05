@@ -89,7 +89,7 @@ class DataAVM(models.Model):
         max_digits=11, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} es {self.pruebaValida}"
+        return f"{self.fecha}: {self.pozo} Fluido Total: {self.tasaLiquido} S&W: {self.bsw}"
 
     class Meta:
         ordering = ["fecha"]
@@ -112,6 +112,9 @@ class DataStork(models.Model):
     api = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
     comentarios = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+            return f"{self.dataAVM}:  | Fluido total stok: {self.fluidoTotal} S&W stork: {self.bsw*100}"
 
 
 class DataAgar(models.Model):
