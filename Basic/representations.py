@@ -4,6 +4,9 @@ import json
 class Representations():
 
     def representacionDataHistorica(self, dataPozo):
+        # traer la data stork relacionada a data avm si existe ver modelo
+        datastork = dataPozo.storkAVM.all().get(
+        ) if dataPozo.storkAVM.all().exists() else None
         dataPozoRepresentation = {
             "fecha": dataPozo.fecha,
             "tablas": [{
@@ -90,17 +93,29 @@ class Representations():
                     "unidades": "Ppm",
                     "color": "rgb(170, 145, 13)"  # Amarillo quemado
                 }, {
-                    "id": "diluyente",
+                    "id": "diluyenteInyectado",
                     "cabecera": "DILUYENTE",
-                    "valor": None,
+                    "valor": getattr(datastork, 'diluyenteInyectado', None),
                     "unidades": "BPD",
                     "color": "rgb(179, 242, 216)"  # Verde Crema
+                }, {
+                    "id": "swMezcla",
+                    "cabecera": "S&W Mezcla",
+                    "valor": getattr(datastork, 'swMezcla', None),
+                    "unidades": "%",
+                    "color": "rgb(197, 170, 198)"  # rosado quemado
+                }, {
+                    "id": "apiMezcla",
+                    "cabecera": "API Mezcla",
+                    "valor": getattr(datastork, 'apiMezcla', None),
+                    "unidades": "º",
+                    "color": "rgb(172, 198, 242)"  # Azul Crema
                 }]
             }, {
                 "titulo": "COMENTARIOS",
                 "contenido": [{
                     "id": "comentarios",
-                    "valor": dataPozo.comentarios
+                    "valor": (f"{dataPozo.comentarios} \n{getattr(datastork,'comentarios','')}")
                 }]
             }]
         }
