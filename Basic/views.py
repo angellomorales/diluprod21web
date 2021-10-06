@@ -201,7 +201,7 @@ def dataHistorica_view(request):
 
 @login_required(login_url="index")
 def cargarDatos(request):
-    msg = taskStatus()
+    taskTracker = taskStatus()
 
     if request.method == 'POST':
 
@@ -229,7 +229,7 @@ def cargarDatos(request):
     form = CargarDatosForm()
 
     return render(request, "Basic/cargarDatos.html", {
-        "message": msg,
+        "taskTracker": taskTracker,
         "form": form
     })
 
