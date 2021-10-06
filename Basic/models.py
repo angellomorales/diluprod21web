@@ -109,12 +109,12 @@ class DataStork(models.Model):
         max_digits=11, decimal_places=2, blank=True, null=True)
     bsw = models.DecimalField(
         max_digits=11, decimal_places=3, blank=True, null=True)
-    api = models.DecimalField(
+    apiMezcla = models.DecimalField(
         max_digits=11, decimal_places=2, blank=True, null=True)
     comentarios = models.TextField(blank=True, null=True)
 
     def __str__(self):
-            return f"{self.dataAVM}:  | Fluido total stok: {self.fluidoTotal} S&W stork: {self.bsw*100}"
+            return f"{self.dataAVM}:  | Fluido total stork: {self.fluidoTotal} S&W stork: {self.bsw*100}"
 
 
 class DataAgar(models.Model):

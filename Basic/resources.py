@@ -140,7 +140,7 @@ class DataStorkResource(resources.ModelResource):
                          column_name='FLUIDO TOTAL (BFPD)')
     BSW = Field(attribute='bsw',
                 column_name=' % S&W (MULTIFASICO)')
-    API = Field(attribute='api',
+    API = Field(attribute='apiMezcla',
                 column_name='API MEZCLA  @ 60 °F')
     COMENTARIOS = Field(attribute='comentarios', column_name='COMENTARIOS')
 
