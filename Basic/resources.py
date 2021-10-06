@@ -42,7 +42,7 @@ class ForeignKeyWidgetMultipleFields(ForeignKeyWidget):
 
     def clean(self, value, row=None, *args, **kwargs):
         if value:
-            print(self.field, value)
+            # print(self.field, value)
             return self.get_queryset(value, row, *args, **kwargs).get(**{self.field: value}) if self.get_queryset(value, row, *args, **kwargs).exists() else None
         # else:
         #     raise ValueError(self.field + " required")
@@ -147,6 +147,8 @@ class DataStorkResource(resources.ModelResource):
     def before_import_row(self, row, **kwargs):
         try:
             val = row[" % S&W (MULTIFASICO)"]
+            if row[" % S&W"]:
+                row[" % S&W"] = row[" % S&W"]*100
         except:
             raise ValueError(
                 f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
