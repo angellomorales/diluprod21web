@@ -262,7 +262,7 @@ def graficarDataHistorica_view(request, graphId):
                     # stringLabel=''.join( x for x in idSerie if x not in "id_")
                     series.append({
                         'nombre': idSerie['id'],
-                        'variable': item.__dict__.get(idSerie['id']),
+                        'variable': getVariable_AVM_or_Stork(item, idSerie),
                         'label': f"{idSerie['label']} ({idSerie['unidades']})",
                         'backgroundColor': idSerie['color'],
                         'borderColor': idSerie['color'],
@@ -300,6 +300,16 @@ def graficarDataHistorica_view(request, graphId):
         # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
         return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
     return render(request, "Basic/calculos.html")
+
+
+def getVariable_AVM_or_Stork(item, idSerie):
+    
+    datastork = item.storkAVM.all().get() if item.storkAVM.all().exists() else None
+
+    if item.__dict__.get(idSerie['id']):
+        return item.__dict__.get(idSerie['id'])
+    else:
+        return getattr(datastork, idSerie['id'], None)
 
 
 @login_required(login_url="index")
