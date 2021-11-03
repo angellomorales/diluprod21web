@@ -45,11 +45,33 @@ function load_predata_Calculos(PozoId) {
 }
 
 function cargarPredata(dataResponse) {
-    // console.log(dataResponse);
+    console.log(dataResponse);
     if (dataResponse.pozoId != null) {
         document.querySelector('#id_aceite').value = dataResponse.data.tablas[2].contenido[0].valor;
         document.querySelector('#id_swCabeza').value = dataResponse.data.tablas[3].contenido[0].valor;
         document.querySelector('#id_apiCabeza').value = dataResponse.data.tablas[3].contenido[1].valor;
+        document.querySelector('#id_ultimaPrueba').innerHTML = '<div class="col-auto">'+
+        '<div class="app-card app-card-orders-table mb-0">'+
+            '<div class="app-card-body">'+
+                '<div class="table-responsive">'+
+                    '<table class="table mb-0 text-left">'+
+                        '<tbody>'+
+                            '<tr>'+
+                                '<td class="cell">Fecha del última prueba:</td>'+
+                                '<th class="cell">'+dataResponse.data.fecha+'</td>'+
+                            '</tr>'+
+                        '</tbody>'+
+                    '</table>'+
+                '</div>'+
+            '</div>'+
+        '</div>'+
+    '</div>';
+    }
+    else{
+        document.querySelector('#id_aceite').value='';
+        document.querySelector('#id_swCabeza').value = '';
+        document.querySelector('#id_apiCabeza').value = '';
+        document.querySelector('#id_ultimaPrueba').innerHTML = '';
     };
 
 }
