@@ -28,7 +28,7 @@ class CalculosForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CalculosForm, self).__init__(*args, **kwargs)
         self.fields['pozo'].widget.attrs.update(
-            {'class': 'form-control'})
+            {'class': 'form-control','list':'Pozos'})
         self.fields['aceite'].widget.attrs.update(
             {'class': 'form-control'})
         self.fields['swCabeza'].widget.attrs.update(

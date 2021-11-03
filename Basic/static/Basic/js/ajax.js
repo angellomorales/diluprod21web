@@ -9,10 +9,16 @@ function enviarAJAX(url, bodyJson) {
     })
         .then(response => response.json())
         // .then(status)
-        .then(dataGraph => {
+        .then(dataResponse => {
             // Print data
             // console.log(dataGraph);
-            graficar(dataGraph);
+            if (url.includes("graficar")) {
+                dataGraph=dataResponse;
+                graficar(dataGraph);
+            }
+            else{
+                cargarPredata(dataResponse)
+            }
 
         })
         .catch(err => console.log(err));

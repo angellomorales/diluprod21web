@@ -1,19 +1,12 @@
-// var data = [{ x: 'Sales', series1: 1500, series2:0 }, { x: 'Purchases', series1: 500, series2:0 }, { x: 'Sales2', series1: 1500, series2:0 }]
-
 document.addEventListener('DOMContentLoaded', function () {
     // listeners para obtener los datos de la grafica
     // if (document.getElementById('relacionDiluyente')) {
     //     document.getElementById('relacionDiluyente').addEventListener('click', () => load_data_Graficas('relacionDiluyente'));
     // }
-    // if (document.getElementById('diluyenteRequerido')) {
-    //     document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data_Graficas('diluyenteRequerido'));
-    // }
-    // if (document.getElementById('limiteRestriccion')) {
-    //     document.getElementById('limiteRestriccion').addEventListener('click', () => load_data_Graficas('limiteRestriccion'));
-    // }
-    // if (document.getElementById('viscosidadBSW')) {
-    //     document.getElementById('viscosidadBSW').addEventListener('click', () => load_data_Graficas('viscosidadBSW'));
-    // }
+    const selectPozo = document.querySelector('#id_pozo');
+    selectPozo.addEventListener('change', (event) => {
+        load_predata_Calculos(`${event.target.value}`);
+    });
 
     // grafica default
     if (document.getElementById('id_apiMezclaHumedo')) {
@@ -28,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function load_data_Graficas(graphId) {
-    const pozo = document.querySelector('#id_pozo').value;
     const aceite = document.querySelector('#id_aceite').value;
     const apiCabeza = document.querySelector('#id_apiCabeza').value;
     const apiDiluyente = document.querySelector('#id_apiDiluyente').value;
@@ -37,7 +29,6 @@ function load_data_Graficas(graphId) {
     const idContenedor = document.querySelector('#chartCalculos').id;
     url = `/graficarCalculos/${graphId}`;
     bodyJson = JSON.stringify({
-        pozo: pozo,
         aceite: aceite,
         apiCabeza: apiCabeza,
         apiDiluyente: apiDiluyente,
@@ -45,5 +36,20 @@ function load_data_Graficas(graphId) {
         idContenedor: idContenedor
     });
     enviarAJAX(url, bodyJson);
+
+}
+
+function load_predata_Calculos(PozoId) {
+    url = `/cargarPredataCalculos/${PozoId}`;
+    enviarAJAX(url, "");
+}
+
+function cargarPredata(dataResponse) {
+    // console.log(dataResponse);
+    if (dataResponse.pozoId != null) {
+        document.querySelector('#id_aceite').value = dataResponse.data.tablas[2].contenido[0].valor;
+        document.querySelector('#id_swCabeza').value = dataResponse.data.tablas[3].contenido[0].valor;
+        document.querySelector('#id_apiCabeza').value = dataResponse.data.tablas[3].contenido[1].valor;
+    };
 
 }

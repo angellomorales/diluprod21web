@@ -23,6 +23,13 @@
                     {% endfor %}
                     <button type="submit" class="btn app-btn-primary" value="Calcular">Calcular</button>
                 </form>
+                <div class="mb-3">
+                    <datalist id="Pozos">
+                        {% for pozo in pozos %}
+                        <option value="{{ pozo }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
             </div>
             <!--//app-card-body-->
 
@@ -137,6 +144,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.0/chartjs-plugin-zoom.min.js"></script> -->
 <script src="{% static 'Basic/plugins/chart.js/chart.min.js' %}"></script>
 <script src="{% static 'Basic/plugins/chart.js/chartjs-plugin-zoom.min.js' %}"></script>
+<script src="{% static 'Basic/js/ajax.js' %}"></script>
 <script src="{% static 'Basic/js/graficas.js' %}"></script>
-<script src="{% static 'Basic/js/enviarGraficaCalculos.js' %}"></script>
+<script src="{% static 'Basic/js/enviarEventosCalculos.js' %}"></script>
 {% endblock %}

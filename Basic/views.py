@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import DataAVM, taskTracker, User
+from .models import DataAVM, Pozo, taskTracker, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataStorkResource, DataPozoInyectorResource, DataLaboratorioResource, DataPozoResource
@@ -49,10 +49,11 @@ def logout_view(request):
 
 @login_required(login_url="index")
 def calculos_view(request):
+    pozos = Pozo.objects.all()
+
     if request.method == "POST":
         form = CalculosForm(request.POST)
         if form.is_valid():
-            pozo = form.cleaned_data["pozo"]
             aceite = form.cleaned_data["aceite"]
             swCabeza = form.cleaned_data["swCabeza"]
             apiCabeza = form.cleaned_data["apiCabeza"]
@@ -70,18 +71,34 @@ def calculos_view(request):
             data = representation.representacionCalculos(calculos)
             return render(request, "Basic/calculos.html", {
                 "form": form,
+                "pozos": pozos,
                 "esCalculado": True,
                 "data": data
             })
         else:
             # form.fields['category'].choices = CategoryChoices.choices#add a choices in category
             return render(request, "Basic/calculos.html", {
-                "form": form
+                "form": form,
+                "pozos": pozos
             })
     form = CalculosForm()
     return render(request, "Basic/calculos.html", {
-        "form": form
+        "form": form,
+        "pozos": pozos
     })
+
+
+@login_required(login_url="index")
+def cargarPredataCalculos_view(request, pozoId):
+    if request.method == "POST":
+        try:
+            dataAVM = DataAVM.objects.filter(pozo=pozoId).latest()
+            representations=Representations()
+            dataResponse = {'pozoId':pozoId,'data':representations.representacionDataHistorica(dataAVM)}
+            return JsonResponse(dataResponse)
+        except DataAVM.DoesNotExist:
+            return JsonResponse({'pozoId':None})
+    return render(request, "Basic/calculos.html")
 
 
 @login_required(login_url="index")
@@ -89,7 +106,6 @@ def graficarCalculos_view(request, graphId):
     if request.method == "POST":
         data = json.loads(request.body)
         calculos = Calculos()
-        pozo = data.get("pozo")
         aceite = data["aceite"]
         apiCabeza = data["apiCabeza"]
         apiDiluyente = data.get("apiDiluyente")
@@ -303,7 +319,7 @@ def graficarDataHistorica_view(request, graphId):
 
 
 def getVariable_AVM_or_Stork(item, idSerie):
-    
+
     datastork = item.storkAVM.all().get() if item.storkAVM.all().exists() else None
 
     if item.__dict__.get(idSerie['id']):
