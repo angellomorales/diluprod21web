@@ -3,31 +3,31 @@
 document.addEventListener('DOMContentLoaded', function () {
     // listeners para obtener los datos de la grafica
     // if (document.getElementById('relacionDiluyente')) {
-    //     document.getElementById('relacionDiluyente').addEventListener('click', () => load_data('relacionDiluyente'));
+    //     document.getElementById('relacionDiluyente').addEventListener('click', () => load_data_Graficas('relacionDiluyente'));
     // }
     // if (document.getElementById('diluyenteRequerido')) {
-    //     document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data('diluyenteRequerido'));
+    //     document.getElementById('diluyenteRequerido').addEventListener('click', () => load_data_Graficas('diluyenteRequerido'));
     // }
     // if (document.getElementById('limiteRestriccion')) {
-    //     document.getElementById('limiteRestriccion').addEventListener('click', () => load_data('limiteRestriccion'));
+    //     document.getElementById('limiteRestriccion').addEventListener('click', () => load_data_Graficas('limiteRestriccion'));
     // }
     // if (document.getElementById('viscosidadBSW')) {
-    //     document.getElementById('viscosidadBSW').addEventListener('click', () => load_data('viscosidadBSW'));
+    //     document.getElementById('viscosidadBSW').addEventListener('click', () => load_data_Graficas('viscosidadBSW'));
     // }
 
     // grafica default
     if (document.getElementById('id_apiMezclaHumedo')) {
-        load_data('relacionDiluyente');
+        load_data_Graficas('relacionDiluyente');
         const selectElement = document.querySelector('#selectCalculos');
 
         selectElement.addEventListener('change', (event) => {
-            load_data(`${event.target.value}`);
+            load_data_Graficas(`${event.target.value}`);
         });
     }
 
 });
 
-function load_data(graphId) {
+function load_data_Graficas(graphId) {
     const pozo = document.querySelector('#id_pozo').value;
     const aceite = document.querySelector('#id_aceite').value;
     const apiCabeza = document.querySelector('#id_apiCabeza').value;
