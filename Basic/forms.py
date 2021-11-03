@@ -55,16 +55,24 @@ class LaboratorioForm(forms.Form):
             {'class': 'form-control mx-sm-3 mb-2'})
 
 
-class DataHistoricaForm(ModelForm):
-    class Meta:
-        model = DataAVM
-        fields = ['pozo']
+# class DataHistoricaForm(ModelForm):#para usar el ModelForm asignando un select para seleccionar todos los pozos
+#     class Meta:
+#         model = DataAVM
+#         fields = ['pozo']
+
+#     def __init__(self, *args, **kwargs):
+#         super(DataHistoricaForm, self).__init__(*args, **kwargs)
+#         self.fields['pozo'].widget.attrs.update(
+#             {'class': 'form-select w-auto'})
+
+
+class DataHistoricaForm(forms.Form):
+    pozo = forms.CharField(required=True, label="Pozo")
 
     def __init__(self, *args, **kwargs):
         super(DataHistoricaForm, self).__init__(*args, **kwargs)
         self.fields['pozo'].widget.attrs.update(
-            {'class': 'form-select w-auto'})
-
+            {'class': 'form-control','list':'Pozos'})
 
 class CargarDatosForm(forms.Form):
     CHOICES = [('Data AVM', 'Data AVM'), ('Data Stork', 'Data Stork'),

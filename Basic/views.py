@@ -93,11 +93,12 @@ def cargarPredataCalculos_view(request, pozoId):
     if request.method == "POST":
         try:
             dataAVM = DataAVM.objects.filter(pozo=pozoId).latest()
-            representations=Representations()
-            dataResponse = {'pozoId':pozoId,'data':representations.representacionDataHistorica(dataAVM)}
+            representations = Representations()
+            dataResponse = {
+                'pozoId': pozoId, 'data': representations.representacionDataHistorica(dataAVM)}
             return JsonResponse(dataResponse)
         except DataAVM.DoesNotExist:
-            return JsonResponse({'pozoId':None})
+            return JsonResponse({'pozoId': None})
     return render(request, "Basic/calculos.html")
 
 
@@ -197,21 +198,32 @@ def pozoInyector_view(request):
 
 @login_required(login_url="index")
 def dataHistorica_view(request):
+    pozos = Pozo.objects.all()
+
     if request.method == "POST":
         form = DataHistoricaForm(request.POST)
         if form.is_valid():
-            pozo = form.cleaned_data["pozo"]
-            dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
-            representation = Representations()
-            data = representation.representacionDataHistorica(dataPozo)
-            return render(request, "Basic/dataHistorica.html", {
-                "form": form,
-                "data": data,
-                "esCalculado": True
-            })
+            try:
+                pozo = form.cleaned_data["pozo"]
+                dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
+                representation = Representations()
+                data = representation.representacionDataHistorica(dataPozo)
+                return render(request, "Basic/dataHistorica.html", {
+                    "form": form,
+                    "data": data,
+                    "pozos": pozos,
+                    "esCalculado": True
+                })
+            except DataAVM.DoesNotExist:
+                return render(request, "Basic/dataHistorica.html", {
+                    "form": form,
+                    "pozos": pozos,
+                })
+
     form = DataHistoricaForm()
     return render(request, "Basic/dataHistorica.html", {
-        "form": form
+        "form": form,
+        "pozos": pozos,
     })
 
 
