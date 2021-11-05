@@ -22,13 +22,13 @@
                         {{ field }}
                     </div>
                     {% endfor %}
-                    <button type="submit" class="btn app-btn-primary" value="Calcular">Calcular</button>
+                    <button type="submit" class="btn app-btn-primary" value="Calcular" id="id_operacionCalcular">Calcular</button>
                 </form>
                 <div class="mb-3">
                     <datalist id="Pozos">
                         {% for pozo in pozos %}
                         <option value="{{ pozo }}">
-                        {% endfor %}
+                            {% endfor %}
                     </datalist>
                 </div>
             </div>
@@ -41,29 +41,47 @@
 
     {% if esCalculado %}
     <div class="col-12 col-md-8">
-        <div class="app-card app-card-chart h-10 shadow-sm">
-            <div class="app-card-body p-0 p-lg-4">
-                <div class="mb-3 d-flex">
-                    <select class="form-select form-select-sm ms-auto d-inline-flex w-auto" id="selectCalculos">
-                        <option value="relacionDiluyente" selected="">Relación diluyente</option>
-                        <option value="diluyenteRequerido">Diluyente</option>
-                        <option value="limiteRestriccion">Límite restricción</option>
-                        <option value="viscosidadBSW">Viscosidad</option>
-                    </select>
-                </div>
-                <div class="chart-container">
-                    <div class="chartjs-size-monitor">
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="app-card app-card-chart h-10 shadow-sm">
+                <div class="app-card-body p-0 p-lg-4">
+                    <div class="mb-3 d-flex">
+                        <select class="form-select form-select-sm ms-auto d-inline-flex w-auto" id="selectCalculos">
+                            <option value="relacionDiluyente" selected="">Relación diluyente</option>
+                            <option value="diluyenteRequerido">Diluyente</option>
+                            <option value="limiteRestriccion">Límite restricción</option>
+                            <option value="viscosidadBSW">Viscosidad</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
                         </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
+                        <div id="chartCalculos"></div>
+                    </div>
+                </div>
+                <!--//app-card-body-->
+            </div>
+        </div>
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="app-card app-card-stats-table h-100 shadow-sm">
+                <div class="app-card-header p-3">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h4 class="app-card-title" id="id_tituloResultadoCalculo"></h4>
                         </div>
                     </div>
-                    <div id="chartCalculos"></div>
                 </div>
+                <div class="app-card-body p-3 p-lg-4">
+                    <h1 id="id_ContenidoResultadoDiluyente">{{ diluyente|floatformat:2 }}</h1>
+                    <h1 id="id_ContenidoResultadoAPI">{{ api|floatformat:2 }}</h1>
+                </div>
+                <!--//app-card-body-->
             </div>
-            <!--//app-card-body-->
         </div>
     </div>
     <!--//Grafica-->

@@ -73,7 +73,9 @@ def calculos_view(request):
                 "form": form,
                 "pozos": pozos,
                 "esCalculado": True,
-                "data": data
+                "data": data,
+                "diluyente":data.get('tablas')[1].get('contenido')[1].get('valor'),
+                "api": data.get('tablas')[5].get('contenido')[0].get('valor')
             })
         else:
             # form.fields['category'].choices = CategoryChoices.choices#add a choices in category
