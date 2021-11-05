@@ -92,7 +92,7 @@ def calculos_view(request):
 def cargarPredataCalculos_view(request, pozoId):
     if request.method == "POST":
         try:
-            dataAVM = DataAVM.objects.filter(pozo=pozoId).latest()
+            dataAVM = DataAVM.objects.filter(pozo=pozoId).exclude(pruebaValida="PENDIENTE").latest()
             representations = Representations()
             dataResponse = {
                 'pozoId': pozoId, 'data': representations.representacionDataHistorica(dataAVM)}
@@ -205,7 +205,7 @@ def dataHistorica_view(request):
         if form.is_valid():
             try:
                 pozo = form.cleaned_data["pozo"]
-                dataPozo = DataAVM.objects.filter(pozo=pozo).latest()
+                dataPozo = DataAVM.objects.filter(pozo=pozo).exclude(pruebaValida="PENDIENTE").latest()
                 representation = Representations()
                 data = representation.representacionDataHistorica(dataPozo)
                 return render(request, "Basic/dataHistorica.html", {
