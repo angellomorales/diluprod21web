@@ -117,8 +117,19 @@ class DataStork(models.Model):
             return f"{self.dataAVM}:  | Fluido total stork: {self.fluidoTotal} S&W stork: {self.bsw*100}"
 
 
-class DataAgar(models.Model):
-    dataAVM = models.ForeignKey(
-        DataAVM, on_delete=models.CASCADE, related_name="agarAVM")
-    medidorNo = models.IntegerField(blank=True, null=True)
-    comentarios = models.TextField(blank=True, null=True)
+class PozoInyector(models.Model):
+    CHOICES = [('Inyección de agua', 'Inyección de agua'),
+               ('Inyección de polímero', 'Inyección de polímero')]
+    pozoInyector = models.ForeignKey(
+        Pozo, on_delete=models.CASCADE, related_name="PozoInyector")
+    caudalInyeccion= models.DecimalField(
+        max_digits=11, decimal_places=2, blank=True, null=True)
+    fechaInicio = models.DateField(auto_now=False, auto_now_add=False)
+    proceso=models.CharField(
+        max_length=25, choices=CHOICES, default='Inyección de agua', blank=False)
+    pozosAsociados = models.ManyToManyField(
+        'Pozo', blank=True, related_name="PozosAsociados")
+    
+
+    def __str__(self):
+            return f"{self.pozoInyector}:  | Caudal BWPD: {self.caudalInyeccion}"
