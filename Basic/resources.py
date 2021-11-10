@@ -1,7 +1,8 @@
 from import_export import resources
 from import_export.fields import Field
-from import_export.widgets import ForeignKeyWidget
-from .models import Campo, DataAVM, DataStork, Pozo
+from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
+from import_export.results import RowResult
+from .models import Campo, DataAVM, DataStork, Pozo, PozoInyector
 from decimal import Decimal
 
 
@@ -174,9 +175,50 @@ class DataStorkResource(resources.ModelResource):
 
 
 class DataPozoInyectorResource(resources.ModelResource):
-    def import_data(self, *args, **kwargs):
-        raise ValueError(
-            f"Funcionalidad Pozo Inyector deshabilitada temporalmente")
+    POZO_INYECTOR = Field(attribute='pozoInyector', column_name='Pozo Inyector', widget=ForeignKeyWidget(
+        Pozo, 'nombre'), saves_null_values=False)
+    CAUDAL_INYECCION = Field(attribute='caudalInyeccion',
+                             column_name='Objetivo de inyección (BWPD)', saves_null_values=False)
+    FECHA_INICIO = Field(attribute='fechaInicio', column_name='Inicio de inyección',
+                         saves_null_values=False)
+    PROCESO = Field(attribute='proceso',
+                    column_name='PROCESO', saves_null_values=False)
+    # POZOS_ASOCIADOS = Field(attribute='pozosAsociados', column_name='Pozo productor asociado - Primera línea ', widget=ManyToManyWidget(
+    #     Pozo, field='nombre'), saves_null_values=False) #asi se construye un manytomanywidget
+
+    def after_import_row(self, row, row_result, **kwargs):
+        if not(row_result.import_type == RowResult.IMPORT_TYPE_ERROR):
+            instance = PozoInyector.objects.get(
+                pozoInyector=row.get('Pozo Inyector'))
+            instanceAsociado = Pozo.objects.filter(
+                nombre=row.get('Pozo productor asociado - Primera línea '))
+            if instanceAsociado.exists():
+                instance.pozosAsociados.add(instanceAsociado.get())
+            else:
+                raise ValueError("Errores en la fila {}: {}".format(kwargs['row_number']+1, "el pozo asociado no existe"))
+
+    # # https://github.com/django-import-export/django-import-export/issues/763
+    #     # overriding import_row to ignore errors and skip rows that fail to import
+    #     # without failing the entire import
+    #     #para saltarse la fila ante un error y seguir importando
+    # def import_row(self, row, instance_loader, **kwargs):
+    #     import_result = super().import_row(row, instance_loader, **kwargs)
+    #     if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
+    #         if (not(Pozo.objects.filter(nombre=row.get('Pozo Inyector')).exists())
+    #                 or (not(Pozo.objects.filter(nombre=row.get('Pozo productor asociado - Primera línea ')).exists()))):
+    #             print("Errors in row {}: {}".format(kwargs['row_number'], [
+    #                   err.error for err in import_result.errors]))  # show error
+    #             import_result.errors = []  # saltar la fila pero seguir importando
+    #             import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+    #     return import_result
+
+    class Meta:
+        model = PozoInyector
+        skip_unchanged = True
+        import_id_fields = ('POZO_INYECTOR',)
+        exclude = ('id')
+        fields = ('Pozo Inyector', 'Objetivo de inyección (BWPD)',
+                  'Inicio de inyección', 'Pozo productor asociado - Primera línea ', 'PROCESO')
 
 
 class DataLaboratorioResource(resources.ModelResource):
