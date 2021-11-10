@@ -61,11 +61,11 @@
     </div>
 </div>
 <!--//form de solicitud -->
-{% if message.status == 'FAILED' %}
+{% if taskTracker.status == 'FAILED' %}
 <div class="col-12">
     <div class="row g-4 settings-section mb-4">
         <h3 class="section-title">ERROR AL CARGAR EL ARCHIVO </h3>
-        <p><mark class="text-danger"><strong>error:</strong> {{ message.type_error }}</mark></p>
+        <p><mark class="text-danger"><strong>error:</strong> {{ taskTracker.type_error }}</mark></p>
     </div>
 </div>
 {% endif %}
