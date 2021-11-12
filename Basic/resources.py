@@ -1,8 +1,10 @@
+from logging import exception
+from django.db.models import query
 from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
 from import_export.results import RowResult
-from .models import Campo, DataAVM, DataStork, Pozo, PozoInyector
+from .models import Campo, DataAVM, DataLaboratorio, DataStork, Pozo, PozoInyector
 from decimal import Decimal
 
 
@@ -195,22 +197,8 @@ class DataPozoInyectorResource(resources.ModelResource):
             if instanceAsociado.exists():
                 instance.pozosAsociados.add(instanceAsociado.get())
             else:
-                raise ValueError("Errores en la fila {}: {}".format(kwargs['row_number']+1, "el pozo asociado no existe"))
-
-    # # https://github.com/django-import-export/django-import-export/issues/763
-    #     # overriding import_row to ignore errors and skip rows that fail to import
-    #     # without failing the entire import
-    #     #para saltarse la fila ante un error y seguir importando
-    # def import_row(self, row, instance_loader, **kwargs):
-    #     import_result = super().import_row(row, instance_loader, **kwargs)
-    #     if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
-    #         if (not(Pozo.objects.filter(nombre=row.get('Pozo Inyector')).exists())
-    #                 or (not(Pozo.objects.filter(nombre=row.get('Pozo productor asociado - Primera línea ')).exists()))):
-    #             print("Errors in row {}: {}".format(kwargs['row_number'], [
-    #                   err.error for err in import_result.errors]))  # show error
-    #             import_result.errors = []  # saltar la fila pero seguir importando
-    #             import_result.import_type = RowResult.IMPORT_TYPE_SKIP
-    #     return import_result
+                raise ValueError("Errores en la fila {}: {}".format(
+                    kwargs['row_number']+1, "el pozo asociado no existe"))
 
     class Meta:
         model = PozoInyector
@@ -222,6 +210,65 @@ class DataPozoInyectorResource(resources.ModelResource):
 
 
 class DataLaboratorioResource(resources.ModelResource):
-    def import_data(self, *args, **kwargs):
-        raise ValueError(
-            f"Funcionalidad data Laboratorio deshabilitada temporalmente")
+    POZO = Field(attribute='pozo', column_name='Pozo', widget=ForeignKeyWidget(
+        Pozo, 'nombre'), saves_null_values=False)
+    FECHA = Field(attribute='fecha',
+                  column_name='Fecha de análisis', saves_null_values=False)
+    ID_MUESTRA = Field(attribute='idMuestra',
+                       column_name='ID Muestra', saves_null_values=False)
+    TIPO_MUESTRA = Field(attribute='tipoMuestra',
+                         column_name='Tipo de muestra', saves_null_values=False)
+    BSW = Field(attribute='bsw', column_name='%BSW (centrifugación)',
+                saves_null_values=False)
+    API = Field(attribute='api', column_name='API@60°F',
+                saves_null_values=False)
+    PH = Field(attribute='ph', column_name='pH', saves_null_values=False)
+    CLORUROS = Field(attribute='cloruros', column_name='Cloruros mg/L',
+                     saves_null_values=False)
+
+    def before_import_row(self, row, row_number=None, **kwargs):
+
+        # for anidado
+        # a={self.fields[f].column_name for f in self.fields} es lo mismo que
+        # for f in self.fields:
+        #     print(f"name:{f} value:{self.fields[f].column_name}")
+        try:
+            val = row["%BSW (centrifugación)"]
+
+            for field in [self.fields[f].column_name for f in self.fields]:
+                if row[field] == 'NO':
+                    row[field] = 0
+        except:
+            raise ValueError(
+                f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
+
+    # https://github.com/django-import-export/django-import-export/issues/763
+    # overriding import_row to ignore errors and skip rows that fail to import
+    # without failing the entire import
+    # para saltarse la fila ante un error y seguir importando
+    def import_row(self, row, instance_loader, **kwargs):
+        import_result = super().import_row(row, instance_loader, **kwargs)
+        if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
+            if not(Pozo.objects.filter(nombre=row.get('Pozo')).exists()):
+                raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
+                    err.error for err in import_result.errors]))  # show error
+            else:
+                import_result.errors = []  # saltar la fila pero seguir importando
+                import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        return import_result
+
+    class Meta:
+        model = DataLaboratorio
+        skip_unchanged = True
+        import_id_fields = ('POZO', 'FECHA', 'ID_MUESTRA')
+        exclude = ('id')
+        fields = ('POZO', 'FECHA', 'ID_MUESTRA', 'TIPO_MUESTRA',
+                  'BSW', 'API', 'PH', 'CLORUROS')
+
+        # fields hace referencia a los campos que quiero tener en cuenta del model.py es decir los que defino aqui+ los que
+        # quiera traer del modelo, que son los que pongo en los parametros
+        # fields = ('pozo', 'fecha', 'idMuestra','tipoMuestra')
+        # trae POZO,FECHA,ID_MUESTRA,TIPO_MUESTRA,BSW,API,PH,CLORUROS que son los definidos aqui
+        # y pozo,fecha,idMuestra,tipoMuestra que son los del modelo model.py
+        # si no se pone trae ambos(archivo y modelo) aunq no significa que los use; es mas para temas de exportacion
+        # por eso es que se ponen los nombres iguales para que no repita
