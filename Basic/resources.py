@@ -123,6 +123,14 @@ class DataAVMResource(resources.ModelResource):
             raise ValueError(
                 f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
 
+    def import_row(self, row, instance_loader, **kwargs):
+        import_result = super().import_row(row, instance_loader, **kwargs)
+        if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
+                (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
+            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
+                err.error for err in import_result.errors]))  # show error
+        return import_result
+
     class Meta:
         model = DataAVM
         skip_unchanged = True
@@ -167,6 +175,14 @@ class DataStorkResource(resources.ModelResource):
         skip = getattr(instance, 'dataAVM_id') == None
         return skip
 
+    def import_row(self, row, instance_loader, **kwargs):
+        import_result = super().import_row(row, instance_loader, **kwargs)
+        if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
+                (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
+            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
+                err.error for err in import_result.errors]))  # show error
+        return import_result
+
     class Meta:
         model = DataStork
         skip_unchanged = True
@@ -206,6 +222,14 @@ class DataPozoInyectorResource(resources.ModelResource):
             else:
                 raise ValueError("Errores en la fila {}: {}".format(
                     kwargs['row_number']+1, "el pozo asociado no existe"))
+
+    def import_row(self, row, instance_loader, **kwargs):
+        import_result = super().import_row(row, instance_loader, **kwargs)
+        if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
+                (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
+            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
+                err.error for err in import_result.errors]))  # show error
+        return import_result
 
     class Meta:
         model = PozoInyector
