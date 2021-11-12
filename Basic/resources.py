@@ -188,6 +188,13 @@ class DataPozoInyectorResource(resources.ModelResource):
     # POZOS_ASOCIADOS = Field(attribute='pozosAsociados', column_name='Pozo productor asociado - Primera línea ', widget=ManyToManyWidget(
     #     Pozo, field='nombre'), saves_null_values=False) #asi se construye un manytomanywidget
 
+    def before_import_row(self, row, row_number=None, **kwargs):
+        try:
+            val = row["Pozo Inyector"]
+        except:
+            raise ValueError(
+                f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
+
     def after_import_row(self, row, row_result, **kwargs):
         if not(row_result.import_type == RowResult.IMPORT_TYPE_ERROR):
             instance = PozoInyector.objects.get(
