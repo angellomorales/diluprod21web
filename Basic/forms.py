@@ -42,6 +42,7 @@ class CalculosForm(forms.Form):
 
 
 class LaboratorioForm(forms.Form):
+    pozo = forms.CharField(required=True, label="Pozo")
     swMezcla = forms.DecimalField(
         decimal_places=2, required=True, label="% S&W Mezcla")
     apiMezcla = forms.DecimalField(
@@ -49,6 +50,8 @@ class LaboratorioForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(LaboratorioForm, self).__init__(*args, **kwargs)
+        self.fields['pozo'].widget.attrs.update(
+            {'class': 'form-control mx-sm-3 mb-2','list':'Pozos'})
         self.fields['swMezcla'].widget.attrs.update(
             {'class': 'form-control mx-sm-3 mb-2'})
         self.fields['apiMezcla'].widget.attrs.update(

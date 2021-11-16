@@ -169,6 +169,7 @@ def graficarCalculos_view(request, graphId):
 
 @login_required(login_url="index")
 def laboratorio_view(request):
+    pozos = Pozo.objects.all()
     if request.method == "POST":
         form = LaboratorioForm(request.POST)
         if form.is_valid():
@@ -181,15 +182,18 @@ def laboratorio_view(request):
             return render(request, "Basic/laboratorio.html", {
                 "form": form,
                 "esCalculado": True,
+                "pozos": pozos,
                 "data": data
             })
         else:
             return render(request, "Basic/laboratorio.html", {
-                "form": form
+                "form": form,
+                "pozos": pozos,
             })
     form = LaboratorioForm()
     return render(request, "Basic/laboratorio.html", {
-        "form": form
+        "form": form,
+        "pozos": pozos,
     })
 
 

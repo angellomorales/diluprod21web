@@ -24,6 +24,13 @@
                     {% endfor %}
                     <button type="submit" class="btn app-btn-primary" value="Calcular">Calcular</button>
                 </form>
+                <div class="mb-3">
+                    <datalist id="Pozos">
+                        {% for pozo in pozos %}
+                        <option value="{{ pozo }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
             </div>
             <!--//app-card-body-->
 
