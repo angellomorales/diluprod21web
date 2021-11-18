@@ -142,7 +142,7 @@
 
   .tab-scrolling {
     overflow-y: auto;
-    height: 300px;
+    max-height: 300px;
 
     th {
       position: sticky;
