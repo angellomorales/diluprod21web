@@ -101,7 +101,32 @@
 {% endif %}
 
 <!-- inner tabla Laboratorio -->
-<div id="id_tabla_historico_Lab">
+<div class="row g-4 mb-4" id="id_tabla_historico_Lab">
+</div>
+
+<!-- Grafica tabla Laboratorio -->
+<div class="row g-4 settings-section mb-4" id="id_separador_grafica">'
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="app-card app-card-chart h-100 shadow-sm">
+            <div class="app-card-body p-0">
+                <div class="chart-container">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                        </div>
+                    </div>
+                    <div id="chartDataHistorica"></div>
+                </div>
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
 </div>
 {% endblock %}
 

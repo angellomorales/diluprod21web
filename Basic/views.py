@@ -303,8 +303,17 @@ def graficarDataHistorica_view(request, graphId):
         return graficarHistorico(data,dataPozo,graphId)
     return render(request, "Basic/calculos.html")
 
+@login_required(login_url="index")
+def graficarTablaLaboratorio_view(request, graphId):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        pozo = data.get("pozo")
+        dataPozo = DataLaboratorio.objects.filter(pozo=pozo)
+        return graficarHistorico(data,dataPozo,graphId,isLab=True)
+    return render(request, "Basic/Laboratorio.html")
 
-def graficarHistorico(data, dataPozo, graphId):
+
+def graficarHistorico(data, dataPozo, graphId,**kwargs):
     idSeries = data["series"]
     idContenedor = data.get("idContenedor")
     grafica = Grafica()
@@ -317,9 +326,13 @@ def graficarHistorico(data, dataPozo, graphId):
             # configurar para cada grafica
             for idSerie in idSeries:
                 # stringLabel=''.join( x for x in idSerie if x not in "id_")
+                if('isLab' in kwargs):
+                    variable=item.__dict__.get(idSerie['id'])
+                else:
+                    variable=getVariable_AVM_or_Stork(item, idSerie)
                 series.append({
                     'nombre': idSerie['id'],
-                    'variable': getVariable_AVM_or_Stork(item, idSerie),
+                    'variable': variable,
                     'label': f"{idSerie['label']} ({idSerie['unidades']})",
                     'backgroundColor': idSerie['color'],
                     'borderColor': idSerie['color'],
