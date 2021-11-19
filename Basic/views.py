@@ -299,59 +299,63 @@ def graficarDataHistorica_view(request, graphId):
     if request.method == "POST":
         data = json.loads(request.body)
         pozo = data.get("pozo")
-        idSeries = data["series"]
-        idContenedor = data.get("idContenedor")
-        grafica = Grafica()
-        series = []
         dataPozo = DataAVM.objects.filter(pozo=pozo)
-        maxYValue = 100
-
-        # ------------------------------------------graph1---------------------------------------------
-        for item in dataPozo:
-            if graphId == "historial":
-                # configurar para cada grafica
-                for idSerie in idSeries:
-                    # stringLabel=''.join( x for x in idSerie if x not in "id_")
-                    series.append({
-                        'nombre': idSerie['id'],
-                        'variable': getVariable_AVM_or_Stork(item, idSerie),
-                        'label': f"{idSerie['label']} ({idSerie['unidades']})",
-                        'backgroundColor': idSerie['color'],
-                        'borderColor': idSerie['color'],
-                        'pointStyle': 'circle'
-                    })
-                title = 'Histórico de datos'
-                titleXAxis = 'Tiempo'
-                titleYAxis = ''
-
-            datos = {'x': str(item.fecha)}
-
-            # ---------------------------construccion de data--------------------------------
-            for serie in series:
-                datos[serie['nombre']] = serie['variable']
-                if not (serie['variable'] == None):
-                    if maxYValue < serie['variable']*decimal.Decimal(1.05):
-                        maxYValue = round(
-                            serie['variable']*decimal.Decimal(1.05))
-            grafica.addSeriesData(**datos)  # dict
-
-        # --------------------------------construccion de grafica----------------------------
-        grafica.addParameters(title=title,
-                              titleXAxis=titleXAxis,
-                              titleYAxis=titleYAxis,
-                              maxYValue=maxYValue)
-        for ser in series:
-            grafica.addSerieParameters(serie=ser['nombre'],
-                                       label=ser['label'],
-                                       backgroundColor=ser['backgroundColor'],
-                                       borderColor=ser['borderColor'],
-                                       pointStyle=ser['pointStyle'],
-                                       pointRadius=3,
-                                       pointBorderColor='rgb(125, 125, 125)')
-
-        # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
-        return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
+        return graficarHistorico(data,dataPozo,graphId)
     return render(request, "Basic/calculos.html")
+
+
+def graficarHistorico(data, dataPozo, graphId):
+    idSeries = data["series"]
+    idContenedor = data.get("idContenedor")
+    grafica = Grafica()
+    series = []
+    maxYValue = 100
+
+    # ------------------------------------------graph1---------------------------------------------
+    for item in dataPozo:
+        if graphId == "historial":
+            # configurar para cada grafica
+            for idSerie in idSeries:
+                # stringLabel=''.join( x for x in idSerie if x not in "id_")
+                series.append({
+                    'nombre': idSerie['id'],
+                    'variable': getVariable_AVM_or_Stork(item, idSerie),
+                    'label': f"{idSerie['label']} ({idSerie['unidades']})",
+                    'backgroundColor': idSerie['color'],
+                    'borderColor': idSerie['color'],
+                    'pointStyle': 'circle'
+                })
+            title = 'Histórico de datos'
+            titleXAxis = 'Tiempo'
+            titleYAxis = ''
+
+        datos = {'x': str(item.fecha)}
+
+        # ---------------------------construccion de data--------------------------------
+        for serie in series:
+            datos[serie['nombre']] = serie['variable']
+            if not (serie['variable'] == None):
+                if maxYValue < serie['variable']*decimal.Decimal(1.05):
+                    maxYValue = round(
+                        serie['variable']*decimal.Decimal(1.05))
+        grafica.addSeriesData(**datos)  # dict
+
+    # --------------------------------construccion de grafica----------------------------
+    grafica.addParameters(title=title,
+                          titleXAxis=titleXAxis,
+                          titleYAxis=titleYAxis,
+                          maxYValue=maxYValue)
+    for ser in series:
+        grafica.addSerieParameters(serie=ser['nombre'],
+                                   label=ser['label'],
+                                   backgroundColor=ser['backgroundColor'],
+                                   borderColor=ser['borderColor'],
+                                   pointStyle=ser['pointStyle'],
+                                   pointRadius=3,
+                                   pointBorderColor='rgb(125, 125, 125)')
+
+    # return JsonResponse(diluyenteAInyectar, safe=False)# para list usar safe=false en el jsonresponse
+    return JsonResponse({'datos': grafica.dataGraph, 'graphParams': grafica.getGraphParams(), 'contenedor': f"#{idContenedor}"})
 
 
 def getVariable_AVM_or_Stork(item, idSerie):
