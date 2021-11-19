@@ -28,7 +28,7 @@
                     <datalist id="Pozos">
                         {% for pozo in pozos %}
                         <option value="{{ pozo }}">
-                        {% endfor %}
+                            {% endfor %}
                     </datalist>
                 </div>
             </div>
@@ -41,7 +41,7 @@
 
     <div class="col-6 col-md-6">
         <div class="container" id="lab-image">
-            <img  class="mx-auto d-block" src="{% static 'Basic/img/hidrometro.gif' %}" alt="">
+            <img class="mx-auto d-block" src="{% static 'Basic/img/hidrometro.gif' %}" alt="">
         </div>
     </div>
     <!-- // imagen  -->
@@ -100,8 +100,15 @@
 {% endfor %}
 {% endif %}
 
+<!-- inner tabla Laboratorio -->
+<div id="id_tabla_historico_Lab">
+</div>
 {% endblock %}
 
 {% block script %}
-
+<script src="{% static 'Basic/plugins/chart.js/chart.min.js' %}"></script>
+<script src="{% static 'Basic/plugins/chart.js/chartjs-plugin-zoom.min.js' %}"></script>
+<script src="{% static 'Basic/js/ajax.js' %}"></script>
+<script src="{% static 'Basic/js/graficas.js' %}"></script>
+<script src="{% static 'Basic/js/enviarEventosLaboratorio.js' %}"></script>
 {% endblock %}

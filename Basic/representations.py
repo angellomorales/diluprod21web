@@ -121,6 +121,47 @@ class Representations():
         }
         return dataPozoRepresentation
 
+    def representacionDataLaboratorio(self, dataLab):
+        dataLabRepresentation = {
+            "Fecha": {
+                "id": "fecha",
+                "valor": dataLab.fecha,
+            },
+            "Id Muestra": {
+                "id": "idMuestra",
+                "valor": dataLab.idMuestra,
+            },
+            "Tipo Muestra": {
+                "id": "tipoMuestra",
+                "valor": dataLab.tipoMuestra,
+            },
+            "s&W": {
+                "id": "bsw",
+                "unidades": "%",
+                "valor": dataLab.bsw,
+                "color": "rgb(100, 116, 254)"  # Azul
+            },
+            "API": {
+                "id": "api",
+                "unidades": "º",
+                "valor": dataLab.api,
+                "color": "rgb(255, 99, 132)"  # rojo claro
+            },
+            "pH": {
+                "id": "ph",
+                "unidades": "",
+                "valor": dataLab.ph,
+                "color": "rgb(96, 249, 33)"  # Verde
+            },
+            "Cloruros": {
+                "id": "cloruros",
+                "unidades": "mg/L",
+                "valor": dataLab.bsw,
+                "color": "rgb(241, 255, 99)"  # Amarillo
+            },
+        }
+        return dataLabRepresentation
+
     def representacionCalculos(self, calculos):
         representation = {
             "tablas": [{

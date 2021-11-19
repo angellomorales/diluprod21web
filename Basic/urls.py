@@ -14,6 +14,8 @@ urlpatterns = [
          views.graficarCalculos_view, name="graficarCalculos"),
     path("cargarPredataCalculos/<str:pozoId>",
          views.cargarPredataCalculos_view, name="cargarPredataCalculos"),
+    path("cargarTablaLaboratorio/<str:pozoId>",
+         views.cargarTablaLaboratorio_view, name="cargarTablaLaboratorio"),
     path("graficarDataHistorica/<str:graphId>",
          views.graficarDataHistorica_view, name="graficarDataHistorica"),
     path("pozoNuevo", views.pozoNuevo_view, name="pozoNuevo"),

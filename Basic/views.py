@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import DataAVM, Pozo, taskTracker, User
+from .models import DataAVM, DataLaboratorio, Pozo, taskTracker, User
 from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataStorkResource, DataPozoInyectorResource, DataLaboratorioResource, DataPozoResource
@@ -74,7 +74,7 @@ def calculos_view(request):
                 "pozos": pozos,
                 "esCalculado": True,
                 "data": data,
-                "diluyente":data.get('tablas')[1].get('contenido')[1].get('valor'),
+                "diluyente": data.get('tablas')[1].get('contenido')[1].get('valor'),
                 "api": data.get('tablas')[5].get('contenido')[0].get('valor')
             })
         else:
@@ -94,7 +94,8 @@ def calculos_view(request):
 def cargarPredataCalculos_view(request, pozoId):
     if request.method == "POST":
         try:
-            dataAVM = DataAVM.objects.filter(pozo=pozoId).exclude(pruebaValida="PENDIENTE").latest()
+            dataAVM = DataAVM.objects.filter(pozo=pozoId).exclude(
+                pruebaValida="PENDIENTE").latest()
             representations = Representations()
             dataResponse = {
                 'pozoId': pozoId, 'data': representations.representacionDataHistorica(dataAVM)}
@@ -198,6 +199,22 @@ def laboratorio_view(request):
 
 
 @login_required(login_url="index")
+def cargarTablaLaboratorio_view(request, pozoId):
+    if request.method == "POST":
+        data = []
+        try:
+            dataLab = DataLaboratorio.objects.filter(pozo=pozoId)
+            representations = Representations()
+            for item in dataLab:
+                data.append(
+                    representations.representacionDataLaboratorio(item))
+            return JsonResponse({'datos': data})
+        except DataLaboratorio.DoesNotExist:
+            return JsonResponse({'datos': None})
+    return render(request, "Basic/Laboratorio.html")
+
+
+@login_required(login_url="index")
 def pozoInyector_view(request):
     return render(request, "Basic/pozoInyector.html")
 
@@ -211,7 +228,8 @@ def dataHistorica_view(request):
         if form.is_valid():
             try:
                 pozo = form.cleaned_data["pozo"]
-                dataPozo = DataAVM.objects.filter(pozo=pozo).exclude(pruebaValida="PENDIENTE").latest()
+                dataPozo = DataAVM.objects.filter(pozo=pozo).exclude(
+                    pruebaValida="PENDIENTE").latest()
                 representation = Representations()
                 data = representation.representacionDataHistorica(dataPozo)
                 return render(request, "Basic/dataHistorica.html", {
