@@ -13,6 +13,9 @@ document.addEventListener('click', event => {
         if (seriesActivas.size > 0) {
             load_data('historial');
         }
+        else{
+            document.querySelector('#chartDataHistorica').innerHTML="";
+        }
     }
 })
 
