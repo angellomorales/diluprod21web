@@ -1,5 +1,7 @@
 import json
 
+from Basic.models import DataLaboratorio
+
 
 class Representations():
 
@@ -122,6 +124,10 @@ class Representations():
         return dataPozoRepresentation
 
     def representacionDataLaboratorio(self, dataLab):
+        elements = DataLaboratorio.objects.filter(pozo=dataLab.pozo).values("tipoMuestra").distinct()
+        dataDropdown=[]
+        for item in elements:
+            dataDropdown.append(item["tipoMuestra"])
         dataLabRepresentation = {
             "Fecha": {
                 "id": "fecha",
@@ -134,6 +140,7 @@ class Representations():
             "Tipo Muestra": {
                 "id": "tipoMuestra",
                 "valor": dataLab.tipoMuestra,
+                "dropdown":dataDropdown
             },
             "s&W": {
                 "id": "bsw",

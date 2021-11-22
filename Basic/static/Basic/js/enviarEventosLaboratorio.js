@@ -3,7 +3,7 @@ const seriesActivas = new Set();
 
 document.addEventListener('click', event => {
     const element = event.target;
-    if (element.className === 'form-check-input') {
+    if ((element.className === 'form-check-input') || (element.id == "selectTipoMuestra")) {
         seriesActivas.clear();
         seriesId.forEach(recorrerSeriesActivas);
         // console.log(seriesActivas);
@@ -12,8 +12,8 @@ document.addEventListener('click', event => {
         if (seriesActivas.size > 0) {
             load_data_Graficas('historial');
         }
-        else{
-            document.querySelector('#chartDataHistorica').innerHTML="";
+        else {
+            document.querySelector('#chartDataHistorica').innerHTML = "";
         }
     }
 })
@@ -70,7 +70,7 @@ function cargarPredata(dataResponse) {
     if (!dataResponse.datos.length) {
         console.log('no existe');
         document.querySelector('#id_tabla_historico_Lab').innerHTML = '';
-        document.querySelector('#chartDataHistorica').innerHTML="";
+        document.querySelector('#chartDataHistorica').innerHTML = "";
     }
     else {
 
@@ -134,6 +134,13 @@ function cargarPredata(dataResponse) {
                             `<input type="hidden" id="${element[field].id}_color" value="${element[field].color}">` +
                             `<input type="hidden" id="${element[field].id}_unidades" value="${element[field].unidades}"></input>` +
                             '</div>';
+                    };
+                    if ('dropdown' in element[field]) {
+                        header += '<select class="form-select form-select-sm ms-auto d-inline-flex w-auto" id="selectTipoMuestra">';
+                        element[field].dropdown.forEach(element => {
+                            header += `<option value="${element}">${element}</option>`;
+                        });
+                        header += '</select>';
                     };
                     header += '</span></th>';
                 }
