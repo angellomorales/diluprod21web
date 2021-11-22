@@ -34,11 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function load_data_Graficas(graphId) {
     const pozo = document.querySelector('#id_pozo').value;
     const series = Array.from(seriesActivas);
+    const tipo = document.querySelector('#selectTipoMuestra').value;
     const idContenedor = document.querySelector('#chartDataHistorica').id;
     url = `/graficarTablaLaboratorio/${graphId}`;
     bodyJson = JSON.stringify({
         pozo: pozo,
         series,
+        tipo: tipo,
         idContenedor: idContenedor
     });
     // console.log('json enviado');

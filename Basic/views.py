@@ -300,25 +300,28 @@ def graficarDataHistorica_view(request, graphId):
         data = json.loads(request.body)
         pozo = data.get("pozo")
         dataPozo = DataAVM.objects.filter(pozo=pozo)
-        return graficarHistorico(data,dataPozo,graphId)
+        return graficarHistorico(data, dataPozo, graphId)
     return render(request, "Basic/calculos.html")
+
 
 @login_required(login_url="index")
 def graficarTablaLaboratorio_view(request, graphId):
     if request.method == "POST":
         data = json.loads(request.body)
         pozo = data.get("pozo")
-        dataPozo = DataLaboratorio.objects.filter(pozo=pozo)
-        return graficarHistorico(data,dataPozo,graphId,isLab=True)
+        tipo = data.get("tipo")
+        dataPozo = DataLaboratorio.objects.filter(pozo=pozo, tipoMuestra=tipo)
+        return graficarHistorico(data, dataPozo, graphId, isLab=True, subTitle=tipo)
     return render(request, "Basic/Laboratorio.html")
 
 
-def graficarHistorico(data, dataPozo, graphId,**kwargs):
+def graficarHistorico(data, dataPozo, graphId, **kwargs):
     idSeries = data["series"]
     idContenedor = data.get("idContenedor")
     grafica = Grafica()
     series = []
     maxYValue = 100
+    subTitle = ""
 
     # ------------------------------------------graph1---------------------------------------------
     for item in dataPozo:
@@ -327,18 +330,21 @@ def graficarHistorico(data, dataPozo, graphId,**kwargs):
             for idSerie in idSeries:
                 # stringLabel=''.join( x for x in idSerie if x not in "id_")
                 if('isLab' in kwargs):
-                    variable=item.__dict__.get(idSerie['id'])
+                    variable = item.__dict__.get(idSerie['id'])
+                    borderColor = 'rgba(255,255,255,0)'
+                    subTitle = kwargs["subTitle"]
                 else:
-                    variable=getVariable_AVM_or_Stork(item, idSerie)
+                    variable = getVariable_AVM_or_Stork(item, idSerie)
+                    borderColor = idSerie['color']
                 series.append({
                     'nombre': idSerie['id'],
                     'variable': variable,
                     'label': f"{idSerie['label']} ({idSerie['unidades']})",
                     'backgroundColor': idSerie['color'],
-                    'borderColor': idSerie['color'],
+                    'borderColor': borderColor,
                     'pointStyle': 'circle'
                 })
-            title = 'Histórico de datos'
+            title = f"Histórico de datos del pozo: {data['pozo']} {subTitle}"
             titleXAxis = 'Tiempo'
             titleYAxis = ''
 
