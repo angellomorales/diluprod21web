@@ -127,8 +127,8 @@ class DataAVMResource(resources.ModelResource):
         import_result = super().import_row(row, instance_loader, **kwargs)
         if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
                 (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
-            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
-                err.error for err in import_result.errors]))  # show error
+            raise ValueError("Errors in row {}: errors:{} validation:{}".format(kwargs['row_number']+1, [
+                             err.error for err in import_result.errors], [val for val in import_result.validation_error.error_list]))  # show error
         return import_result
 
     class Meta:
@@ -179,8 +179,8 @@ class DataStorkResource(resources.ModelResource):
         import_result = super().import_row(row, instance_loader, **kwargs)
         if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
                 (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
-            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
-                err.error for err in import_result.errors]))  # show error
+            raise ValueError("Errors in row {}: errors:{} validation:{}".format(kwargs['row_number']+1, [
+                             err.error for err in import_result.errors], [val for val in import_result.validation_error.error_list]))  # show error
         return import_result
 
     class Meta:
@@ -227,8 +227,8 @@ class DataPozoInyectorResource(resources.ModelResource):
         import_result = super().import_row(row, instance_loader, **kwargs)
         if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
                 (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
-            raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
-                err.error for err in import_result.errors]))  # show error
+            raise ValueError("Errors in row {}: errors:{} validation:{}".format(kwargs['row_number']+1, [
+                             err.error for err in import_result.errors], [val for val in import_result.validation_error.error_list]))  # show error
         return import_result
 
     class Meta:
