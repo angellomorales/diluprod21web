@@ -307,16 +307,20 @@ class DataLaboratorioResource(resources.ModelResource):
     # para saltarse la fila ante un error y seguir importando
     def import_row(self, row, instance_loader, **kwargs):
         import_result = super().import_row(row, instance_loader, **kwargs)
-        if (import_result.import_type == RowResult.IMPORT_TYPE_ERROR):
-            if not(Pozo.objects.filter(nombre=row.get('Pozo')).exists()):
-                raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
-                    err.error for err in import_result.errors]))  # show error
-            else:
-                import_result.errors = []  # saltar la fila pero seguir importando
-                import_result.import_type = RowResult.IMPORT_TYPE_SKIP
-        if (import_result.import_type == RowResult.IMPORT_TYPE_INVALID):
-            raise ValueError("invalid row {}: validation:{}".format(
-                kwargs['row_number']+1, [val for val in import_result.validation_error.error_list]))  # show error
+        # if (import_result.import_type == RowResult.IMPORT_TYPE_ERROR):
+        #     if not(Pozo.objects.filter(nombre=row.get('Pozo')).exists()):
+        #         raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
+        #             err.error for err in import_result.errors]))  # show error
+        #     else:
+        #         import_result.errors = []  # saltar la fila pero seguir importando
+        #         import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        # if (import_result.import_type == RowResult.IMPORT_TYPE_INVALID):
+        #     raise ValueError("invalid row {}: validation:{}".format(
+        #         kwargs['row_number']+1, [val for val in import_result.validation_error.error_list]))  # show error
+        if ((import_result.import_type == RowResult.IMPORT_TYPE_ERROR) or
+                (import_result.import_type == RowResult.IMPORT_TYPE_INVALID)):
+            raise ValueError("Errors in row {}: errors:{} validation:{}".format(kwargs['row_number']+1, [
+                             err.error for err in import_result.errors], [val for val in import_result.validation_error.error_list]))  # show error
         return import_result
 
     class Meta:
