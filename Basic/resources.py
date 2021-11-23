@@ -40,6 +40,31 @@ from decimal import Decimal
 #     def clean(self, value, **kwargs):
 #         return self.model.objects.get_or_create(nombre=value)
 
+def validateRow(rowfield):
+    if ((rowfield == '-') or
+        (rowfield == 'NO') or
+        (rowfield == 'NR') or
+        (rowfield == 'N.R.') or
+        (rowfield == 'N.R') or
+        (rowfield == 'NR.') or
+        (rowfield == 'N/R') or
+        (rowfield == 'NA') or
+        (rowfield == 'N/A') or
+        (rowfield == 'N.A.') or
+        (rowfield == 'N.A') or
+        (rowfield == 'NA.') or
+        (rowfield == 'PDTE') or
+        (rowfield == 'PDTE.') or
+        (rowfield == 'PDT') or
+        (rowfield == 'PDT.') or
+        (rowfield == 'PENDIENTE') or
+        (rowfield == 'PENDIENTE.') or
+        (rowfield == '#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!#DIV/0!') or
+            (rowfield == '#DIV/0!')):
+        return True
+    else:
+        return False
+
 
 class ForeignKeyWidgetMultipleFields(ForeignKeyWidget):
 
@@ -160,6 +185,9 @@ class DataStorkResource(resources.ModelResource):
             val = row[" % S&W (MULTIFASICO)"]
             if row[" % S&W"]:
                 row[" % S&W"] = row[" % S&W"]*100
+            for field in [self.fields[f].column_name for f in self.fields]:
+                if validateRow(row[field]):
+                    row[field] = 0
         except:
             raise ValueError(
                 f"el archivo no contiene datos relacionados al modelo {self.Meta.model} que se esta cargando")
@@ -267,7 +295,7 @@ class DataLaboratorioResource(resources.ModelResource):
             val = row["%BSW (centrifugación)"]
 
             for field in [self.fields[f].column_name for f in self.fields]:
-                if row[field] == 'NO':
+                if validateRow(row[field]):
                     row[field] = 0
         except:
             raise ValueError(
@@ -279,13 +307,16 @@ class DataLaboratorioResource(resources.ModelResource):
     # para saltarse la fila ante un error y seguir importando
     def import_row(self, row, instance_loader, **kwargs):
         import_result = super().import_row(row, instance_loader, **kwargs)
-        if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
+        if (import_result.import_type == RowResult.IMPORT_TYPE_ERROR):
             if not(Pozo.objects.filter(nombre=row.get('Pozo')).exists()):
                 raise ValueError("Errors in row {}: {}".format(kwargs['row_number']+1, [
                     err.error for err in import_result.errors]))  # show error
             else:
                 import_result.errors = []  # saltar la fila pero seguir importando
                 import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        if (import_result.import_type == RowResult.IMPORT_TYPE_INVALID):
+            raise ValueError("invalid row {}: validation:{}".format(
+                kwargs['row_number']+1, [val for val in import_result.validation_error.error_list]))  # show error
         return import_result
 
     class Meta:
