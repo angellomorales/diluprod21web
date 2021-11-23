@@ -241,15 +241,16 @@ class DataPozoInyectorResource(resources.ModelResource):
 
     def after_import_row(self, row, row_result, **kwargs):
         if not(row_result.import_type == RowResult.IMPORT_TYPE_ERROR):
-            instance = PozoInyector.objects.get(
+            instance = PozoInyector.objects.filter(
                 pozoInyector=row.get('Pozo Inyector'))
-            instanceAsociado = Pozo.objects.filter(
-                nombre=row.get('Pozo productor asociado - Primera línea '))
-            if instanceAsociado.exists():
-                instance.pozosAsociados.add(instanceAsociado.get())
-            else:
-                raise ValueError("Errores en la fila {}: {}".format(
-                    kwargs['row_number']+1, "el pozo asociado no existe"))
+            if instance.exists():
+                instanceAsociado = Pozo.objects.filter(
+                    nombre=row.get('Pozo productor asociado - Primera línea '))
+                if instanceAsociado.exists():
+                    instance.get().pozosAsociados.add(instanceAsociado.get())
+                else:
+                    raise ValueError("Errores en la fila {}: {}".format(
+                        kwargs['row_number']+1, "el pozo asociado no existe"))
 
     def import_row(self, row, instance_loader, **kwargs):
         import_result = super().import_row(row, instance_loader, **kwargs)
