@@ -23,7 +23,7 @@ def import_data_task(self, data_resource, dataset):
         instance.status = 'FAILED'
         instance.type_error = exc
         instance.save()
-        raise self.retry(exc=exc, max_retries=2, countdown=10)
+        raise self.retry(exc=exc, max_retries=1, countdown=2)#1 RETRY 2 SEG DESPUES
 
     logger.info("actualizar instancia de taskTracker")
     instance.status = 'FINISHED'
