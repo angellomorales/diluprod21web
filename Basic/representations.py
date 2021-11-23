@@ -1,4 +1,5 @@
 import json
+import re
 
 from Basic.models import DataLaboratorio
 
@@ -124,8 +125,9 @@ class Representations():
         return dataPozoRepresentation
 
     def representacionDataLaboratorio(self, dataLab):
-        elements = DataLaboratorio.objects.filter(pozo=dataLab.pozo).values("tipoMuestra").distinct()
-        dataDropdown=[]
+        elements = DataLaboratorio.objects.filter(
+            pozo=dataLab.pozo).values("tipoMuestra").distinct()
+        dataDropdown = []
         for item in elements:
             dataDropdown.append(item["tipoMuestra"])
         dataLabRepresentation = {
@@ -140,7 +142,7 @@ class Representations():
             "Tipo Muestra": {
                 "id": "tipoMuestra",
                 "valor": dataLab.tipoMuestra,
-                "dropdown":dataDropdown
+                "dropdown": dataDropdown
             },
             "s&W": {
                 "id": "bsw",
@@ -387,4 +389,17 @@ class Representations():
                 'maxYValue': 420
             }
         }
+        return representation
+
+    def representacionPozoInyector(self, dataPozoInyector):
+
+        representation = []
+        for data in dataPozoInyector:
+            row = {}
+            for field in [f for f in data.__dict__.keys() if f not in ('id', '_state')]:
+                row.update({
+                    re.sub(r"([A-Z])", r" \1", field).title(): getattr(data, field)#nombre del atributo desde el dict en formato titulo: valor del atributo en el queryset
+                })
+            representation.append(row)
+
         return representation

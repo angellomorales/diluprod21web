@@ -3,15 +3,111 @@
 
 
 {% block body %}
-<h1>Pozo Inyector</h1>
-<div id="mapid" style="height: 400px;"></div>
+
+
+<h1 class="app-page-title mb-0">Pozo Inyector</h1>
+
+<hr class="my-4">
+
+<div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div id="mapid" style="height: 400px;"></div>
+</div>
+
+<div class="row g-4 settings-section mb-4">
+    <hr class="my-4">
+    <h3 class="section-title">Pozo productor asociado a primera línea:</h3>
+</div>
+
+<div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+        <div class="page-utilities">
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto">
+                    <form class="docs-search-form row gx-1 align-items-center" method="POST">
+                        {% csrf_token %}
+                        <!-- <div class="col-auto">
+                            <h5 class="app-card-title">Pozo:</h5>
+                        </div> -->
+                        <div class="col-auto">
+                            {{ form.pozo}}
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn app-btn-primary" value="Calcular"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-lightning" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z" />
+                                </svg>Actualizar</button>
+                        </div>
+                    </form>
+                    <div class="mb-3">
+                        <datalist id="Pozos">
+                            {% for pozo in pozos %}
+                            <option value="{{ pozo }}">
+                                {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+                <!--//col-->
+            </div>
+            <!--//row-->
+        </div>
+        <!--//table-utilities-->
+    </div>
+    <!--//col-->
+</div>
+<!--//form de solicitud -->
+{% if esCalculado %}
+
+<div class="row g-4 settings-section mb-4">
+    <hr class="my-4">
+    <h3 class="section-title">Pozos Inyectores:</h3>
+</div>
+<div class="row g-4 settings-section mb-4">
+    <div class="tab-content" id="orders-table-tab-content">
+        <div class="tab-pane fade active show" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive tab-scrolling">
+                        <table class="table app-table-hover mb-0 text-left">
+                            <thead>
+                                {% for item in data %}
+                                {% if forloop.first %}
+                                <tr>
+                                    {% for field in item.keys %}
+                                    <th class="cell"><span>{{ field }}</span></th>
+                                    <!-- <span class="note">aaaaa</span></th> -->
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% endif %}
+                                <tr>
+                                    {% for field in item.values %}
+                                    <td class="cell">{{ field }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
 {% endblock %}
 
 {% block script %}
 <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" /> -->
-<link rel="stylesheet" href="{% static 'Basic/plugins/leaflet/leaflet.css' %}"/>
+<link rel="stylesheet" href="{% static 'Basic/plugins/leaflet/leaflet.css' %}" />
 <script src="{% static 'Basic/plugins/leaflet/leaflet.js' %}"></script>
 <!-- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="

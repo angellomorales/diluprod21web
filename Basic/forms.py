@@ -98,3 +98,11 @@ class CargarDatosForm(forms.Form):
             return data
         else:
             raise ValidationError(_('Invalid content type'), code='invalid')
+
+class PozoInyectorForm(forms.Form):
+    pozo = forms.CharField(required=True, label="Pozo")
+
+    def __init__(self, *args, **kwargs):
+        super(PozoInyectorForm, self).__init__(*args, **kwargs)
+        self.fields['pozo'].widget.attrs.update(
+            {'class': 'form-control','list':'Pozos'})

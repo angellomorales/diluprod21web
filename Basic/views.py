@@ -1,5 +1,6 @@
 import json
 import decimal
+import sys
 from tablib import Dataset
 
 from django.http.response import JsonResponse
@@ -10,7 +11,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import DataAVM, DataLaboratorio, Pozo, taskTracker, User
-from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm
+from .forms import CalculosForm, DataHistoricaForm, LaboratorioForm, CargarDatosForm, PozoInyectorForm
 from .calculos import Calculos
 from .resources import DataAVMResource, DataStorkResource, DataPozoInyectorResource, DataLaboratorioResource, DataPozoResource
 from .representations import Representations
@@ -216,7 +217,39 @@ def cargarTablaLaboratorio_view(request, pozoId):
 
 @login_required(login_url="index")
 def pozoInyector_view(request):
-    return render(request, "Basic/pozoInyector.html")
+    pozos = Pozo.objects.all()
+    dataPozo = None
+    esCalculado = False
+    data = None
+
+    if request.method == "POST":
+        form = PozoInyectorForm(request.POST)
+        if form.is_valid():
+            try:
+                pozo = form.cleaned_data["pozo"]
+                SelectedPozo = Pozo.objects.filter(nombre=pozo)
+                representation = Representations() 
+                if SelectedPozo.exists():
+                    dataPozo = SelectedPozo.get().PozosAsociados.all()
+                    esCalculado = True
+                    data = representation.representacionPozoInyector(dataPozo)
+                return render(request, "Basic/pozoInyector.html", {
+                    "form": form,
+                    "data": data,
+                    "pozos": pozos,
+                    "esCalculado": esCalculado,
+                })
+            except:
+                print("Error inesperado:", sys.exc_info()[0])
+                return render(request, "Basic/pozoInyector.html", {
+                    "form": form,
+                    "pozos": pozos,
+                })
+
+    form = PozoInyectorForm()
+    return render(request, "Basic/pozoInyector.html", {
+                  "form": form,
+                  "pozos": pozos})
 
 
 @login_required(login_url="index")
