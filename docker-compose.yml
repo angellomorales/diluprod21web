@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  # Redis
+  # redis:
+  #   image: redis:alpine
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+
+  # Database postgresql
+  db:
+    image: postgres
+    volumes:
+      - /data/db:/var/lib/postgresql/data
+    environment:
+      - DATABASE_NAME=diluprod21
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=Controwell.2020
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+
+  # Django App
+  # app:
+  #   build: .
+  #   volumes:
+  #     - .:/diluprod21
+  #   environment:
+  #     - DATABASE_URL= postgres://postgres:pw@db:5432/myapp_development
+  #     - REDIS_TLS_URL=redis://redis:6379
+  #   ports:
+  #     - 8000:8000
+  #   image: app:diluprod21
+  #   container_name: diluprod21_container
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   depends_on:
+  #     - db
+  
+  # Celery
+  # celery:
+  #   restart: always
+  #   build: 
+  #     context: .
+  #   command: celery -A diluprod21 worker -l INFO #se usa pq el entorno es linux, para windows: celery -A diluprod21 worker -l info --pool=solo
+  #   volumes:
+  #     - .:/diluprod21
+  #   container_name: celery
+  #   depends_on:
+  #     - db
+  #     - redis
+  #     - app
