@@ -14,42 +14,47 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=diluprod21
+      - POSTGRES_DB=diluprod21db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=Controwell.2020
     container_name: postgres_db
     ports:
       - "5432:5432"
   
-  # PgAdmin4
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=root@root.com
-      - PGADMIN_DEFAULT_PASSWORD=root
-    container_name: pgadmin4
-    ports:
-      - "5050:80"
+  # # PgAdmin4
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   volumes:
+  #     - ./data/pgadmin:/var/lib/pgadmin
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=root@root.com
+  #     - PGADMIN_DEFAULT_PASSWORD=root
+  #   container_name: pgadmin4
+  #   ports:
+  #     - "5050:80"
 
 
   # Django App
-  # app:
-  #   build: .
-  #   volumes:
-  #     - .:/diluprod21
-  #   environment:
-  #     - DATABASE_URL= postgres://postgres:pw@db:5432/myapp_development
-  #     - REDIS_TLS_URL=redis://redis:6379
-  #   ports:
-  #     - 8000:8000
-  #   image: app:diluprod21
-  #   container_name: diluprod21_container
-  #   command: python manage.py runserver 0.0.0.0:8000
-  #   depends_on:
-  #     - db
+  app:
+    build: .
+    volumes:
+      - .:/diluprod21
+    environment:
+      - DATABASE_URL=postgres://root:Controwell.2020@db:5432/diluprod21db
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - REDIS_TLS_URL=redis://redis:6379
+    ports:
+      - "8000:8000"
+    image: app:diluprod21
+    container_name: diluprod21_container
+    command: >
+      sh -c "python manage.py waitdb --seconds 5 &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - "db"
   
   # Celery
   # celery:
