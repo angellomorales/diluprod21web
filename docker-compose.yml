@@ -3,6 +3,7 @@ services:
   # Redis
   redis:
     image: redis:alpine
+    restart: always
     volumes:
       - redis_data:/data
     container_name: redis
@@ -57,6 +58,7 @@ services:
     ports:
       - "8000:8000"
     image: app:diluprod21
+    restart: always
     container_name: diluprod21_container
     command: >
       sh -c "python manage.py waitdb --seconds 15 &&
@@ -69,8 +71,9 @@ services:
   # Celery
   celery:
     restart: always
-    build: 
-      context: .
+    # build: 
+    #   context: .#para recrear una imagen adicional basado en en la imagen de la app, crea una copia de la imagen
+    image: app:diluprod21
     command: celery -A diluprod21 worker -l INFO #se usa pq el entorno es linux, para windows: celery -A diluprod21 worker -l info --pool=solo
     volumes:
       - .:/diluprod21
