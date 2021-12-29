@@ -43,7 +43,7 @@ services:
 
 
   # Django App
-  app:
+  diluprod21:
     build: .
     volumes:
       - .:/diluprod21
@@ -57,9 +57,9 @@ services:
       - REDIS_TLS_URL=redis://redis:6379
     ports:
       - "8000:8000"
-    image: app:diluprod21
+    image: angellomorales/diluprod21:V1.0 #para subir a dockerhub
     restart: always
-    container_name: diluprod21_container
+    container_name: diluprod21_container #cambiar para estructura tag para docker hub para hacer push
     command: >
       sh -c "python manage.py waitdb --seconds 15 &&
              python manage.py migrate &&
@@ -73,7 +73,7 @@ services:
     restart: always
     # build: 
     #   context: .#para recrear una imagen adicional basado en en la imagen de la app, crea una copia de la imagen
-    image: app:diluprod21
+    image: angellomorales/diluprod21:V1.0
     command: celery -A diluprod21 worker -l INFO #se usa pq el entorno es linux, para windows: celery -A diluprod21 worker -l info --pool=solo
     volumes:
       - .:/diluprod21
@@ -87,7 +87,7 @@ services:
     depends_on:
       - db
       - redis
-      - app
+      - diluprod21
 
 #volumes como global dentro del docker      
 volumes:
